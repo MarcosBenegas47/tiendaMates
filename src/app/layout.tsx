@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import styles from "../resources/styles/pageMain.module.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,7 +27,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <div className={styles.container}>
+          <aside className={styles.aside}>
+            <p>Principal</p>
+            <p>Categorias</p>
+          </aside>
+          <div className={styles.cont}>
+
+            <header className={styles.head}>
+            <h1 className={styles.title}>Mates</h1>
+
+            </header>
+            {children}
+
+          </div>
+        
+      </div>
+        
+      <footer >
+
+  
+</footer>
       </body>
     </html>
   );
