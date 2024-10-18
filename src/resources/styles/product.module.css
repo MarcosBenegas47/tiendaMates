@@ -3,18 +3,35 @@
 
 .productList{
     display: grid;
-    gap: 20;
     grid-template-columns: 1fr 1fr 1fr;
+}
+.product{
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 7px 6px 10px -3px rgba(0,0,0,0.44);
+    width: 300px;
+    height: 370px;
+    margin: 0 auto 20px auto;
+    
+
+}
+.imagen{
+    border-radius: 10px 10px 0 0;
+}
+.precio{
+    font-size: 25px;
+}
+.textCard{
+    margin: 15px 10px;
 }
 @media (max-width: 1400px){
     .productList{
-        display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 0px;
     }   
 }
-@media (max-width: 500px){
+@media (max-width: 800px){
     .productList{
-        display: grid;
         grid-template-columns: 1fr ;
     }   
 }

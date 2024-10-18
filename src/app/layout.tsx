@@ -33,11 +33,11 @@ export default function RootLayout({
             <p>Categorias</p>
           </aside>
           <div className={styles.cont}>
-
             <header className={styles.head}>
             <h1 className={styles.title}>Mates</h1>
-
             </header>
+            <nav className={styles.navBar}> <p>Principal</p>
+            <p>Categorias</p></nav>
             {children}
 
           </div>
