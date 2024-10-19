@@ -1,8 +1,6 @@
 
 .container{
     display: flex;
-    justify-content: space-between;
-    gap: 40px;
     height: 100%;
     width: 100%;
     
@@ -79,4 +77,13 @@
     align-content: center;
     margin: 0 auto;
 }
+}
+
+.elementAside{
+    margin-top: 100px;
+    text-align: left;
+}
+
+.titleAside{
+    margin: 20px 0;
 }
