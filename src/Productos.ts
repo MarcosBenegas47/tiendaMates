@@ -5,3 +5,8 @@ export interface Productos  {
     descripcion: string,
     p_Unitario_final:string
 }
+
+export interface ImagenInter {
+    original:string,
+    thumbnail:string
+}

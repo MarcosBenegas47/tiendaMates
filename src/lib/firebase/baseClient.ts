@@ -15,9 +15,8 @@ export const  baseClient = async ():Promise<Productos[]> =>{
     })
     return data
 }
-export const productById = async (id:number)=>{
+export const productById = async (id:number):Promise<Productos>=>{
     const query = await getDoc(doc(db, "productos", id.toString()))
-    console.log("producto por " +id)
     return query.data() as Productos;
 
 }

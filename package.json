@@ -6,22 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "script-webp": "node src/app/script/create-image-webp.js"
   },
   "dependencies": {
     "@firebase/firestore": "^4.7.3",
     "firebase": "^10.14.1",
+    "glob": "^11.0.0",
     "next": "14.2.15",
     "normalize.css": "^8.0.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-image-gallery": "^1.3.0",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-image-gallery": "^1.2.4",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

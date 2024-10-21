@@ -17,20 +17,20 @@ export default function Product({products}:{products:Productos[]} ){
         <ul className={style.productList}>
             {products?.map(({id,codigo,cantidad,descripcion,p_Unitario_final} )=>(
                 cantidad >0 && (
-                    <Link href={`/costomers/product/${descripcion}`} onClick={()=> handleClick(id)} 
-                    key={id}>
-                        <li className={style.product} >
-                    <Image src={`/api/images/${id}`} alt="algun mate im" width={300} height={290} className={style.imagen}/>
-                    <div className={style.textCard}>
-                    {id}
-
-                        <h3>{descripcion}</h3>
-                        <span>{codigo}</span>
-                        <strong className={style.precio}>${p_Unitario_final}</strong>
-                    </div>
+                    <li className={style.product} key={id}>
+                    <Link href={`/costomers/product/${descripcion}`} onClick={ ()=> handleClick(id) }>
                     
-                </li>    
-                    </Link>
+                        
+                            <Image src={`/api/images/${id}`} alt="algun mate im" width={300} height={290} className={style.imagen}/>
+                            <div className={style.textCard}>
+                                <h3>{descripcion}</h3>
+                                <span>{codigo}</span>
+                                <strong className={style.precio}>${p_Unitario_final}</strong>
+                            </div>
+                           
+                       
+                    </Link> 
+                    </li> 
                 )
             ))}
         </ul>

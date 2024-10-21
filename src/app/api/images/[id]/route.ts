@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { join } from 'path';
 import { promises as fs, readdirSync } from 'fs';
+import { FindImage } from '@/app/utility/findImage';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const { id } = params;
@@ -13,11 +14,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       pathFile = join(ruta, fileFind);
 
     }
-  try {
-    const imagen = await fs.readFile(pathFile)
-    return new NextResponse(imagen)
-  } catch (error) {
-    return new NextResponse('Image not Found',{status:404})
-  } 
-   
+
+    return FindImage(pathFile);
+
 }
