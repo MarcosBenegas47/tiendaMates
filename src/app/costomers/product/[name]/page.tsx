@@ -37,15 +37,15 @@ useEffect( () =>{
 
 
   let images:[ImagenInter] = [{
-    original: `/api/images/${id}`,
-    thumbnail: `/api/images/${id}`
+    original: `/api/images/${product?.codigo}`,
+    thumbnail: `/api/images/${product?.codigo}`
   }];
 
 
 
   listImag?.forEach(file =>{
   images.push({
-    original: `/api/images/folderIn/${id}/${file}`,
+    original: `/api/images/folderIn/${product?.codigo}/${file}`,
     thumbnail: `/api/images/folderIn/${id}/${file}`
   })
 })

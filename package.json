@@ -2,12 +2,14 @@
   "name": "matesproyecto",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "script-webp": "node src/app/script/create-image-webp.js"
+    "script-webp": "node src/app/script/create-image-webp.js",
+    "script-Rename": "node src/app/script/rename-Image.js"
   },
   "dependencies": {
     "@firebase/firestore": "^4.7.3",

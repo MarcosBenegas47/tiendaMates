@@ -21,7 +21,7 @@ export default function Product({products}:{products:Productos[]} ){
                     <Link href={`/costomers/product/${descripcion}`} onClick={ ()=> handleClick(id) }>
                     
                         
-                            <Image src={`/api/images/${id}`} alt="algun mate im" width={300} height={290} className={style.imagen}/>
+                            <Image src={`/api/images/${codigo}`} alt="algun mate im" width={300} height={290} className={style.imagen}/>
                             <div className={style.textCard}>
                                 <h3>{descripcion}</h3>
                                 <span>{codigo}</span>
