@@ -11,8 +11,6 @@ export const  baseClient = async ():Promise<Productos[]> =>{
     const query = await getDocs(collection(db,"productos"));
     var data:Productos[] = [];
     query.forEach(doc =>{
-        let datos = doc.data() as Productos
-       console.log(`${datos.id}:${datos.codigo}`)
         data.push(doc.data() as Productos); 
     })
     return data

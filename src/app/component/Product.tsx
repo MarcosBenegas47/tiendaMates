@@ -19,12 +19,14 @@ export default function Product({products}:{products:Productos[]} ){
                 cantidad >0 && (
                     <li className={style.product} key={id}>
                     <Link href={`/costomers/product/${descripcion}`} onClick={ ()=> handleClick(id) }>
-                    
-                        
-                            <Image src={`/api/images/${codigo}`} alt="algun mate im" width={300} height={290} className={style.imagen}/>
+                
+                            <div>
+                            <span className={style.cod}>{codigo}</span>
+
+                                <Image src={`/api/images/${codigo}`} alt="algun mate im" width={300} height={290} className={style.imagen}/>
+                            </div>
                             <div className={style.textCard}>
                                 <h3>{descripcion}</h3>
-                                <span>{codigo}</span>
                                 <strong className={style.precio}>${p_Unitario_final}</strong>
                             </div>
                            
