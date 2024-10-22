@@ -6,12 +6,12 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import ImageGallery from 'react-image-gallery';
 import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
+import NavBar from "@/app/component/NavBar";
 
 const ProductId = () => {
 
 
     const [product, setProduct]=useState<Productos>();
-    const [id,setId] = useState<number>();
     const [listImag, setListImag]= useState<string[]>();
 
   useEffect( () =>{
@@ -22,20 +22,17 @@ const ProductId = () => {
       const porducto = await productById(Number(storedId));
       
 
-      const listImage = await imageList(String(storedId));
-
+      const listImage = await imageList(String(porducto.codigo));
       setProduct(porducto);
-      setId(Number(storedId));
       setListImag(listImage);
     }
       producto();
   },[]);
 
 
-
   const images:ImagenInter[] = [{
-    original: `/api/images/${product?.codigo}`,
-    thumbnail: `/api/images/${product?.codigo}`
+    original: `/api/images/${product?.codigo || null}`,
+    thumbnail: `/api/images/${product?.codigo || null}`
   }];
 
 
@@ -43,24 +40,23 @@ const ProductId = () => {
   listImag?.forEach(file =>{
   images.push({
     original: `/api/images/folderIn/${product?.codigo}/${file}`,
-    thumbnail: `/api/images/folderIn/${id}/${file}`
+    thumbnail: `/api/images/folderIn/${product?.codigo}/${file}`
   })
 });
 
     return (
       <Suspense fallback="loading...">
       <div className={style.infoProduct}>
-        <div className={style.imageGallery}>
-        <ImageGallery showPlayButton={false} showFullscreenButton={false}  items={images}/>
+          <NavBar/>
+          <div className={style.imageGallery}>
+            <ImageGallery showPlayButton={false} showFullscreenButton={false}  items={images}/>
 
-        </div>
-        {/* <Image src={`/api/images/${id}`} alt="algun mate im" width={300} height={290} /> */}
+          </div>
         <section className={style.elementProduct}>
           <h2 className={style.descriptionProduct}>{product?.descripcion}</h2>
           
           <strong className={style.precioProduct}>${product?.p_Unitario_final}</strong>
         </section>
-        
       </div>
     
       </Suspense>

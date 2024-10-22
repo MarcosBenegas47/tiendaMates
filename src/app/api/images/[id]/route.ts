@@ -4,6 +4,7 @@ import { FindImage } from '@/app/utility/findImage';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const { id } = params;
+    if(id == null) return
     // Ruta a la imagen en tu directorio público
     const ruta = join(process.cwd(), 'src', 'resources','images');
     const file = readdirSync(ruta);

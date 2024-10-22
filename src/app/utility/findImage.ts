@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 export const FindImage = async (src:string)=>{
+  
     try {
         const imagen = await fs.readFile(src)
         return new NextResponse(imagen,{
