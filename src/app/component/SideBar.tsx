@@ -1,5 +1,5 @@
-import React from "react"
-import Link from "next/link"
+import React from "react";
+import Link from "next/link";
 import styles from "../../resources/styles/pageMain.module.css";
 
 
@@ -18,5 +18,5 @@ export default function Sidebar() {
             </ul>
         
     </aside>
-  )
+  );
 }

@@ -3,10 +3,7 @@ import { Productos } from "@/Productos";
 import style from "../../resources/styles/product.module.css"
 import Image from "next/image";
 
-import img from "../../resources/images/10.png"
 import Link from "next/link";
-import ProdcutView from "../costomers/product/[name]/page";
-import { query } from "@firebase/firestore";
 
 export default function Product({products}:{products:Productos[]} ){
     const handleClick = (id: number) => {
@@ -36,5 +33,5 @@ export default function Product({products}:{products:Productos[]} ){
                 )
             ))}
         </ul>
-    </>) ;
+    </>);
 }

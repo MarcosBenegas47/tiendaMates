@@ -2,7 +2,6 @@ import path, { join } from "path";
 import sharp from "sharp";
 // import { promises as fs } from 'fs';
 import fs from "fs"; // Usar fs sin .promises
-import { Console } from "console";
 const extensionToConvert = ['.png', '.jpg'];
 
 

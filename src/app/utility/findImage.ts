@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { join } from 'path';
-import { promises as fs, readdirSync } from 'fs';
+import { promises as fs } from 'fs';
 export const FindImage = async (src:string)=>{
     try {
         const imagen = await fs.readFile(src)
@@ -8,8 +7,9 @@ export const FindImage = async (src:string)=>{
           headers:{
             'Content-Type': 'image/webp',
           }
-        })
+        });
     } catch (error) {
-        return new NextResponse('Image not Found',{status:404})
+      console.log(error)
+        return new NextResponse('Image not Found',{status:404});
     }
 }
