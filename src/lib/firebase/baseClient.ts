@@ -5,14 +5,14 @@ import app from "./firebaseConfig"
 import { Productos } from "@/Productos";
 const db = getFirestore(app);
 
-export const  baseClient = async ():Promise<Productos[]> =>{
+export const baseClient = async ():Promise<Productos[]> =>{
 
     const query = await getDocs(collection(db,"productos"));
-    var data:Productos[] = [];
+    const data:Productos[] = [];
     query.forEach(doc =>{
         data.push(doc.data() as Productos); 
     })
-    return data;
+    return data as Productos[];
 }
 export const productById = async (id:number):Promise<Productos>=>{
     const query = await getDoc(doc(db, "productos", id.toString()));

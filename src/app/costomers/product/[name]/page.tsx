@@ -7,33 +7,33 @@ import ImageGallery from 'react-image-gallery';
 import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
 
-const productId = () => {
+const ProductId = () => {
 
 
     const [product, setProduct]=useState<Productos>();
     const [id,setId] = useState<number>();
     const [listImag, setListImag]= useState<string[]>();
 
-useEffect( () =>{
+  useEffect( () =>{
 
- 
-  const producto = async ()=>{
-    const storedId =   sessionStorage.getItem("productId");
-    const porducto = await productById(Number(storedId));
-    
+  
+    const producto = async ()=>{
+      const storedId = sessionStorage.getItem("productId");
+      const porducto = await productById(Number(storedId));
+      
 
-    const listImage = await imageList(String(storedId));
+      const listImage = await imageList(String(storedId));
 
-    setProduct(porducto);
-    setId(Number(storedId));
-    setListImag(listImage);
-  }
-    producto();
-},[]);
+      setProduct(porducto);
+      setId(Number(storedId));
+      setListImag(listImage);
+    }
+      producto();
+  },[]);
 
 
 
-  let images:[ImagenInter] = [{
+  const images:ImagenInter[] = [{
     original: `/api/images/${product?.codigo}`,
     thumbnail: `/api/images/${product?.codigo}`
   }];
@@ -71,4 +71,4 @@ useEffect( () =>{
 }
 
 
-export default productId;
+export default ProductId;
