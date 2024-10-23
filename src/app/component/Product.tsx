@@ -6,16 +6,25 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Product({products}:{products:Productos[]} ){
-    const handleClick = (id: number) => {
+    const handleClick = (id: number ,codigo:string,cantidad:number,descripcion:string,p_Unitario_final:string,categoria:string[] ) => {
+       const  products ={
+        id: id ,
+        codigo:codigo,
+        cantidad:cantidad,
+        descripcion:descripcion,
+        p_Unitario_final:p_Unitario_final,
+        category:categoria
+        }
         // Guardar el id en sessionStorage
-        sessionStorage.setItem("productId", String(id));
+        localStorage.setItem("productId", String(id));
+        localStorage.setItem("product",JSON.stringify(products))
       };
     return(<>
         <ul className={style.productList}>
-            {products?.map(({id,codigo,cantidad,descripcion,p_Unitario_final} )=>(
+            {products?.map(({id,codigo,cantidad,descripcion,p_Unitario_final, categoria} )=>(
                 cantidad >0 && (
                     <li className={style.product} key={id}>
-                    <Link href={`/costomers/product/${descripcion}`} onClick={ ()=> handleClick(id) }>
+                    <Link href={`/costomers/product/${descripcion}`} onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria ) }>
                 
                             <div>
                             <span className={style.cod}>{codigo}</span>

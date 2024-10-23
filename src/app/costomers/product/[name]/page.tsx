@@ -7,26 +7,39 @@ import ImageGallery from 'react-image-gallery';
 import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
 import NavBar from "@/app/component/NavBar";
+import { useRouter } from "next/navigation";
+
+
 
 const ProductId = () => {
 
-
-    const [product, setProduct]=useState<Productos>();
+const router =  useRouter()
+console.log()
+    const [product, setProduct]=useState<Productos| null>();
     const [listImag, setListImag]= useState<string[]>();
-
+console.log(product);
   useEffect( () =>{
+    
 
-  
-    const producto = async ()=>{
-      const storedId = sessionStorage.getItem("productId");
-      const porducto = await productById(Number(storedId));
+    const product = localStorage.getItem("product")
+    const storedId = localStorage.getItem("productId");
+    console.log(storedId)
+    if (product) {
+      
+      setProduct(JSON.parse(product))
+      
+    }
+
+    // const producto = async ()=>{
+    //   const storedId = sessionStorage.getItem("productId");
+    //   const porducto = await productById(Number(storedId));
       
 
-      const listImage = await imageList(String(porducto.codigo));
-      setProduct(porducto);
-      setListImag(listImage);
-    }
-      producto();
+    //   const listImage = await imageList(String(porducto.codigo));
+    //   setProduct(porducto);
+    //   setListImag(listImage);
+    // }
+      // producto();
   },[]);
 
 
@@ -49,7 +62,7 @@ const ProductId = () => {
       <div className={style.infoProduct}>
           <NavBar/>
           <div className={style.imageGallery}>
-            <ImageGallery showPlayButton={false} showFullscreenButton={false}  items={images}/>
+            <ImageGallery showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
 
           </div>
         <section className={style.elementProduct}>
