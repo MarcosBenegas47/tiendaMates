@@ -5,9 +5,14 @@ import Image from "next/image";
 
 import Link from "next/link";
 
+
+
 export default function Product({products}:{products:Productos[]} ){
+
     const handleClick = (id: number ,codigo:string,cantidad:number,descripcion:string,p_Unitario_final:string,categoria:string[] ) => {
-       const  products ={
+        
+
+        const  products ={
         id: id ,
         codigo:codigo,
         cantidad:cantidad,
@@ -24,7 +29,11 @@ export default function Product({products}:{products:Productos[]} ){
             {products?.map(({id,codigo,cantidad,descripcion,p_Unitario_final, categoria} )=>(
                 cantidad >0 && (
                     <li className={style.product} key={id}>
-                    <Link href={`/costomers/product/${descripcion}`} onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria ) }>
+                    <Link href={`/costomers/product/${descripcion}`} 
+                        onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria )}
+                         
+                         onContextMenu={()=>handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria)}
+                         >
                 
                             <div>
                             <span className={style.cod}>{codigo}</span>

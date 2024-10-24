@@ -21,7 +21,7 @@ export default  function HomePage({data}:{data:Productos[]}) {
 
 //  dataFucttion()
 // },[])
-
+localStorage.clear()
   return (
     <>
     
