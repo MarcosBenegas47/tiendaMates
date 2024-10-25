@@ -16,7 +16,7 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: 20%;
+    width: 18%;
     padding: 10px;
     align-items: center;
     text-align: center;
@@ -24,6 +24,9 @@
     gap: 4px;
     background-color: var(--background);
     color: var(--foreground);
+
+
+ 
 }
 
 .head{
@@ -49,7 +52,14 @@
 
     }   
 }
-@media (max-width: 500px){
+
+@media (max-width: 800px){
+    .aside{
+        width: 20%;
+    }   
+}
+
+@media (max-width: 560px){
     .head{
         display: block;
         align-items: center;
@@ -69,34 +79,76 @@
         padding: 10px 0;
         
     }
-.container{
-    display: block;
-    gap: 40px;
-    align-content: center;
+    .container{
+        display: block;
+        gap: 40px;
+        align-content: center;
 
-} 
-.main{
-    margin: 0;
-    max-width: 100%;
-}
-.aside{
-    display: none;
-}
+    } 
+    .main{
+        margin: 0;
+        max-width: 100%;
+    }
+    .aside{
+        display: none;
+    }
 
 
-.cont{
-    left: 0;
-    max-width: 90%;
-    align-content: center;
-    margin: 0 auto;
-}
+    .cont{
+        left: 0;
+        max-width: 90%;
+        align-content: center;
+    }
 }
 
 .elementAside{
     margin-top: 100px;
     text-align: left;
+
 }
 
 .titleAside{
-    margin: 20px 0;
+    margin: 20px auto;
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+@media (max-width: 1518px){
+    .titleAside{
+        margin: 20px 0;
+        max-width: 150px;
+    }
+}
+
+
+.productList{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: var(--foreground);
+}
+
+@media (max-width: 1518px){
+    .productList{
+        grid-template-columns: 1fr 1fr;
+        gap: 0px;
+    }   
+}
+@media (max-width: 1020px){
+    .productList{
+        grid-template-columns: 1fr ;
+    }   
+}
+
+.titleSection{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 1520px){
+    .titleSection{
+        margin-top: 0;
+
+    }
 }

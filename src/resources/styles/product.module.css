@@ -10,31 +10,42 @@
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 7px 6px 10px -3px rgba(0,0,0,0.44);
-    width: 300px;
-    height: 400no px;
+    width: 400px;
+    height: 500px;
     margin: 0 auto 20px auto;
-
+    transition: transform 0.4s ease;
 }
+@media(hover:hover){
+    .product:hover{
+        transform: scale(1.1);
+    }
+}
+
 .imagen{
     border-radius: 10px 10px 0 0;
+    width:400px;
+    height:390px
 }
+
 .precio{
     font-size: 25px;
 }
 .textCard{
     margin: 15px 10px;
 }
-@media (max-width: 1400px){
+@media (max-width: 1518px){
     .productList{
         grid-template-columns: 1fr 1fr;
         gap: 0px;
     }   
 }
-@media (max-width: 800px){
+@media (max-width: 1020px){
     .productList{
         grid-template-columns: 1fr ;
     }   
 }
+
+
 .cod{
     position:absolute;
     margin: 10px;
@@ -43,4 +54,33 @@
     border-radius: 10px;
     text-decoration: bold;
     font-size: 20px;
+}
+
+/* @media (max-width: 1518px){
+    .imagen{
+        width:300px;
+        height:290px
+    }
+
+    .product{
+
+        width: 300px;
+        height: 400px;
+
+    }
+    
+} */
+@media (max-width: 400px){
+    .imagen{
+        width:300px;
+        height:290px
+    }
+
+    .product{
+
+        width: 300px;
+        height: 400px;
+
+    }
+    
 }

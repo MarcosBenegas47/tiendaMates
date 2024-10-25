@@ -1,5 +1,4 @@
 "use client"
-import { productById } from "@/lib/firebase/baseClient";
 import { ImagenInter, Productos } from "@/Productos";
 import { Suspense, useEffect, useState } from "react";
 import 'react-image-gallery/styles/css/image-gallery.css';
@@ -7,46 +6,45 @@ import ImageGallery from 'react-image-gallery';
 import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
 import NavBar from "@/app/component/NavBar";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 
+const ProductView = () => {
+  const searchParams = useSearchParams();
+  const hash = searchParams.get("hash")
 
-const ProductId = () => {
+  
 
-const router =  useRouter()
-console.log()
-    const [product, setProduct]=useState<Productos| null>();
-    const [listImag, setListImag]= useState<string[]>();
-console.log(product);
+  const [product, setProduct]=useState<Productos| null>()
+  const [listImag, setListImag]= useState<string[]>([]);
+
+  
+
+
   useEffect( () =>{
     
+    let productos:Productos | undefined ;
 
-    const product = localStorage.getItem("product")
-    const storedId = localStorage.getItem("productId");
-    console.log(storedId)
-    if (product) {
-      
-      setProduct(JSON.parse(product))
+    if(hash){
+      productos = JSON.parse(atob(hash))
       
     }
 
-    // const producto = async ()=>{
-    //   const storedId = sessionStorage.getItem("productId");
-    //   const porducto = await productById(Number(storedId));
-      
-
-    //   const listImage = await imageList(String(porducto.codigo));
-    //   setProduct(porducto);
-    //   setListImag(listImage);
-    // }
-      // producto();
-  },[]);
+    const productList =  async (prodCod:string ="null" )=>{
+      const listImage = await imageList(prodCod);
+      setListImag(listImage)
+    }
 
 
-  const images:ImagenInter[] = [{
+      productList(productos?.codigo)
+      setProduct(productos)
+    
+},[hash]);
+
+  const images:ImagenInter[] = product?.codigo? [{
     original: `/api/images/${product?.codigo || null}`,
     thumbnail: `/api/images/${product?.codigo || null}`
-  }];
+  }] : [];
 
 
 
@@ -57,6 +55,7 @@ console.log(product);
   })
 });
 
+  
     return (
       <Suspense fallback="loading...">
       <div className={style.infoProduct}>
@@ -80,4 +79,4 @@ console.log(product);
 }
 
 
-export default ProductId;
+export default ProductView;

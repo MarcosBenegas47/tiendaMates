@@ -4,8 +4,7 @@ import { join } from "path";
 export async function GET(req:Request, {params}:{params:{id:string}}) {
     
     const {id} = params;
-
-    const ruta = join(process.cwd(),'src', 'resources','images',id);
+    const ruta = join(process.cwd(),'src', 'resources','images',String(id));
     if(!existsSync(ruta)){
         return NextResponse.json([]);
     }
