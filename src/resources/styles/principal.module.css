@@ -1,0 +1,58 @@
+.header{
+    background-image: linear-gradient(to right ,rgba(256, 256, 256, 0.5),
+    rgba(256, 256, 256, .2)),url("../images/principal.webp");
+    background-size: cover;
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.header::before{
+    z-index: 1;
+    
+}
+@media (max-width: 560px){
+    .header{
+        margin: 0;
+    }
+
+}
+
+.main{
+    margin: 0 0 0 18%;
+    background-color: var(--foreground);
+
+}
+.conta{
+
+}
+
+.elementPrincipal{
+text-align: center;
+   /* backdrop-filtear: blur(7px);
+   background-color: rgba(256, 256, 256, 0.2); */
+}
+.elementTitle{
+    font-size: 60px;
+}
+
+.button{
+    background-color: var(--foreground);
+    font-size:  20px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: inline-block;
+
+}
+
+.productoDest{
+    max-width: 95%;
+    margin: 0 auto;
+
+}
+.titleDest{
+    font-size: 20px;
+}

@@ -1,4 +1,4 @@
-export default function nosotros() {
+export default function home() {
    
      return (
        <>

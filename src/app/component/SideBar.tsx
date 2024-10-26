@@ -19,9 +19,9 @@ export default function Sidebar() {
             <li><Link href="/" className="hover:text-white">Inicio</Link></li>
             {/* <li><Link href="#" className="hover:text-white">Catalogo</Link></li> */}
             
-            <li><Link href="#" className="hover:text-white">Contacto</Link></li>
+            <li><Link href="/catalogo" className="hover:text-white">Catalogo</Link></li>
 
-            <li><Link href="#" className="hover:text-white">Más vendidos</Link></li>
+            <li><Link href="#" className="hover:text-white">Contacto</Link></li>
         </ul>
         
     </aside>
