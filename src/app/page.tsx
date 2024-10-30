@@ -1,10 +1,10 @@
-import { baseClient } from "@/lib/firebase/baseClient";
+import { baseClient, dbDestacados } from "@/lib/firebase/baseClient";
 import HomePage from "./page.client";
 
 export default async function Home() {
-      const data = await baseClient() ;
+   const destacados = await dbDestacados()
 
        
-   return <HomePage data={data }/>
+   return <HomePage data={destacados }/>
 
 }   
