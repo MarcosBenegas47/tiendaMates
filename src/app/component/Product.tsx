@@ -40,7 +40,7 @@ useEffect( () => {},[])
                             <div>
                             <span className={style.cod}>{codigo}</span>
 
-                                <Image src={`/api/images/${codigo}`} alt="algun mate" width={300} height={400} className={style.imagen}/>
+                                <Image src={`/api/images/${codigo}`} alt="algun mate" width={300} unoptimized height={400} className={style.imagen}/>
                             </div>
                             <div className={style.textCard}>
                                 <h3>{descripcion}</h3>

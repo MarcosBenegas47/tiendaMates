@@ -19,7 +19,6 @@ export default  function HomePage({data}:{data:Productos[]}) {
         <h1 className={styles.title}>Nuestro catalogo</h1>
 
               
-          {/* <Product products={data}/> */}
           <ul className={styles.productList}>
             {data?.map( product =>(
                product.cantidad >0 &&(
