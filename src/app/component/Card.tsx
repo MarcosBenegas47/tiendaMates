@@ -42,7 +42,7 @@ export default function Card({products}:{products:Productos} ){
                     <div>
                     <span className={style.cod}>{products.codigo}</span>
 
-                        <Image src={`/api/images/${products.codigo}`} alt="algun mate" width={300} unoptimized height={400} className={style.imagen}/>
+                        <Image src={`/api/images/${products.codigo}`} alt="algun mate" width={300} unoptimized={true} height={400} className={style.imagen}/>
                     </div>
                     <div className={style.textCard}>
                         <h3>{products.descripcion}</h3>
