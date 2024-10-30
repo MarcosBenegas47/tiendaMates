@@ -1,11 +1,7 @@
 "use client"
 import styles from "../resources/styles/principal.module.css";
-import NavBar from "./component/NavBar";
 import { Productos } from "@/Productos";
-import Card from "./component/Card";
-import Image from "next/image";
 
-import img from "../resources/images/principal.webp"
 import Link from "next/link";
 
 
@@ -31,7 +27,8 @@ export default  function HomePage({data}:{data:Productos[]}) {
 
           <header className={styles.header}>
               <div className={styles.elementPrincipal}>
-                <h2 className={styles.elementTitle}>Tienda de mates</h2>
+                <h2 className={styles.elementTitle}>Tienda mates</h2>
+                <h3>Descubre nuestra selección de mates y accesorios</h3>
                 <Link href="/catalogo"> 
                 <p className={styles.button}>Ir al catalogo</p>
                 </Link>

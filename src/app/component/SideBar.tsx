@@ -11,7 +11,7 @@ export default function Sidebar() {
   return (
     <aside className={styles.aside}>
       <section className={styles.titleSection}>
-      <h2 className={styles.titleAside}>Tienda M<span className={styles.emoji}><Image  src={imgMate} alt="A" width={35}/></span>tes</h2>
+      <h2 className={styles.titleAside}>Tienda M<span className={styles.emoji}><Image  src={imgMate} unoptimized alt="A" width={35}/></span>tes</h2>
 
 
       </section>

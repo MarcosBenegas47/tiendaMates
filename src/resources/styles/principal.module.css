@@ -2,7 +2,7 @@
     background-image: linear-gradient(to right ,rgba(256, 256, 256, 0.5),
     rgba(256, 256, 256, .2)),url("../images/principal.webp");
     background-size: cover;
-    height: 380px;
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,21 +30,26 @@
 }
 
 .elementPrincipal{
-text-align: center;
-   /* backdrop-filtear: blur(7px);
+    text-align: center;
+   /* backdrop-filter: blur(2px);
+   border-radius: 20px;
+   padding: 20px;
    background-color: rgba(256, 256, 256, 0.2); */
 }
 .elementTitle{
-    font-size: 60px;
+    font-size: 80px;
+    font-weight: bold;
+    
 }
 
 .button{
     background-color: var(--foreground);
     font-size:  20px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border-radius: 10px;
     margin: 20px auto;
     display: inline-block;
+    
 
 }
 

@@ -30,7 +30,6 @@ export default function Card({products}:{products:Productos} ){
 
             return btoa(JSON.stringify(obj));
 
-        return Buffer.from(JSON.stringify(obj)).toString('base64');
       };
     return(<>
 
@@ -39,16 +38,16 @@ export default function Card({products}:{products:Productos} ){
                 pathname: `/costomers/product/${products.descripcion}`,
                 query:{hash: encodeToBase64( products)} }} 
                 onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria )}>
-                     {/* onContextMenu={ ()=>handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria)} > */}
         
                     <div>
                     <span className={style.cod}>{products.codigo}</span>
 
-                        <Image src={`/api/images/${products.codigo}`} alt="algun mate" width={300} height={400} className={style.imagen}/>
+                        <Image src={`/api/images/${products.codigo}`} alt="algun mate" width={300} height={400} unoptimized  className={style.imagen}/>
                     </div>
                     <div className={style.textCard}>
                         <h3>{products.descripcion}</h3>
                         <strong className={style.precio}>${products.p_Unitario_final}</strong>
+                        {id}
                     </div>
             </Link> 
         </li> 

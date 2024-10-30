@@ -61,7 +61,7 @@ const ProductView = () => {
       <div className={style.infoProduct}>
           <NavBar/>
           <div className={style.imageGallery}>
-            <ImageGallery showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
+            <ImageGallery  showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
 
           </div>
         <section className={style.elementProduct}>
