@@ -3,8 +3,10 @@
 import { getFirestore, collection, getDocs, getDoc, doc } from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
-const db = getFirestore(app);
 
+
+
+const db = getFirestore(app);
 export const baseClient = async ():Promise<Productos[]> =>{
 
     const query = await getDocs(collection(db,"productos"));
@@ -14,10 +16,10 @@ export const baseClient = async ():Promise<Productos[]> =>{
     })
     return data as Productos[];
 }
+
 export const productById = async (id:number):Promise<Productos>=>{
     const query = await getDoc(doc(db, "productos", id.toString()));
     return query.data() as Productos;
-
 }
 
 

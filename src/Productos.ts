@@ -15,5 +15,5 @@ export interface ImagenInter {
 export interface Destacados {
     codigo:string,
     descripcion: string,
-
+    id:number
 }

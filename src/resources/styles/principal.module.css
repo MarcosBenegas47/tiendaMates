@@ -13,12 +13,6 @@
     z-index: 1;
     
 }
-@media (max-width: 560px){
-    .header{
-        margin: 0;
-    }
-
-}
 
 .main{
     margin: 0 0 0 18%;
@@ -28,6 +22,7 @@
 .conta{
 
 }
+
 
 .elementPrincipal{
     text-align: center;
@@ -55,8 +50,8 @@
 }
 
 .productoDest{
-    max-width: 95%;
-    margin: 0 auto;
+    max-width: 90%;
+    margin: 20px auto;
 
 }
 .titleDest{
@@ -67,14 +62,28 @@
     /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
 
 }
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap');
 
-/* // <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 100 to 400 */
 
-.elementDescription  , .elementTitle {
-  font-family: "Playwrite GB S", cursive;
-  font-optical-sizing: auto;
-  font-weight: bold;
-  font-style: normal;
+@media (max-width: 560px){
+    .header{
+        margin: 0;
+        height: 300px;
+    }
+    .main{
+      margin: 0;
+    }
+    .elementTitle{
+        font-size: 40px;
+    }
+    .titleDest{
+        font-size: 20px;
+    }
+
+}
+
+.destCards{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    justify-items: center;
 }
