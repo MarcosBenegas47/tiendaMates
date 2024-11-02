@@ -40,7 +40,7 @@ export default function Card({products}:{products:Productos} ){
                 onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria )}>
         
                     <div>
-                    <span className={style.cod}>{products.codigo}</span>
+                    <span className={style.cod}>cod: {products.codigo}</span>
 
                         <Image src={`/api/images/${products.codigo}`} alt="algun mate" width={300} unoptimized={true} height={400} className={style.imagen}/>
                     </div>

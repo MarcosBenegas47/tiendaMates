@@ -49,11 +49,11 @@
 .cod{
     position:absolute;
     margin: 10px;
-    background-color: #3fff33;
+    /* background-color: #3fff33; */
     padding: 2px 5px;
     border-radius: 10px;
     text-decoration: bold;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 /* @media (max-width: 1518px){
