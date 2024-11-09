@@ -1,14 +1,25 @@
 "use client"
-import styles from "../../resources/styles/pageMain.module.css";
-import NavBar from "../component/NavBar";
+import styles from "@/resources/styles/pageMain.module.css";
+import NavBar from "../../component/NavBar";
 import { Productos } from "@/Productos";
-import Card from "../component/Card";
+import Card from "../../component/Card";
+
+const convertTospace =  (str:string ) =>{
+  return str.split('-').join(' ');
+}
 
 
+export default  function HomePage({data, filtro}:{data:Productos[],filtro:string}) {
+  const filter = convertTospace(filtro)
+const productos = data.filter(elem => {
+  console.log(filter);
+  console.log( elem.categoria);
+ return elem.categoria.includes(filter);
+})
 
+console.log(data);
+console.log(productos);
 
-
-export default  function HomePage({data}:{data:Productos[]}) {
   return (
     <>
       <main className={styles.main}>
@@ -21,7 +32,7 @@ export default  function HomePage({data}:{data:Productos[]}) {
               
           {/* <Product products={data}/> */}
           <ul className={styles.productList}>
-            {data?.map( product =>(
+            {productos?.map( product =>(
                product.cantidad >0 &&(
               <Card key={product.id} products={product}/>)
 
