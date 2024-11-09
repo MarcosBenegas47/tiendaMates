@@ -4,7 +4,6 @@ import { Destacados, Productos } from "@/Productos";
 
 import Link from "next/link";
 import NavBar from "./component/NavBar";
-import dynamic from "next/dynamic";
 import { CardDest } from "./component/CardDestacados";
 
 export default  function HomePage({data}:{data:Destacados[]}) {
@@ -26,6 +25,8 @@ export default  function HomePage({data}:{data:Destacados[]}) {
             <h3 className={styles.titleDest}> Productos destacados</h3>
             <ul className={styles.destCards}>
             {data.map( elem =>(
+              
+
               <CardDest key={elem.id} destacados={elem}  />
             ))}
             </ul>

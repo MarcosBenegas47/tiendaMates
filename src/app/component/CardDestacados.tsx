@@ -8,34 +8,48 @@ import { productById } from "@/lib/firebase/baseClient";
 import { useEffect, useState } from "react";
 
  export const CardDest = ({destacados}:{destacados:Destacados}) =>{
-    const [product, setProduct] = useState <Productos | null>()
+    // const [product, setProduct] = useState <Productos | null>()
+    const [hash, setHash] = useState<string | null>(null);
+    const [isLoad, setIsLoad] = useState <boolean> (false)
     useEffect(()=>{
         const product = async (id:number )=>{
-            console.log("useEFe")
 
-            const productos = await productById(id)
-            console.log( productos)
-            setProduct(productos)
+            const productos = await productById(id);
+            // setProduct(productos);
+            if(productos){
+                setHash(btoa(JSON.stringify(productos)));
+                setIsLoad(true);
+            }
+
         }
-        product(destacados.id)
-    },[])
+        product(destacados.id);
+        
+    },[]);
+
 
 
 return (<>
-    <li className={style.card}>
+    <li className={`${style.card} ${isLoad? style.cardLoad: ""}`}>
         <Image  src={`/api/images/${destacados.codigo}`} alt="algun producto destacado" width={290} height={300} unoptimized={true}/>
-        <div style={{width:"100%", height:"100%"}} >
-        <p>{destacados.descripcion}</p>    
-        <Link href={{
-            pathname:`/costomers/product/${destacados.descripcion}`,
-            query:{hash: btoa(JSON.stringify(product))}
+        {/* <div className={style.divCard} > */}
+            <p>{destacados.descripcion}</p>    
+        {/* </div> */}
+        <div>
 
-        }} className=""> 
+
+       
+        { hash ?  (<Link href={{
+            pathname:`/costomers/product/${destacados.descripcion}`,
+            query:{hash: hash}
+
+        }} > 
             <p className={style.linkProduct}>Ver mas</p>
         </Link>
+        ):  <p className={style.linkProduct}>Ver mas</p>}       
         </div>
-        
+
     </li>
+
 
 </>)
  }
