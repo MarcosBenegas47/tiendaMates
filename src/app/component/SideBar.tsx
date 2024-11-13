@@ -27,13 +27,12 @@ const [isOpen, setIsOpen] = useState<boolean>(false);
         <ul className={styles.elementAside}>
             <li><Link href="/" className="hover:text-white">Inicio</Link></li>
             
-            <li>
-              {/* <Link href="/catalogo/completo" className={styles.catalogo} >Catalogo</Link> */}
+            <li >
              <p onClick={() => handleClick(isOpen)}>Catalogo</p>
               <ul className={`${styles.subMenu} ${isOpen ? styles.isOpen : ""}`} >
               
-                {arrayCategory.map(elem =>(
-                    <li ><Link href={`/catalogo/${convertToSlug(elem)}`}>{elem}</Link></li>
+                {arrayCategory.map((elem, i) =>(
+                    <li key={i} className={styles.elem}><Link href={`/catalogo/${convertToSlug(elem)}`}>{elem}</Link></li>
                 ))}
                 
 

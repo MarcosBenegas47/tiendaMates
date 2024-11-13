@@ -10,8 +10,9 @@ import { useRouter } from "next/navigation";
 export default function Card({products}:{products:Productos} ){
     const {id,codigo,cantidad,descripcion,p_Unitario_final,categoria} = products;
     const router = useRouter();
-    const handleClick = (id: number ,codigo:string,cantidad:number,descripcion:string,p_Unitario_final:string,categoria:string[] ) => {
+  
 
+    const handleClick = (id: number ,codigo:string,cantidad:number,descripcion:string,p_Unitario_final:string,categoria:string[] ) => {
             const  products ={
             id: id ,
             codigo:codigo,
@@ -29,11 +30,10 @@ export default function Card({products}:{products:Productos} ){
     const encodeToBase64 = (obj: Productos) => {
 
             return btoa(JSON.stringify(obj));
-
       };
     return(<>
 
-        <li className={style.product} >
+        <div className={style.product} >
             <Link href={{ 
                 pathname: `/costomers/product/${products.descripcion}`,
                 query:{hash: encodeToBase64( products)} }} 
@@ -50,6 +50,6 @@ export default function Card({products}:{products:Productos} ){
                         {id}
                     </div>
             </Link> 
-        </li> 
+        </div> 
     </>);
 }

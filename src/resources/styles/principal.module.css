@@ -63,7 +63,12 @@
 
 }
 
-
+.destCards{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    justify-items: center;
+}
 @media (max-width: 560px){
     .header{
         margin: 0;
@@ -78,12 +83,9 @@
     .titleDest{
         font-size: 20px;
     }
+    .destCards{
+        grid-template-columns: 1fr;
+    }
 
 }
 
-.destCards{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    justify-items: center;
-}

@@ -35,19 +35,15 @@ return (<>
             <p>{destacados.descripcion}</p>    
         {/* </div> */}
         <div>
+            { hash ?  (<Link href={{
+                pathname:`/costomers/product/${destacados.descripcion}`,
+                query:{hash: hash}
 
-
-       
-        { hash ?  (<Link href={{
-            pathname:`/costomers/product/${destacados.descripcion}`,
-            query:{hash: hash}
-
-        }} > 
-            <p className={style.linkProduct}>Ver mas</p>
-        </Link>
-        ):  <p className={style.linkProduct}>Ver mas</p>}       
+            }} > 
+                <p className={style.linkProduct}>Ver mas</p>
+            </Link>
+            ):  <p className={style.linkProduct}>Ver mas</p>}       
         </div>
-
     </li>
 
 
