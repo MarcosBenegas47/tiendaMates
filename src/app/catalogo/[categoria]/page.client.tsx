@@ -6,6 +6,7 @@ import Card from "../../component/Card";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { baseClientLimitado } from "@/lib/firebase/baseClient";
 import { DocumentSnapshot } from "@firebase/firestore";
+import Sidebar from "@/app/component/SideBar";
 
 const convertTospace =  (str:string ) =>{
   const dec = decodeURIComponent(str)
@@ -65,9 +66,11 @@ export default  function HomePage({filtro}:{filtro:string}) {
   return (
     <>
       <main className={styles.main}>
+      <Sidebar/>
         <header className={styles.head}>
           <h2 className={styles.titlePrincipal}>Tienda Mates</h2>
           <NavBar />
+          
         </header>
         <h1 className={styles.title}>Nuestro catalogo</h1>
 

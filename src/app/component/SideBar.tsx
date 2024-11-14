@@ -25,10 +25,10 @@ const [isOpen, setIsOpen] = useState<boolean>(false);
 
       </section>
         <ul className={styles.elementAside}>
-            <li><Link href="/" className="hover:text-white">Inicio</Link></li>
+            <li><Link href="/" className="hover:text-white"><i className="las la-home"></i> Inicio</Link></li>
             
             <li >
-             <p onClick={() => handleClick(isOpen)}>Catalogo</p>
+             <p onClick={() => handleClick(isOpen)}>Catalogo <i className="las la-angle-down"></i></p>
               <ul className={`${styles.subMenu} ${isOpen ? styles.isOpen : ""}`} >
               
                 {arrayCategory.map((elem, i) =>(
@@ -39,7 +39,7 @@ const [isOpen, setIsOpen] = useState<boolean>(false);
               </ul>
             </li>
 
-            <li ><Link href="#" className="hover:text-white">Contacto</Link></li>
+            {/* <li ><Link href="#" className="hover:text-white">Contacto</Link></li> */}
         </ul>
         
     </aside>

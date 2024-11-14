@@ -30,9 +30,9 @@ import { useEffect, useState } from "react";
 
 return (<>
     <li className={`${style.card} ${isLoad? style.cardLoad: ""}`}>
-        <Image  src={`/api/images/${destacados.codigo}`} alt="algun producto destacado" width={290} height={300} unoptimized={true}/>
+        <Image className={style.imgDest}src={`/api/images/${destacados.codigo}`} alt="algun producto destacado" width={290} height={300} unoptimized={true}/>
         {/* <div className={style.divCard} > */}
-            <p>{destacados.descripcion}</p>    
+            <p className={style.destDescrip}>{destacados.descripcion}</p>    
         {/* </div> */}
         <div>
             { hash ?  (<Link href={{

@@ -18,9 +18,9 @@ export default function NavBar() {
     return (
       <nav className={styles.navBar}>
               <ul className={styles.elementNav}>
-                  <li><Link href="/" className="hover:text-white"> Inicio</Link></li>
+                  <li><Link href="/" className="hover:text-white"><i className="las la-home"></i> Inicio</Link></li>
                   <li>
-                  <p onClick={() =>handleClick(isOpen)}  className="hover:text-white">Productos +</p>
+                  <p onClick={() =>handleClick(isOpen)}  className="hover:text-white">Productos <i className="las la-angle-down"></i></p>
                     <ul className={`${styles.subMenu} ${isOpen ? styles.isOpen : ""}`}>
                       {arrayCategory.map((elem, i) => (
                         <li key={i} className={styles.elem}> <Link href={`/catalogo/${convertToSlug(elem) }`} >  {elem}</Link></li>
@@ -30,7 +30,7 @@ export default function NavBar() {
                   </li>
 
 
-                  <li><Link href="#" className="hover:text-white">Más vendidos</Link></li>
+                  {/* <li><Link href="#" className="hover:text-white">Más vendidos</Link></li> */}
               </ul>
           
       </nav>

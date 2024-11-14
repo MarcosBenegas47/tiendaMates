@@ -19,9 +19,6 @@
     background-color: var(--foreground);
 
 }
-.conta{
-
-}
 
 
 .elementPrincipal{
@@ -55,6 +52,7 @@
 
 }
 .titleDest{
+    margin: 20px 0;
     font-size: 20px;
 }
 .elementDescription{

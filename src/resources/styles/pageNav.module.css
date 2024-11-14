@@ -20,7 +20,9 @@
     padding: 10px 20px;
     color: var(--foreground);
 }
-    
+.elementNav li:hover{
+    cursor: pointer;
+}
 .subMenu{
     margin-top: 20px;
     position: absolute;
@@ -46,5 +48,6 @@
 }
 
 .elem:hover{
-    background-color: red;
+    background-color:color-mix(in srgb, var(--background), white 5%);
+
 }

@@ -5,11 +5,13 @@ import { Destacados, Productos } from "@/Productos";
 import Link from "next/link";
 import NavBar from "./component/NavBar";
 import { CardDest } from "./component/CardDestacados";
+import Sidebar from "./component/SideBar";
 
 export default  function HomePage({data}:{data:Destacados[]}) {
   return (
     <>
       <main className={styles.main}>
+        <Sidebar/>
       <NavBar/>
           <header className={styles.header}>
             
