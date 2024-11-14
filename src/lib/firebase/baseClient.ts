@@ -23,7 +23,7 @@ type ProductosResult = {
   
 
 export const baseClientLimitado = async (lastDataPos:DocumentSnapshot |null, filter ="Todo"):Promise<ProductosResult > =>{
-console.log(filter);
+// console.log(filter);
     let productos = lastDataPos
     ? query( collection(db,"productos" ), limit(6) ,where("cantidad","!=",0), orderBy("id"),  startAfter(lastDataPos ))
     : query( collection(db,"productos" ), limit(6), where("cantidad","!=",0), orderBy("id"));

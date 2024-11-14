@@ -1,6 +1,6 @@
 "use client"
 
-import { Destacados, Productos } from "@/Productos";
+import { Destacados} from "@/Productos";
 import Image from "next/image";
 import style  from "@/resources/styles/productCardDestacado.module.css";
 import Link from "next/link";
@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
         }
         product(destacados.id);
         
-    },[]);
+    },[destacados.id]);
 
 
 

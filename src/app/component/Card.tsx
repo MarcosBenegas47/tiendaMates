@@ -47,7 +47,6 @@ export default function Card({products}:{products:Productos} ){
                     <div className={style.textCard}>
                         <h3>{products.descripcion}</h3>
                         <strong className={style.precio}>${products.p_Unitario_final}</strong>
-                        {id}
                     </div>
             </Link> 
         </div> 

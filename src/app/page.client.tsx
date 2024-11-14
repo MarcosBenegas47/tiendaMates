@@ -1,6 +1,6 @@
 "use client"
 import styles from "../resources/styles/principal.module.css";
-import { Destacados, Productos } from "@/Productos";
+import { Destacados } from "@/Productos";
 
 import Link from "next/link";
 import NavBar from "./component/NavBar";

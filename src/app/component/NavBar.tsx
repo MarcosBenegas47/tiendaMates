@@ -3,8 +3,6 @@ import Link from "next/link"
 import styles from "../../resources/styles/pageNav.module.css"
 import { useState } from "react";
 import { arrayCategory } from "../utility/categorias";
-import Image from "next/image";
-import inicio from "@/resources/assets/home-4-svgrepo-com.svg"
 const convertToSlug =(str:string)=>{
   return str.split(' ').join('-');
   }

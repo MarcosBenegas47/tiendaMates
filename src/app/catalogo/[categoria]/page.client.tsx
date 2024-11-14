@@ -3,7 +3,7 @@ import styles from "@/resources/styles/pageMain.module.css";
 import NavBar from "../../component/NavBar";
 import { Productos } from "@/Productos";
 import Card from "../../component/Card";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { baseClientLimitado } from "@/lib/firebase/baseClient";
 import { DocumentSnapshot } from "@firebase/firestore";
 import Sidebar from "@/app/component/SideBar";
@@ -28,20 +28,20 @@ export default  function HomePage({filtro}:{filtro:string}) {
 
 
   useEffect(()=>{
-    console.log("useEfec")
+    // console.log("useEfec")
     const productos =async ()=> {
       const  { data, lastVisible  } = await baseClientLimitado(null, filter);
       setProduct(data);
       setLastVisible(lastVisible);
     }
     productos();      
-  },[]);
+  },[filter]);
 
  
   useEffect(() => {
     const productos =async ()=> {
       const {data, lastVisible} = await baseClientLimitado(lasVisible,filter);
-      console.log(data);
+      // console.log(data);
       if(data.length){
         setProduct(elem => [...(elem||[]), ...data]);
         setLastVisible(lastVisible);
@@ -60,7 +60,7 @@ export default  function HomePage({filtro}:{filtro:string}) {
     observer.observe(lastCardRef.current);
 
     return () => observer.disconnect();
-  }, [products]);
+  }, [filter,products,lasVisible]);
 
 
   return (
