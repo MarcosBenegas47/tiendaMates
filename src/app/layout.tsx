@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import styles from "../resources/styles/pageMain.module.css";
 import Sidebar from "./component/SideBar";
 
 const geistSans = localFont({
@@ -27,10 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+      <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" ></link>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div className={styles.container}>
-            <Sidebar/>
-
+        <div >
+            {/* <Sidebar/> */}
           {/* <div className={styles.cont}> */}
             
 

@@ -1,0 +1,89 @@
+.header{
+    background-image: linear-gradient(to right ,rgba(256, 256, 256, 0.5),
+    rgba(256, 256, 256, .2)),url("../images/principal.webp");
+    background-size: cover;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.header::before{
+    z-index: 1;
+    
+}
+
+.main{
+    margin: 0 0 0 18%;
+    background-color: var(--foreground);
+
+}
+
+
+.elementPrincipal{
+    text-align: center;
+   /* backdrop-filter: blur(2px);
+   border-radius: 20px;
+   padding: 20px;
+   background-color: rgba(256, 256, 256, 0.2); */
+}
+.elementTitle{
+    font-size: 80px;
+    font-weight: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.button{
+    background-color: var(--foreground);
+    font-size:  20px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: inline-block;
+    
+
+}
+
+.productoDest{
+    max-width: 90%;
+    margin: 20px auto;
+
+}
+.titleDest{
+    margin: 20px 0;
+    font-size: 20px;
+}
+.elementDescription{
+    font-weight: bold;
+    /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+
+}
+
+.destCards{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    justify-items: center;
+}
+@media (max-width: 560px){
+    .header{
+        margin: 0;
+        height: 300px;
+    }
+    .main{
+      margin: 0;
+    }
+    .elementTitle{
+        font-size: 40px;
+    }
+    .titleDest{
+        font-size: 20px;
+    }
+    .destCards{
+        grid-template-columns: 1fr;
+    }
+
+}
+

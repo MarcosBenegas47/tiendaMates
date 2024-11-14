@@ -11,3 +11,9 @@ export interface ImagenInter {
     original:string,
     thumbnail:string
 }
+
+export interface Destacados {
+    codigo:string,
+    descripcion: string,
+    id:number
+}

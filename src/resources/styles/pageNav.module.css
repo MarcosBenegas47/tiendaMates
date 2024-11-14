@@ -20,4 +20,34 @@
     padding: 10px 20px;
     color: var(--foreground);
 }
-    
+.elementNav li:hover{
+    cursor: pointer;
+}
+.subMenu{
+    margin-top: 20px;
+    position: absolute;
+    background-color: var(--background);
+    padding: 10px;   
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    transition: opacity 0.4s ease,transform 0.4s ease, visibility 0s .4s;
+}
+
+.isOpen{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease,transform 0.4s ease, visibility 0s 0s;
+    z-index: 1;
+    /* display: block; */
+}
+.elem{
+    padding: 10px;
+}
+
+.elem:hover{
+    background-color:color-mix(in srgb, var(--background), white 5%);
+
+}

@@ -7,6 +7,7 @@ import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
 import NavBar from "@/app/component/NavBar";
 import { useSearchParams } from "next/navigation";
+import Sidebar from "@/app/component/SideBar";
 
 
 const ProductView = () => {
@@ -59,9 +60,10 @@ const ProductView = () => {
     return (
       <Suspense fallback="loading...">
       <div className={style.infoProduct}>
+          <Sidebar/>
           <NavBar/>
           <div className={style.imageGallery}>
-            <ImageGallery showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
+            <ImageGallery  showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
 
           </div>
         <section className={style.elementProduct}>

@@ -14,7 +14,10 @@
     height: 500px;
     margin: 0 auto 20px auto;
     transition: transform 0.4s ease;
+
 }
+
+
 @media(hover:hover){
     .product:hover{
         transform: scale(1.1);

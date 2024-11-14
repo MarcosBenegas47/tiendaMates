@@ -1,33 +1,42 @@
 "use client"
-import styles from "../resources/styles/pageMain.module.css";
+import styles from "../resources/styles/principal.module.css";
+import { Destacados, Productos } from "@/Productos";
+
+import Link from "next/link";
 import NavBar from "./component/NavBar";
-import { Productos } from "@/Productos";
-import Card from "./component/Card";
-import Image from "next/image";
-import imgMate from "../resources/assets/mate-svgrepo-com.svg"
+import { CardDest } from "./component/CardDestacados";
+import Sidebar from "./component/SideBar";
 
-
-
-
-
-export default  function HomePage({data}:{data:Productos[]}) {
+export default  function HomePage({data}:{data:Destacados[]}) {
   return (
     <>
       <main className={styles.main}>
-        <header className={styles.head}>
-          <h2 className={styles.titlePrincipal}>Tienda M<span className={styles.emoji}><Image unoptimized={true} src={imgMate} alt="A" width={25}/></span>tes</h2>
-          <NavBar />
-        </header>
-        <h1 className={styles.title}>Nuestro catalogo</h1>
-
+        <Sidebar/>
+      <NavBar/>
+          <header className={styles.header}>
+            
+              <div className={styles.elementPrincipal}>
+                <h2 className={styles.elementTitle}>Tienda mates</h2>
+                <h3 className={styles.elementDescription}>Descubre nuestra selección de mates y accesorios</h3>
+                <Link href="/catalogo/Todo"> 
+                <p className={styles.button}>Ir al catalogo</p>
+                </Link>
+              </div>
+          </header>
+          <section className={styles.productoDest}>
+            <h3 className={styles.titleDest}> Productos destacados</h3>
+            <ul className={styles.destCards}>
+            {data.map( elem =>(
               
-          <ul className={styles.productList}>
-            {data?.map( product =>(
-               product.cantidad >0 &&(
-              <Card key={product.id} products={product}/>)
 
+              <CardDest key={elem.id} destacados={elem}  />
             ))}
-          </ul>
+            </ul>
+           
+
+          </section>
+
+
 
       </main>
     
