@@ -1,6 +1,6 @@
 
 // Import the functions you need from the SDKs you need
-import { getFirestore, collection,query, getDocs, getDoc, doc, limit, startAfter, orderBy, DocumentSnapshot, where } from "@firebase/firestore"
+import { getFirestore, collection,query, getDocs, getDoc, doc, limit, startAfter, orderBy, DocumentSnapshot, where, getDocsFromServer } from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
 
@@ -33,7 +33,7 @@ export const baseClientLimitado = async (lastDataPos:DocumentSnapshot |null, fil
         ? query( collection(db,"productos" ),where("categoria","array-contains",filter) ,where("cantidad",">",0), orderBy("id"),  startAfter(lastDataPos ) ,limit(6) )
         : query( collection(db,"productos" ),where("categoria","array-contains",filter), limit(6), orderBy("id"), where("cantidad",">",0));
         }
-    const querysnap = await getDocs(productos);
+    const querysnap = await getDocsFromServer(productos );
 
     const data:Productos[] = [];
     querysnap.forEach(doc =>{
@@ -50,12 +50,13 @@ export const productById = async (id:number):Promise<Productos>=>{
 
 
 export const dbDestacados = async ():Promise<Destacados[]> =>{
-    const query = await getDocs(collection(db, "destacados"));
+    const queryDest =  query(collection(db, "destacados"), orderBy("id"))
+    const queryD = await getDocsFromServer(queryDest);
 
     const des:Destacados[] =[];
-    query.forEach(element => {
+    queryD.forEach(element => {
         des.push(element.data() as Destacados)
 
     })
-    return des
+    return des;
 }
