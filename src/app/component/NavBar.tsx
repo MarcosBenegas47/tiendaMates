@@ -21,7 +21,7 @@ export default function NavBar() {
                   <p onClick={() =>handleClick(isOpen)}  className="hover:text-white">Productos <i className="las la-angle-down"></i></p>
                     <ul className={`${styles.subMenu} ${isOpen ? styles.isOpen : ""}`}>
                       {arrayCategory.map((elem, i) => (
-                        <li key={i} className={styles.elem}> <Link href={`/catalogo/${convertToSlug(elem) }`} >  {elem}</Link></li>
+                        <Link key={i}  href={`/catalogo/${convertToSlug(elem) }`} > <li className={styles.elem} >{elem}</li></Link>
                       ))}
                     </ul>  
                                    

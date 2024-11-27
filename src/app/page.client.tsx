@@ -16,7 +16,7 @@ export default  function HomePage({data}:{data:Destacados[]}) {
           <header className={styles.header}>
             
               <div className={styles.elementPrincipal}>
-                <h2 className={styles.elementTitle}>Tienda mates</h2>
+                <h2 className={styles.elementTitle}>Tienda Mates</h2>
                 <h3 className={styles.elementDescription}>Descubre nuestra selección de mates y accesorios</h3>
                 <Link href="/catalogo/Todo"> 
                 <p className={styles.button}>Ir al catalogo</p>

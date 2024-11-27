@@ -1,6 +1,6 @@
 
 // Import the functions you need from the SDKs you need
-import { getFirestore, collection,query, getDocs, getDoc, doc, limit, startAfter, orderBy, DocumentSnapshot, where, getDocsFromServer } from "@firebase/firestore"
+import { getFirestore, collection,query, getDocs, getDoc, doc, limit, startAfter, orderBy, DocumentSnapshot, where, getDocsFromServer, addDoc } from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
 
@@ -59,4 +59,9 @@ export const dbDestacados = async ():Promise<Destacados[]> =>{
 
     })
     return des;
+}
+
+
+export const agregarProducto = (productos:Productos )=>{
+     addDoc(collection(db, "productos"),productos)
 }

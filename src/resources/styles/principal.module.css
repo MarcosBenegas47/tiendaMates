@@ -1,13 +1,14 @@
 .header{
     background-image: linear-gradient(to right ,rgba(256, 256, 256, 0.35),
     rgba(256, 256, 256, .2)),url("../images/backgroundprincipal.webp");
-    background-position: 0 -70px;
+    background-position: 0 -100px;
+    
     background-size: cover;
     height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
-    
+ 
 }
 
 .header::before{
@@ -39,6 +40,7 @@
 .button{
     background-color: var(--foreground);
     font-size:  20px;
+    font-weight: bold;
     padding: 10px 20px;
     border-radius: 10px;
     margin: 20px auto;
@@ -69,7 +71,7 @@
     gap: 20px;
     justify-items: center;
 }
-@media (max-width: 560px){
+@media (max-width: 700px){
     .header{
         margin: 0;
         height: 300px;
@@ -83,9 +85,57 @@
     .titleDest{
         font-size: 20px;
     }
-    .destCards{
-        grid-template-columns: 1fr;
-    }
+
 
 }
 
+
+@media (max-width:1230px) {
+    .destCards{
+        grid-template-columns: 1fr 1fr;
+    }
+    .header{
+        height: 300px;
+    }
+    .elementTitle{
+        font-size: 50px;
+    }
+    .elementDescription{
+        font-size: 22px;
+    }
+
+}
+@media (max-width:770px) {
+    .destCards{
+        grid-template-columns: 1fr;
+    }
+    .header{
+        /* border-radius: 20px 20px 0 0; */
+        background-position: 0 -10px;
+        
+    }
+}
+
+@media (max-width: 900px) {
+    .header{
+        height: 250px;
+    }
+}
+
+@media (max-width: 570px) {
+    .elementTitle{
+        font-size: 30px;
+    }
+    .elementDescription{
+        font-size: 18px;
+    }
+    .header{
+
+        background-position: 0;
+        background-repeat: no-repeat;
+    }
+    .button{
+        font-size:  17px;
+        padding: 10px 20px;
+    }
+}
