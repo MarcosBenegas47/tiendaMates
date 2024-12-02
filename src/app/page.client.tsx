@@ -10,10 +10,10 @@ import Sidebar from "./component/SideBar";
 export default  function HomePage({data}:{data:Destacados[]}) {
   return (
     <>
-      <main className={styles.main}>
-        <Sidebar/>
-      <NavBar/>
-          <header className={styles.header}>
+      <section className={styles.main}>
+        {/* <Sidebar/> */}
+      {/* <NavBar/> */}
+          <section className={styles.header}>
             
               <div className={styles.elementPrincipal}>
                 <h2 className={styles.elementTitle}>Tienda Mates</h2>
@@ -22,7 +22,7 @@ export default  function HomePage({data}:{data:Destacados[]}) {
                 <p className={styles.button}>Ir al catalogo</p>
                 </Link>
               </div>
-          </header>
+          </section>
           <section className={styles.productoDest}>
             <h3 className={styles.titleDest}> Productos destacados</h3>
             <ul className={styles.destCards}>
@@ -38,7 +38,7 @@ export default  function HomePage({data}:{data:Destacados[]}) {
 
 
 
-      </main>
+      </section>
     
     </>
   );

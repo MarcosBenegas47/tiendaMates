@@ -1,18 +1,20 @@
-.navBar{
+/* .navBar{
     display: none;
 
+} */
+.navBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background);
+    color: var(--foreground);
+    align-content: center;
+    padding: 10px 0 10px 0;
+  
 }
-
-@media (max-width: 700px){
-    .navBar{
-        display:block;
-        background-color: var(--background);
-        color: var(--foreground);
-        align-content: center;
-        padding: 10px 0 10px 0;
-        gap: 10px;
-    }}
-
+.titleSection, .buscarSection{
+    margin: 0 100px;
+}
 .elementNav{
     display: flex;
     gap: 20px;
@@ -23,6 +25,33 @@
 .elementNav li:hover{
     cursor: pointer;
 }
+@media (max-width: 700px){
+    .navBar{
+        display:block;
+     
+        padding: 0;
+    }
+    .titleSection{
+        margin: 0;
+        text-align: center;
+        background-color: var(--foreground);
+        color: var(--background);
+        padding-bottom: 10px; 
+        border-radius: 0 0 10px 10px ;
+        /* background-color: var(--foreground);
+        color: var(--background); */
+    } 
+    .buscarSection{
+        margin: 0;
+        display: none;
+    }
+    .elementSection{
+        padding: 10px 0 10px 0;
+        background-color: var(--background);
+    }
+}
+
+
 .subMenu{
     margin-top: 20px;
     position: absolute;

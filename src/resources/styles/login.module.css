@@ -1,0 +1,35 @@
+.cardLogin{
+    display: flex;
+    height: 93vh;
+}
+
+.elementLogin{
+    margin: auto; 
+    width: 400px;
+    height: 300px;
+    background-color: #ffff;
+
+}
+.formulario{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 18px;
+    gap: 20px;
+
+}
+.formulario div{
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+}
+.formulario div input{
+    padding: 10px;
+    
+}
+.buttonIngresar{
+    width: 100px;
+    padding: 5px 10px;
+
+}

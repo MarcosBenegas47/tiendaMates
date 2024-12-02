@@ -60,8 +60,8 @@ const ProductView = () => {
     return (
       <Suspense fallback="loading...">
       <div className={style.infoProduct}>
-          <Sidebar/>
-          <NavBar/>
+          {/* <Sidebar/> */}
+          {/* <NavBar/> */}
           <div className={style.imageGallery}>
             <ImageGallery  showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
 

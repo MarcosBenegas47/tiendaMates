@@ -1,6 +1,6 @@
 
 .imageGallery{
-    width: 600px;
+    width: 570px;
     
 }
 
@@ -9,14 +9,13 @@ margin: 0 auto 0 20%;
 flex-grow: 1; */
 
 .infoProduct{
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  max-width: 80%;
-margin: 0 auto 0 25%;
-  gap: 20px;
-  top: 0;
-  left: 15%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    max-width: 1182px;
+    margin: 0 auto ;
+    gap: 20px;
+  
 }
 @media (max-width: 600px){
     .infoProduct{

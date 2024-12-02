@@ -41,7 +41,6 @@ export default  function HomePage({filtro}:{filtro:string}) {
   useEffect(() => {
     const productos =async ()=> {
       const {data, lastVisible} = await baseClientLimitado(lasVisible,filter);
-      // console.log(data);
       if(data.length){
         setProduct(elem => [...(elem||[]), ...data]);
         setLastVisible(lastVisible);
@@ -66,12 +65,12 @@ export default  function HomePage({filtro}:{filtro:string}) {
   return (
     <>
       <main className={styles.main}>
-      <Sidebar/>
-        <header className={styles.head}>
+      {/* <Sidebar/> */}
+        {/* <header className={styles.head}>
           <h2 className={styles.titlePrincipal}>Tienda Mates</h2>
-          <NavBar />
+          {/* <NavBar /> 
           
-        </header>
+        </header> */}
         <h1 className={styles.title}>Nuestro catalogo</h1>
 
               

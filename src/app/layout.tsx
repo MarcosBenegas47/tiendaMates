@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import NavBar from "./component/NavBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,21 +31,19 @@ export default function RootLayout({
       <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" ></link>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div >
-            {/* <Sidebar/> */}
-          {/* <div className={styles.cont}> */}
-            
 
+            <header>
+              <NavBar/>
+            </header>
+            
             {children}
             <SpeedInsights />
-          {/* </div> */}
-        
-      </div>
+  
         
       <footer >
 
   
-</footer>
+      </footer>
       </body>
     </html>
   );
