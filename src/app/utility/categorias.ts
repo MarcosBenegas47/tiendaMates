@@ -12,7 +12,7 @@ export const arrayCategory = [
     ,"Bombillas de Alpaca"
     ,"Bombillas de Acero"
     ,"Latas"
-    // ,"Set Materos" 
+    ,"Set Materos" 
     ,"Acesorio"
     ,"Vaso Térmico"
 
