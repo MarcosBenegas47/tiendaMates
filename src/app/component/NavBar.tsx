@@ -5,16 +5,21 @@ import { useState } from "react";
 import { arrayCategory } from "../utility/categorias";
 import Image from "next/image";
 import imgMate from "../../resources/assets/mate-svgrepo-com.svg"
+import { logoutAuth } from "../service/getServiceList";
 
 const convertToSlug =(str:string)=>{
   return str.split(' ').join('-');
   }
 
-export default function NavBar() {
+export default function NavBar({estado}:{estado:boolean}) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleClick = (estado: boolean) => {
     setIsOpen(!estado);
+  }
+  const logout =( )=> {
+    logoutAuth();
+    // window.location.reload();
   }
     return (
       <nav className={styles.navBar}>
@@ -34,14 +39,18 @@ export default function NavBar() {
                       ))}
                     </ul>  
                                    
-                  </li>
-
+                  </li>{estado &&(
+                       <>
+                      <li><Link href="/dashboard/admin" >Administracion</Link></li>  
+                       <li><Link href="/" onClick={() => logout()}>Logout</Link></li> 
+                       </>
+                      )}
 
                   {/* <li><Link href="#" className="hover:text-white">Más vendidos</Link></li> */}
               </ul>
         </section>
         <section className={styles.buscarSection}>
-          <p>Buscar</p>
+          <input />
         </section>
               
           

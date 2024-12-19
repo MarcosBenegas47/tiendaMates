@@ -65,3 +65,4 @@ export const dbDestacados = async ():Promise<Destacados[]> =>{
 export const agregarProducto = (productos:Productos )=>{
      addDoc(collection(db, "productos"),productos)
 }
+

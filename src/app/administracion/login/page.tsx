@@ -1,7 +1,9 @@
 "use client";
 
+import { loginAuth } from "@/app/service/getServiceList";
 import { login } from "@/lib/firebase/baseUser";
 import style from "@/resources/styles/login.module.css"
+import { redirect } from "next/navigation";
 import {  useState } from "react";
 
 const Login =()=>{
@@ -10,8 +12,10 @@ const Login =()=>{
     const enviar = ()=>{
 
         if(email != "" || password !=""){
-            login(email,password)
-    
+
+            const response = loginAuth(email,password);
+            
+
         }
     
     }

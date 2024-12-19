@@ -5,9 +5,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import ImageGallery from 'react-image-gallery';
 import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
-import NavBar from "@/app/component/NavBar";
 import { useSearchParams } from "next/navigation";
-import Sidebar from "@/app/component/SideBar";
 
 
 const ProductView = () => {
@@ -63,13 +61,15 @@ const ProductView = () => {
           {/* <Sidebar/> */}
           {/* <NavBar/> */}
           <div className={style.imageGallery}>
-            <ImageGallery  showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
+            <ImageGallery thumbnailPosition={"left"} showBullets={true} showPlayButton={false} showFullscreenButton={false}  items={images}/>
 
           </div>
         <section className={style.elementProduct}>
           <h2 className={style.descriptionProduct}>{product?.descripcion}</h2>
           
           <strong className={style.precioProduct}>${product?.p_Unitario_final}</strong>
+          <span> stock disponible</span>
+          <span>cantidad: {product?.cantidad} unidades</span>
         </section>
       </div>
     

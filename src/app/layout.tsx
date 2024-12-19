@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NavBar from "./component/NavBar";
+import { cookies } from "next/headers";
+import { verify } from "jsonwebtoken";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,6 +27,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const cookie = cookies().get("accessToken");
+  let estado = false
+  if(cookie){
+   
+    if(verify(cookie?.value, 'ClaveSecreta'))  {
+      estado= true;
+    }
+    // else{
+    //   estado= false;
+    // }
+  }
   return (
     <html lang="en">
       <head>
@@ -33,10 +47,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
 
             <header>
-              <NavBar/>
+              <NavBar estado = {estado}/>
             </header>
-            
             {children}
+           
             <SpeedInsights />
   
         
