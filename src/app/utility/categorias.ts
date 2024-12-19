@@ -7,6 +7,7 @@ export const arrayCategory = [
     ,"Yerbera y azucarera"
     ,"Bombillas de Acero"
     ,"Bazar"
+    ,"Bolso Matero"
     // ,"Blister"
     ,"Botellas Plásticas"
     ,"Bombillas de Alpaca"
