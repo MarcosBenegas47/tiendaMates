@@ -35,9 +35,12 @@ export default function Card({products}:{products:Productos} ){
 
         <div className={style.product} >
             <Link href={{ 
-                pathname: `/costomers/product/${products.descripcion}`,
-                query:{hash: encodeToBase64( products)} }} 
-                onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria )}>
+                pathname: `/producto/${products.queryLink}`,
+                // query:{hash: encodeToBase64( products)}
+            
+            }} 
+                // onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria )}
+                >
         
                     <div>
                     <span className={style.cod}>cod: {products.codigo}</span>

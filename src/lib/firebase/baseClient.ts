@@ -63,6 +63,15 @@ export const productById = async (id:number):Promise<Productos>=>{
     return query.data() as Productos;
 }
 
+export const productBySlug = async (slug:string):Promise<Productos>=>{
+    const queryResult = query(collection(db,"productosV2"),orderBy('queryLink'),startAt(slug) ,endAt(slug+'\uf8ff'));
+    const querys = await getDocsFromServer(queryResult);
+    console.log(querys);
+
+    return querys.docs[0].data()as Productos;
+}
+
+
 export const baseClientSearch = async (str:string):Promise<Productos[]> =>{
     
     

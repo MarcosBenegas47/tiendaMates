@@ -6,10 +6,12 @@ import ImageGallery from 'react-image-gallery';
 import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css"
 import { useSearchParams } from "next/navigation";
+import { productBySlug } from "@/lib/firebase/baseClient";
 
-
-const ProductView = () => {
+//export default async function Home({params}: {params:{categoria:string}}) {
+const ProductView = ({params}:{params:{name:string}}) => {
   const searchParams = useSearchParams();
+  const {name} = params
   const hash = searchParams.get("hash")
 
   
@@ -30,15 +32,20 @@ const ProductView = () => {
     }
 
     const productList =  async (prodCod:string ="null" )=>{
-      const listImage = await imageList(prodCod);
-      setListImag(listImage)
+      const producto = await productBySlug(name)
+      if(producto){
+        const listImage = await imageList(producto.codigo);
+        setListImag(listImage);
+        setProduct(producto)
+
+      }
     }
 
 
-      productList(productos?.codigo)
-      setProduct(productos)
+      productList()
+      
     
-},[hash]);
+},[name]);
 
   const images:ImagenInter[] = product?.codigo? [{
     original: `/api/images/${product?.codigo || null}`,
