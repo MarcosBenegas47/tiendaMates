@@ -1,11 +1,13 @@
 "use client"
 import Link from "next/link"
 import styles from "../../resources/styles/pageNav.module.css"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { arrayCategory } from "../utility/categorias";
 import Image from "next/image";
 import imgMate from "../../resources/assets/mate-svgrepo-com.svg"
 import { logoutAuth } from "../service/getServiceList";
+import { baseClientSearch } from "@/lib/firebase/baseClient";
+import { Productos } from "@/Productos";
 
 const convertToSlug =(str:string)=>{
   return str.split(' ').join('-');
@@ -13,7 +15,8 @@ const convertToSlug =(str:string)=>{
 
 export default function NavBar({estado}:{estado:boolean}) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
+  const [listLi, setListLi] = useState<Productos[]>([]);
+  const sectionRef =useRef<HTMLDivElement>(null);
   const handleClick = (estado: boolean) => {
     setIsOpen(!estado);
   }
@@ -21,6 +24,30 @@ export default function NavBar({estado}:{estado:boolean}) {
     logoutAuth();
     // window.location.reload();
   }
+    const formater = (str:string) =>{
+      return str.replace
+    }
+    const search = async(e:React.ChangeEvent<HTMLInputElement>)=> {
+
+      const str = e.target.value;
+      console.log(str);
+      if( str.length !== 0){      
+        setListLi( await baseClientSearch(str.trim()));
+      }
+      else{
+        setListLi([]);
+      }
+    }
+
+    useEffect( ()=> {
+      const clickOutSide =( e:MouseEvent)=> {
+        if(sectionRef.current && !sectionRef.current.contains(e.target as Node)){
+          setListLi([]);
+        }
+      }
+      document.addEventListener('mousedown' ,clickOutSide);
+    },[])
+
     return (
       <nav className={styles.navBar}>
         <section className={styles.titleSection}>
@@ -49,8 +76,15 @@ export default function NavBar({estado}:{estado:boolean}) {
                   {/* <li><Link href="#" className="hover:text-white">Más vendidos</Link></li> */}
               </ul>
         </section>
-        <section className={styles.buscarSection}>
-          <input />
+        <section ref={sectionRef} className={styles.buscarSection}>
+          <input className={styles.input} onChange={search}/>
+          <ul  className={styles.dropdown} >
+              {listLi.map((elem , i) => (
+                <li key={i} className={styles.liProduct}>
+                  {elem.descripcion}
+                  </li> 
+              ))}
+          </ul>
         </section>
               
           

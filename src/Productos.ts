@@ -3,6 +3,7 @@ export interface Productos  {
     codigo: string,
     cantidad: number,
     descripcion: string,
+    estado:boolean,
     p_Unitario_final:string
     categoria:string[]
 }

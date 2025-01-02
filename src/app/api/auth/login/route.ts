@@ -24,7 +24,7 @@ export async function POST(req:NextRequest ){
         cookies().set("accessToken", token,{
             httpOnly:true,
             sameSite:'strict',
-            maxAge:1000*60*60*24*30,
+            maxAge:3600,
             path:'/'
         });
 

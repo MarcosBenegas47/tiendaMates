@@ -6,7 +6,7 @@ export const arrayCategory = [
     // ,"Mates de Calabaza"
     ,"Yerbera y azucarera"
     ,"Bombillas de Acero"
-    ,"Bazar"
+    ,"Set Materos"
     // ,"Blister"
     ,"Botellas Plásticas"
     ,"Bombillas de Alpaca"

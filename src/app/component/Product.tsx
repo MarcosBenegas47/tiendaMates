@@ -30,16 +30,16 @@ useEffect( () => {},[])
       };
     return(<>
         <ul className={style.productList}>
-            {products?.map(({id,codigo,cantidad,descripcion,p_Unitario_final, categoria} )=>(
-                cantidad >0 && (
+            {products?.map(({id,codigo,cantidad,descripcion,p_Unitario_final, categoria,estado} )=>(
+                 estado && (
                     <li className={style.product} key={id}>
                     <Link href={`/costomers/product/${descripcion}`} 
+                    
                         onClick={ ()=> handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria )}
                          onContextMenu={ ()=>handleClick(id,codigo,cantidad,descripcion,p_Unitario_final,categoria)} >
                 
                             <div>
                             <span className={style.cod}>{codigo}</span>
-
                                 <Image src={`/api/images/${codigo}`} alt="algun mate" width={300} unoptimized={true} height={400} className={style.imagen}/>
                             </div>
                             <div className={style.textCard}>

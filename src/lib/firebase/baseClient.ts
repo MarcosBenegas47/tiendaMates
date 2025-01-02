@@ -1,6 +1,21 @@
 
 // Import the functions you need from the SDKs you need
-import { getFirestore, collection,query, getDocs, getDoc, doc, limit, startAfter, orderBy, DocumentSnapshot, where, getDocsFromServer, addDoc } from "@firebase/firestore"
+import { 
+    getFirestore, 
+    collection,
+    query, 
+    getDocs,
+    getDoc, 
+    doc, 
+    limit, 
+    startAfter, 
+    orderBy, 
+    DocumentSnapshot, 
+    where, 
+    getDocsFromServer, 
+    addDoc, 
+    startAt, 
+    endAt} from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
 
@@ -8,7 +23,7 @@ import { Destacados, Productos } from "@/Productos";
 const db = getFirestore(app);
 export const baseClient = async ():Promise<Productos[]> =>{
 
-    const query = await getDocs(collection(db,"productos"));
+    const query = await getDocs(collection(db,"productosV2"));
     const data:Productos[] = [];
     query.forEach(doc =>{
         data.push(doc.data() as Productos); 
@@ -25,13 +40,13 @@ type ProductosResult = {
 export const baseClientLimitado = async (lastDataPos:DocumentSnapshot |null, filter ="Todo"):Promise<ProductosResult > =>{
 // console.log(filter);
     let productos = lastDataPos
-    ? query( collection(db,"productos" ), limit(6) ,where("cantidad","!=",0), orderBy("id"),  startAfter(lastDataPos ))
-    : query( collection(db,"productos" ), limit(6), where("cantidad","!=",0), orderBy("id"));
+    ? query( collection(db,"productosV2" ), limit(6) ,where("estado","==",true), orderBy("id"),  startAfter(lastDataPos ))
+    : query( collection(db,"productosV2" ), limit(6), where("estado","==",true), orderBy("id"));
                                                             
     if(filter != "Todo"){
         productos = lastDataPos
-        ? query( collection(db,"productos" ),where("categoria","array-contains",filter) ,where("cantidad",">",0), orderBy("id"),  startAfter(lastDataPos ) ,limit(6) )
-        : query( collection(db,"productos" ),where("categoria","array-contains",filter), limit(6), orderBy("id"), where("cantidad",">",0));
+        ? query( collection(db,"productosV2" ),where("categoria","array-contains",filter) ,where("estado","==",true), orderBy("id"),  startAfter(lastDataPos ) ,limit(6) )
+        : query( collection(db,"productosV2" ),where("categoria","array-contains",filter), limit(6), orderBy("id"), where("estado","==",true));
         }
     const querysnap = await getDocsFromServer(productos );
 
@@ -44,10 +59,28 @@ export const baseClientLimitado = async (lastDataPos:DocumentSnapshot |null, fil
 }
 
 export const productById = async (id:number):Promise<Productos>=>{
-    const query = await getDoc(doc(db, "productos", id.toString()));
+    const query = await getDoc(doc(db, "productosV2", id.toString()));
     return query.data() as Productos;
 }
 
+export const baseClientSearch = async (str:string):Promise<Productos[]> =>{
+    
+    
+    const strFormat = str.toLowerCase();
+    const data:Productos[]=[];
+    const queryResult = query(collection(db,"productosV2"),orderBy('queryLink'),startAt(strFormat) ,endAt(strFormat+'\uf8ff'));
+    const result = await getDocsFromServer(queryResult);
+    
+    result.forEach(doc => {
+        
+        data.push(doc.data() as Productos)
+        
+    })
+    console.log(data)
+    return data as Productos[];
+
+
+}
 
 export const dbDestacados = async ():Promise<Destacados[]> =>{
     const queryDest =  query(collection(db, "destacados"), orderBy("id"))
@@ -63,6 +96,6 @@ export const dbDestacados = async ():Promise<Destacados[]> =>{
 
 
 export const agregarProducto = (productos:Productos )=>{
-     addDoc(collection(db, "productos"),productos)
+     addDoc(collection(db, "productosV2"),productos)
 }
 
