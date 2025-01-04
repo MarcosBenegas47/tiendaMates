@@ -81,7 +81,7 @@ export default function NavBar({estado}:{estado:boolean}) {
           <ul  className={styles.dropdown} >
               {listLi.map((elem , i) => (
                 <li key={i} className={styles.liProduct}>
-                  {elem.descripcion}
+                  <Link href={`/producto/${elem.queryLink}`}>{elem.descripcion}</Link>
                   </li> 
               ))}
           </ul>

@@ -32,6 +32,14 @@ a {
 main{
   background-color: var(--background);
 }
+
+.container{
+  background-color: #ffff;
+  margin: 0 auto;
+  max-width: 1182px;
+  flex-grow: 1;
+
+}
 li{
   list-style: none;
 }

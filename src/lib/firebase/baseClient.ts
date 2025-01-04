@@ -15,7 +15,8 @@ import {
     getDocsFromServer, 
     addDoc, 
     startAt, 
-    endAt} from "@firebase/firestore"
+    endAt,
+    setDoc} from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
 
@@ -85,7 +86,6 @@ export const baseClientSearch = async (str:string):Promise<Productos[]> =>{
         data.push(doc.data() as Productos)
         
     })
-    console.log(data)
     return data as Productos[];
 
 
@@ -104,7 +104,25 @@ export const dbDestacados = async ():Promise<Destacados[]> =>{
 }
 
 
-export const agregarProducto = (productos:Productos )=>{
-     addDoc(collection(db, "productosV2"),productos)
+export const agregarProducto = async (productos:Productos )=>{
+    
+console.log(productos);
+    try {
+        const queryDest =  query(collection(db, "productosV2"), orderBy("id","desc"), limit(1));
+        const queryD = await getDocsFromServer(queryDest); 
+        if(!queryD.empty){
+            const id = queryD.docs[0].data().id +1;
+            console.log(id);
+            productos.id =id;
+            console.log(productos);
+             setDoc(doc(db,"productosV2",String(id)),productos);
+
+        }   
+    } catch (error) {
+        console.log(error)
+        
+    }
+
+
 }
 

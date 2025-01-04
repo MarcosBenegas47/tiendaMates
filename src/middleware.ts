@@ -20,5 +20,5 @@ export function middleware(req:NextRequest){
         
 }
 export const config ={
-    matcher:['/dashboard/admin']
+    matcher:['/dashboard/admin','/dashboard/crear']
 }
