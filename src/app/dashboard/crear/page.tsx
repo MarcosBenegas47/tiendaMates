@@ -14,6 +14,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useState } from "react";
 import { arrayCategory } from "@/app/utility/categorias";
 import { Productos } from "@/Productos";
+import slug from "slug";
+import { redirect } from "next/navigation";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,7 +50,7 @@ const crear = () => {
     );
   };
 
-  const subtmitForm =(formData:FormData) => {
+  const subtmitForm = async (formData:FormData) => {
     console.log(formData);
     
 
@@ -56,15 +58,20 @@ const crear = () => {
     prod.descripcion=formData.get("title")?.toString() ?? "";
     prod.p_Unitario_final = formData.get("price")?.toString() ??  "";
     prod.codigo = formData.get( "cod")?.toString() ?? "";
-    prod.cantidad = parseInt(formData.get("cant")?.toString() ?? "0")
+    prod.cantidad = parseInt(formData.get("cant")?.toString() ?? "0");
     prod.categoria = categorias;
     prod.estado = formData.get("estado") =="1"? true : false;
+    prod.queryLink = slug(formData.get("title")?.toString() ?? "");
+    
     // if(Object.keys(formData.getAll()).length === 0){
     //       console.log("vacio");
           
     // }
-    agregarProducto(prod);
-   // console.log(prod);
+
+    if( await agregarProducto(prod)){
+      redirect('/dashboard/admin');
+    }
+
   }
 
   return (

@@ -19,6 +19,8 @@ import {
     setDoc} from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
+import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 
 const db = getFirestore(app);
@@ -114,13 +116,15 @@ console.log(productos);
             const id = queryD.docs[0].data().id +1;
             console.log(id);
             productos.id =id;
+            
             console.log(productos);
              setDoc(doc(db,"productosV2",String(id)),productos);
+             return true;
+        }
 
-        }   
     } catch (error) {
         console.log(error)
-        
+        return false;
     }
 
 
