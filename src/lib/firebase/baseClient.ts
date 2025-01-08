@@ -13,15 +13,12 @@ import {
     DocumentSnapshot, 
     where, 
     getDocsFromServer, 
-    addDoc, 
     startAt, 
     endAt,
-    setDoc} from "@firebase/firestore"
+    setDoc,
+    deleteDoc} from "@firebase/firestore"
 import app from "./firebaseConfig"
 import { Destacados, Productos } from "@/Productos";
-import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
-
 
 const db = getFirestore(app);
 export const baseClient = async ():Promise<Productos[]> =>{
@@ -118,15 +115,25 @@ console.log(productos);
             productos.id =id;
             
             console.log(productos);
-             setDoc(doc(db,"productosV2",String(id)),productos);
-             return true;
+            setDoc(doc(db,"productosV2",String(id)),productos);
+
+            return true;
         }
 
     } catch (error) {
         console.log(error)
         return false;
     }
+}
+export const editProduct = async ( id:number,producto:Productos)=>{
+    producto.id = id
+    try {
+        await setDoc(doc(db,"productosV2",String(id)),producto );
 
-
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 }
 

@@ -1,11 +1,24 @@
-"use Client"
+"use client"
 import styles from "@/resources/styles/dashboard.module.css";
 
 import { Productos } from "@/Productos";
 import Image from "next/image";
 import Link from "next/link";
 
+
+
 const DashboardClient = ({data}:{data:Productos[]})=>{
+    const deleteProduct =  async (producto:Productos)=> {
+        try {
+            console.log(producto);
+        
+             deleteProduct(producto);
+        } catch (error) {
+            console.log(error)
+        }
+        
+        
+    }
     
     return(<main className={styles.main}>
         
@@ -43,6 +56,7 @@ const DashboardClient = ({data}:{data:Productos[]})=>{
                 </thead>
                 <tbody>
                 {data.map(elem => (
+                    
                     <tr key={elem.id} className={styles.tbody}>
                         <td>
                             {elem.id}
@@ -56,14 +70,14 @@ const DashboardClient = ({data}:{data:Productos[]})=>{
                             {elem.p_Unitario_final}
                         </td>
                         <td>{elem.cantidad}</td>
-                        <td>{elem.categoria}</td>
+                        <td>{elem.categoria.map(elem => ( <p>{elem +", "}</p> ))}</td>
                         
                         <td>
                             <Image src={`/api/images/${elem.codigo}`} alt="imagen" width={50} unoptimized={true} height={50} />
                         </td>
                         <td>
-                                <button className={styles.actionButton}>Editar</button>
-                                <button className={styles.actionButton}>Eliminar</button>
+                            <Link href={`/dashboard/editar/${elem.queryLink}`} className={styles.actionButton}>Editar</Link>
+                            <button onClick={() => deleteProduct(elem)} className={styles.actionButton}>Eliminar</button>
                         </td>
                         
                     

@@ -20,5 +20,5 @@ export function middleware(req:NextRequest){
         
 }
 export const config ={
-    matcher:['/dashboard/admin','/dashboard/crear']
+    matcher:['/dashboard/admin','/dashboard/crear','/dashboard/editar/:path*']
 }

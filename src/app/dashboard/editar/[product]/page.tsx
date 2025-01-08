@@ -1,7 +1,6 @@
 "use client";
-import { agregarProducto } from "@/lib/firebase/baseClient";
+import {editProduct, productBySlug } from "@/lib/firebase/baseClient";
 
-import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -9,27 +8,13 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { styled } from '@mui/material/styles';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { arrayCategory } from "@/app/utility/categorias";
 import { Productos } from "@/Productos";
 import slug from "slug";
 import { redirect } from "next/navigation";
-import { Button } from "@mui/material";
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -44,11 +29,23 @@ const MenuProps = {
 
 
 
-const crear = () => {
+const editar = ({params}:{params:{product:string}}) => {
+const {product} = params;
+const [producto, setProduct] = useState<Productos>();  
+const [categorias, setCategorias] = useState<string[]>([]);
+const [estado, setEstado] = useState("1");
 
+useEffect(()=> {
+  const queryProuct = async ()=> {
+    const productoDB = await productBySlug(product);
+    setProduct(productoDB);
+    setCategorias(productoDB.categoria)
 
-  const [categorias, setCategorias] = useState<string[]>([]);
-  const [estado, setEstado] = useState("1");
+    setEstado(productoDB.estado ? "1": "0");
+  }
+  queryProuct();
+  },[product]); 
+ 
   console.log(categorias);
 
   const handleChange2 = (event: SelectChangeEvent) => {
@@ -65,10 +62,10 @@ const crear = () => {
   };
 
   const subtmitForm = async (formData:FormData) => {
-    console.log(formData);
     
 
     let prod:Productos = {} as Productos;
+
     prod.descripcion=formData.get("title")?.toString() ?? "";
     prod.p_Unitario_final = formData.get("price")?.toString() ??  "";
     prod.codigo = formData.get( "cod")?.toString() ?? "";
@@ -81,10 +78,12 @@ const crear = () => {
     //       console.log("vacio");
           
     // }
-
-    if( await agregarProducto(prod)){
+  if(producto?.id ){
+    if( await editProduct(producto?.id ,prod )){
       redirect('/dashboard/admin');
     }
+  }
+      
 
   }
 
@@ -99,6 +98,12 @@ const crear = () => {
             label="Titulo"
             variant="outlined"
             size="small"
+            defaultValue={producto?.descripcion}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
             required
             
           />
@@ -108,18 +113,30 @@ const crear = () => {
             name="price"
             label="Precio"
             variant="outlined"
-            size="small" required
+            size="small"
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+            required
+            defaultValue= {parseInt(producto?.p_Unitario_final)}
           />
         </div>
         <div>
           <TextField
             id="outlined-basic"
-            type="number"
             name="cod"
             label="Codigo"
             variant="outlined"
             size="small"
             required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+            defaultValue={producto?.codigo}
           />
           <TextField
             id="outlined-basic"
@@ -129,6 +146,12 @@ const crear = () => {
             variant="outlined"
             size="small"
             required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+            defaultValue={producto?.cantidad }
           />
         </div>
 
@@ -175,26 +198,10 @@ const crear = () => {
             </Select>
           </FormControl>
         </section>
-
-
-        <Button
-      component="label"
-      role={undefined}
-      variant="contained"
-      tabIndex={-1}
-      startIcon={<CloudUploadIcon />}
-    >
-      Upload files
-      <VisuallyHiddenInput
-        type="file"
-        onChange={(e) => console.log(e.target.files)}
-        multiple
-      />
-    </Button>
-        <button type="submit">Agregar</button>
+        <button type="submit">Guardar</button>
       </form>
     </main>
   );
 };
 
-export default crear;
+export default editar;
