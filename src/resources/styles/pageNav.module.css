@@ -88,9 +88,9 @@
 }
 
 .input{
-    max-width: 350px;
+    width: 250px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 7px;
 }
 
 
@@ -128,6 +128,7 @@
 .dropdown{
     background: black;
     max-height: 350px;
+    max-width: 250px;
     overflow-y: scroll;
 }
 

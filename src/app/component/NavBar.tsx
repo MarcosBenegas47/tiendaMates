@@ -27,6 +27,7 @@ export default function NavBar({estado}:{estado:boolean}) {
     const formater = (str:string) =>{
       return str.replace
     }
+    
     const search = async(e:React.ChangeEvent<HTMLInputElement>)=> {
 
       const str = e.target.value;
@@ -81,7 +82,7 @@ export default function NavBar({estado}:{estado:boolean}) {
           <ul  className={styles.dropdown} >
               {listLi.map((elem , i) => (
                 <li key={i} className={styles.liProduct}>
-                  <Link href={`/producto/${elem.queryLink}`}>{elem.descripcion}</Link>
+                  <a href={`/producto/${elem.queryLink}`}>{elem.descripcion}</a>
                   </li> 
               ))}
           </ul>
