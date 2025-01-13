@@ -26,8 +26,8 @@ type ProductosResult = {
 export const baseClientLimitado = async (lastDataPos:DocumentSnapshot |null, filter ="Todo"):Promise<ProductosResult > =>{
 // console.log(filter);
     let productos = lastDataPos
-    ? query( collection(db,dbName ), limit(6) ,where("estado","==",true), orderBy("id"),  startAfter(lastDataPos ))
-    : query( collection(db,dbName ), limit(6), where("estado","==",true), orderBy("id"));
+    ? query( collection(db,dbName ), limit(6) ,where("estado","==",true), orderBy("id", "desc"),  startAfter(lastDataPos ))
+    : query( collection(db,dbName ), limit(6), where("estado","==",true), orderBy("id", "desc"));
                                                             
     if(filter != "Todo"){
         productos = lastDataPos
@@ -51,7 +51,7 @@ export const productById = async (id:number):Promise<Productos>=>{
 
 
 export const dbDestacados = async ():Promise<Destacados[]> =>{
-    const queryDest =  query(collection(db, "destacados"), orderBy("id"))
+    const queryDest =  query(collection(db, "destacados"), orderBy("id", "desc"))
     const queryD = await getDocsFromServer(queryDest);
 
     const des:Destacados[] =[];
