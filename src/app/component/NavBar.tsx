@@ -6,8 +6,8 @@ import { arrayCategory } from "../utility/categorias";
 import Image from "next/image";
 import imgMate from "../../resources/assets/mate-svgrepo-com.svg"
 import { logoutAuth } from "../service/getServiceList";
-import { baseClientSearch } from "@/lib/firebase/baseClient";
-import { Productos } from "@/Productos";
+import { baseClientSearch, baseClientSearchTurso } from "@/lib/firebase/baseClient";
+import { Productos, ProductosDB } from "@/Productos";
 
 const convertToSlug =(str:string)=>{
   return str.split(' ').join('-');
@@ -15,7 +15,7 @@ const convertToSlug =(str:string)=>{
 
 export default function NavBar({estado}:{estado:boolean}) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [listLi, setListLi] = useState<Productos[]>([]);
+  const [listLi, setListLi] = useState<ProductosDB[]>([]);
   const sectionRef =useRef<HTMLDivElement>(null);
   const handleClick = (estado: boolean) => {
     setIsOpen(!estado);
@@ -33,7 +33,7 @@ export default function NavBar({estado}:{estado:boolean}) {
       const str = e.target.value;
       console.log(str);
       if( str.length !== 0){      
-        setListLi( await baseClientSearch(str.trim()));
+        setListLi( await baseClientSearchTurso(str.trim()));
       }
       else{
         setListLi([]);

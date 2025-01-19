@@ -9,6 +9,21 @@ export interface Productos  {
     queryLink:string,
 }
 
+export interface ProductosDB{
+    id_mate:number,
+    codigo:string,
+    cantidad:number,
+    descripcion:string,
+    estado:boolean,
+    eliminado:boolean,
+    precio:string,
+    queryLink:string,
+
+}
+
+export interface ProductosDBconCat extends ProductosDB{
+    categorias:string[]
+}
 export interface ImagenInter {
     original:string,
     thumbnail:string

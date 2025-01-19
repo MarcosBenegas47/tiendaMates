@@ -12,6 +12,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@firebase/firestore": "^4.7.3",
+    "@libsql/client": "^0.14.0",
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
     "@types/crypto-js": "^4.2.2",

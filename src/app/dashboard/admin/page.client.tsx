@@ -1,13 +1,13 @@
 "use client"
 import styles from "@/resources/styles/dashboard.module.css";
 
-import { Productos } from "@/Productos";
+import { Productos, ProductosDBconCat } from "@/Productos";
 import Image from "next/image";
 import Link from "next/link";
 
 
 
-const DashboardClient = ({data}:{data:Productos[]})=>{
+const DashboardClient = ({data}:{data:ProductosDBconCat[]})=>{
     const deleteProduct =  async (producto:Productos)=> {
         try {
             console.log(producto);
@@ -55,11 +55,11 @@ const DashboardClient = ({data}:{data:Productos[]})=>{
                 </tr>
                 </thead>
                 <tbody>
-                {data.map(elem => (
+                {data.map((elem,i) => (
                     
-                    <tr key={elem.id} className={styles.tbody}>
+                    <tr key={i} className={styles.tbody}>
                         <td>
-                            {elem.id}
+                            {elem.id_mate}
                         </td>
                         <td>{elem.codigo}</td>
                         
@@ -67,10 +67,10 @@ const DashboardClient = ({data}:{data:Productos[]})=>{
                             {elem.descripcion}
                         </td>
                         <td>
-                            {elem.p_Unitario_final}
+                            {elem.precio}
                         </td>
                         <td>{elem.cantidad}</td>
-                        <td>{elem.categoria.map(elem => ( <p>{elem +", "}</p> ))}</td>
+                        <td>{elem.categorias.map(elem => ( <p>{elem +", "}</p> ))}</td>
                         
                         <td>
                             <Image src={`/api/images/${elem.codigo}`} alt="imagen" width={50} unoptimized={true} height={50} />

@@ -1,5 +1,5 @@
 "use client"
-import { Productos } from "@/Productos";
+import { Productos, ProductosDB } from "@/Productos";
 import style from "../../resources/styles/product.module.css"
 import Image from "next/image";
 import Link from "next/link";
@@ -7,30 +7,9 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function Card({products}:{products:Productos} ){
-    const {id,codigo,cantidad,descripcion,p_Unitario_final,categoria} = products;
+export default function Card({products}:{products:ProductosDB} ){
     const router = useRouter();
-  
 
-    const handleClick = (id: number ,codigo:string,cantidad:number,descripcion:string,p_Unitario_final:string,categoria:string[] ) => {
-            const  products ={
-            id: id ,
-            codigo:codigo,
-            cantidad:cantidad,
-            descripcion:descripcion,
-            p_Unitario_final:p_Unitario_final,
-            category:categoria
-            }
-
-            // Guardar el id en sessionStorage
-            localStorage.setItem("productId", String(id));
-            localStorage.setItem("product",JSON.stringify(products))
-            router.push(`/?id=${id}`);
-    };
-    const encodeToBase64 = (obj: Productos) => {
-
-            return btoa(JSON.stringify(obj));
-      };
     return(<>
 
         <div className={style.product} >
@@ -49,7 +28,7 @@ export default function Card({products}:{products:Productos} ){
                     </div>
                     <div className={style.textCard}>
                         <h3>{products.descripcion}</h3>
-                        <strong className={style.precio}>${products.p_Unitario_final}</strong>
+                        <strong className={style.precio}>${products.precio}</strong>
                     </div>
             </Link> 
         </div> 

@@ -1,21 +1,23 @@
 "use client"
 
-import { Destacados} from "@/Productos";
+import { Destacados, ProductosDB} from "@/Productos";
 import Image from "next/image";
 import style  from "@/resources/styles/productCardDestacado.module.css";
 import Link from "next/link";
-import { productById } from "@/lib/firebase/baseClient";
+import { productById, productByIdTurso } from "@/lib/firebase/baseClient";
 import { useEffect, useState } from "react";
 
  export const CardDest = ({destacados}:{destacados:Destacados}) =>{
-    // const [product, setProduct] = useState <Productos | null>()
+     const [product, setProduct] = useState <ProductosDB | null>()
     const [hash, setHash] = useState<string | null>(null);
     const [isLoad, setIsLoad] = useState <boolean> (false)
     useEffect(()=>{
         const product = async (id:number )=>{
 
-            const productos = await productById(id);
-            // setProduct(productos);
+            // const productos = await productById(id);
+            const productos = await productByIdTurso(id);
+
+             setProduct(productos);
             if(productos){
                 setHash(btoa(JSON.stringify(productos)));
                 setIsLoad(true);
@@ -35,11 +37,9 @@ return (<>
             <p className={style.destDescrip}>{destacados.descripcion}</p>    
         {/* </div> */}
         <div>
-            { hash ?  (<Link href={{
-                pathname:`/costomers/product/${destacados.descripcion}`,
-                query:{hash: hash}
+            { product ?  (<Link href={"/producto/"+product.queryLink}
 
-            }} > 
+             > 
                 <p className={style.linkProduct}>Ver mas</p>
             </Link>
             ):  <p className={style.linkProduct}>Ver mas</p>}       

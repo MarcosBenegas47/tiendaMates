@@ -1,9 +1,9 @@
 "use client";
 import styles from "@/resources/styles/pageMain.module.css";
-import { Productos } from "@/Productos";
+import { Productos, ProductosDB } from "@/Productos";
 import Card from "../../component/Card";
 import { useEffect, useRef, useState } from "react";
-import { baseClientLimitado } from "@/lib/firebase/baseClient";
+import { baseClientLimitado, baseClientLimitadoTurso } from "@/lib/firebase/baseClient";
 import { DocumentSnapshot } from "@firebase/firestore";
 
 const convertTospace = (str: string) => {
@@ -14,8 +14,9 @@ const convertTospace = (str: string) => {
 export default function HomePage({ filtro }: { filtro: string }) {
   const filter = convertTospace(filtro);
 
-  const [products, setProduct] = useState<Productos[]>([]);
+  const [products, setProduct] = useState<ProductosDB[]>([]);
   const [lasVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
+  const [lasVisibleT, setLastVisibleT] = useState<number>(0);
 
   const lastCardRef = useRef(null);
 
@@ -23,7 +24,11 @@ export default function HomePage({ filtro }: { filtro: string }) {
     // console.log("useEfec")
     const productos = async () => {
       const { data, lastVisible } = await baseClientLimitado(null, filter);
-      setProduct(data);
+
+      const {dataT,lastVisibleT}= await baseClientLimitadoTurso( 0,filter)
+      console.log( dataT)
+      setProduct(dataT);
+      setLastVisibleT(lastVisibleT)
       setLastVisible(lastVisible);
     };
     productos();
@@ -35,8 +40,11 @@ export default function HomePage({ filtro }: { filtro: string }) {
         lasVisible,
         filter
       );
-      if (data.length) {
-        setProduct((elem) => [...(elem || []), ...data]);
+      const {dataT,lastVisibleT}= await baseClientLimitadoTurso(lasVisibleT,filter)
+      console.log( dataT)
+      if (dataT.length) {
+        setProduct((elem) => [...(elem || []), ...dataT]);
+        setLastVisibleT(lastVisibleT)
         setLastVisible(lastVisible);
       }
     };
@@ -52,7 +60,7 @@ export default function HomePage({ filtro }: { filtro: string }) {
     observer.observe(lastCardRef.current);
 
     return () => observer.disconnect();
-  }, [filter, products, lasVisible]);
+  }, [filter, lasVisibleT]);
 
   return (
     <>
@@ -62,7 +70,7 @@ export default function HomePage({ filtro }: { filtro: string }) {
         <ul className={styles.productList}>
           {products?.map((product, i) => (
             <li
-              key={product.id}
+              key={i}
               ref={i === products.length - 1 ? lastCardRef : null}
             >
               <Card products={product} />
