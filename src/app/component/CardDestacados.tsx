@@ -32,7 +32,7 @@ import { useEffect, useState } from "react";
 
 return (<>
     <li className={`${style.card} ${isLoad? style.cardLoad: ""}`}>
-        <Image className={style.imgDest}src={`/api/images/${destacados.codigo}`} alt="algun producto destacado" width={290} height={300} unoptimized={true}/>
+        <Image className={style.imgDest}src={`/api/images/${destacados.codigo}`} alt="algun producto destacado" width={250} height={250} unoptimized={true}/>
         {/* <div className={style.divCard} > */}
             <p className={style.destDescrip}>{destacados.descripcion}</p>    
         {/* </div> */}

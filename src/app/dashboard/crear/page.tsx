@@ -1,5 +1,5 @@
 "use client";
-import { agregarProducto } from "@/lib/firebase/baseClient";
+import { agregarProducto, agregarProductoTurso } from "@/lib/firebase/baseClient";
 
 import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
@@ -82,10 +82,13 @@ const crear = () => {
           
     // }
 
-    if( await agregarProducto(prod)){
-      redirect('/dashboard/admin');
-    }
-
+    // if( await agregarProducto(prod)){
+    //   redirect('/dashboard/admin');
+    // }
+      
+     if(await agregarProductoTurso(prod)){
+        redirect('/dashboard/admin');
+      }
   }
 
   return (

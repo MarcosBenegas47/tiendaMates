@@ -16,3 +16,9 @@ export const arrayCategory = [
     ,"Vaso Térmico"
 
 ]
+export const arrayCategoriaPrincipal = [
+    ,"Mate"
+    ,"Yerbera y azucarera"
+    ,"Latas"
+    ,"Vaso Térmico"
+]

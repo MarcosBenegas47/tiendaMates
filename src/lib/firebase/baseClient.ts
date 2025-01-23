@@ -106,17 +106,7 @@ export const baseClientLimitadoTurso = async (lastDataPos =0 , filter ="Todo") =
     // console.log(filter);
         let producto
         if(filter != "Todo"){
-            console.log(await client.execute(`SELECT
-               p.id_mate,
-                p.codigo,
-                p.cantidad, 
-                p.descripcion, 
-                p.estado, 
-                p.eliminado,
-                p.precio,
-                nl.nombre_Link
-                 FROM productos p 
-                 LEFT JOIN nombreLink nl ON p.id_mate = nl.id_producto WHERE p.id_mate IN (SELECT pc.id_producto FROM producto_categoria pc LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria WHERE c.categoria = 'Mate' ) `))
+         
                 console.log(lastDataPos)
                  producto = (await client.execute(`SELECT
                 id_mate,
@@ -127,7 +117,10 @@ export const baseClientLimitadoTurso = async (lastDataPos =0 , filter ="Todo") =
                 eliminado,
                 precio,
                 nombre_Link
-                 FROM productos  LEFT JOIN nombreLink ON id_mate = id_producto WHERE id_mate IN (SELECT id_producto FROM producto_categoria pc LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria WHERE categoria = '${filter}' ) AND estado = '1'  ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6 `)).rows ;
+                 FROM productos 
+                  LEFT JOIN nombreLink ON id_mate = id_producto
+                   WHERE id_mate IN (SELECT id_producto FROM producto_categoria pc LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria WHERE categoria = '${filter}' )
+                    AND estado = '1'  ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6 `)).rows ;
 
         }else{
              producto = (await client.execute(`SELECT id_mate, codigo, cantidad, descripcion, estado, eliminado, precio, nombre_Link FROM productos LEFT JOIN nombreLink ON  id_mate = id_producto WHERE estado = '1' ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6`)).rows ;
@@ -351,26 +344,20 @@ export const editProduct = async ( id:number,producto:Productos)=>{
     }
 }
 
-export const agregarProductoTurso = async (productos:ProductosDBconCat )=>{
+export const agregarProductoTurso = async (productos:Productos )=>{
     
 console.log(productos);
 
 
     try {
-        let query = (await client.execute(`INSERT INTO productos (id_mate, codigo , cantidad, descripcion, estado, eliminado, precio)
-VALUES (${productos.id_mate}, ${productos.id_mate}, ${productos.id_mate}, ${productos.id_mate},${productos.id_mate} ,${productos.id_mate},${productos.id_mate})`)).rows ;
-            
-            
-        if(!queryD.empty){
-            const id = queryD.docs[0].data().id +1;
-            console.log(id);
-            productos.id =id;
-            
-            console.log(productos);
-            setDoc(doc(db,"productosV2",String(id)),productos);
+        let query = await client.execute(`INSERT INTO productos (codigo , cantidad, descripcion, estado, eliminado, precio)
+            VALUES (${productos.codigo}, ${productos.cantidad}, ${productos.descripcion},${productos.estado} ,0,${productos.p_Unitario_final})`) ;
+            console.log( query)
 
+            const id = await client.execute(`SELECT last_insert_rowid()  as id_mate`)
+  
             return true;
-        }
+        
 
     } catch (error) {
         console.log(error)

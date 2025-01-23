@@ -6,8 +6,8 @@ import { arrayCategory } from "../utility/categorias";
 import Image from "next/image";
 import imgMate from "../../resources/assets/mate-svgrepo-com.svg"
 import { logoutAuth } from "../service/getServiceList";
-import { baseClientSearch, baseClientSearchTurso } from "@/lib/firebase/baseClient";
-import { Productos, ProductosDB } from "@/Productos";
+import {  baseClientSearchTurso } from "@/lib/firebase/baseClient";
+import { ProductosDB } from "@/Productos";
 
 const convertToSlug =(str:string)=>{
   return str.split(' ').join('-');
