@@ -7,6 +7,7 @@ export const arrayCategory = [
     ,"Yerbera y azucarera"
     ,"Set Materos"
     // ,"Blister"
+    ,"Bombillas"
     ,"Botellas Plásticas"
     ,"Bombillas de Alpaca"
     ,"Bombillas de Acero"
@@ -17,8 +18,8 @@ export const arrayCategory = [
 
 ]
 export const arrayCategoriaPrincipal = [
-    ,"Mate"
-    ,"Yerbera y azucarera"
-    ,"Latas"
-    ,"Vaso Térmico"
+    {id:0, name:"Mate"}
+    ,{id:1, name:"Yerbera y azucarera"}
+    ,{id:2, name:"Bombillas"}
+    ,{id:3, name:"Vaso Térmico"}
 ]

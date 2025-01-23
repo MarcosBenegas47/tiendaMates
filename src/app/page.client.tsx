@@ -6,6 +6,8 @@ import Link from "next/link";
 import { CardDest } from "./component/CardDestacados";
 
 import Slider, { CustomArrowProps } from "react-slick";
+import { arrayCategoriaPrincipal } from "./utility/categorias";
+import Image from "next/image";
 
 function SampleNextArrow(props:CustomArrowProps) {
   const { className, style, onClick } = props;
@@ -32,6 +34,7 @@ function SamplePrevArrow(props:CustomArrowProps) {
 }
 
 export default  function HomePage({data}:{data:Destacados[]}) {
+  
   var settings = {
     dots: true,
     infinite: true,
@@ -79,7 +82,16 @@ export default  function HomePage({data}:{data:Destacados[]}) {
           </section>
           <section>
             <h3>Categorias</h3>
-            
+            {arrayCategoriaPrincipal.map((elem, i) => (
+              <section key={i}>
+                <Image alt="imgCat" src={"/api/images/category/"+elem.id} width={100} height={100}/>
+              <Link href={'/catalogo/'+elem.name} >
+                              
+                              {elem.name}
+                  </Link>
+              </section>
+              
+            ))}
           </section>
 
 

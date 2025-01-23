@@ -7,7 +7,7 @@ import { imageList } from "@/app/service/getServiceList";
 import style from "@/resources/styles/pageProduct.module.css";
 import { useSearchParams } from "next/navigation";
 import { productBySlug, productBySlugTurso } from "@/lib/firebase/baseClient";
-import { Skeleton } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 
 //export default async function Home({params}: {params:{categoria:string}}) {
 const ProductView = ({ params }: { params: { name: string } }) => {
@@ -17,6 +17,7 @@ const ProductView = ({ params }: { params: { name: string } }) => {
 
   const [product, setProduct] = useState<ProductosDB | null>();
   const [listImag, setListImag] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
 
@@ -30,6 +31,7 @@ const ProductView = ({ params }: { params: { name: string } }) => {
         
         setListImag(listImage);
         setProduct(producto);
+        setLoading(true);
       }
     };
 
@@ -50,6 +52,7 @@ const ProductView = ({ params }: { params: { name: string } }) => {
       original: `/api/images/folderIn/${product?.codigo}/${file}`,
       thumbnail: `/api/images/folderIn/${product?.codigo}/${file}`,
     });
+    
   });
 
   return (
@@ -58,22 +61,28 @@ const ProductView = ({ params }: { params: { name: string } }) => {
         {/* <Sidebar/> */}
         {/* <NavBar/> */}
         <div className={style.imageGallery}>
+          {loading?  (
           <ImageGallery
             thumbnailPosition={"left"}
             showBullets={true}
             showPlayButton={false}
             showFullscreenButton={false}
             items={images}
-          />
+          />): <Skeleton variant="rectangular" width={570} height={570} />}
         </div>
         <section className={style.elementProduct}>
-          <h2 className={style.descriptionProduct}>{product?.descripcion}</h2>
-
-          <strong className={style.precioProduct}>
+        
+          {loading ?  (<h2 className={style.descriptionProduct}>{product?.descripcion}</h2>) : <Skeleton width={210} />}
+          
+          {loading ?  (
+            <strong className={style.precioProduct}>
             ${product?.precio}
-          </strong>
-          <span> stock disponible</span>
-          <span>cantidad: {product?.cantidad} unidades</span>
+          </strong>) : <Skeleton width={210} />}
+          
+          {loading ?  (<span> stock disponible</span>) : <Skeleton width={210} />}
+          
+          {loading ?  ( <span>cantidad: {product?.cantidad} unidades</span>) : <Skeleton width={210} />}
+         
         </section>
       </div>
     // </Skeleton>

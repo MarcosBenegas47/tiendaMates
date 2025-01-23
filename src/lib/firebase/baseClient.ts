@@ -163,6 +163,7 @@ export const productBySlug = async (slug:string):Promise<Productos>=>{
 
 
 export const productBySlugTurso = async (slug:string):Promise<ProductosDB>=>{
+    console.log(slug)
     let query = (await client.execute(`SELECT
             id_mate,
             codigo,
@@ -184,7 +185,7 @@ export const productBySlugTurso = async (slug:string):Promise<ProductosDB>=>{
                 precio: query[0].precio? query[0].precio.toString(): "",
                 queryLink: query[0].nombre_Link? query[0].nombre_Link.toString(): ""
             }
-
+console.log(prod)
 
      return prod as ProductosDB;
 }
