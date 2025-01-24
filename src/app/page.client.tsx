@@ -10,42 +10,29 @@ import { arrayCategoriaPrincipal } from "./utility/categorias";
 import Image from "next/image";
 
 function SampleNextArrow(props:CustomArrowProps) {
-  const { className, style, onClick } = props;
+  const { className, onClick } = props;
   return (
-    <div
-    className={`button button--text button--icon ${className}`}    
-    style={{ display: "block", color:"black" ,opacity:1}} 
-        onClick={onClick} 
-    >
-      <i style={{ display: "block", color:"black" ,opacity:1}}  className="las la-angle-right"></i>
-    </div>
+    <div onClick={onClick} className={styles.slickNext} ><i className="las la-angle-right"></i></div>
   );
 }
 
 function SamplePrevArrow(props:CustomArrowProps) {
-  const { className, style, onClick } = props;
+  const { className, onClick } = props;
   return (
-    <div
-      className={className}
-      style={{ display: "block", background: "green",color: "black" }}
-      onClick={onClick}
-    />
+    <div className={styles.slickPrev} onClick={onClick}><i className="las la-angle-left"></i></div>
   );
 }
 
 export default  function HomePage({data}:{data:Destacados[]}) {
   
   var settings = {
-    dots: true,
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     speed: 500,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    // nextArrow: <i className="las la-angle-right"></i>,
-    // prevArrow: <i className="las la-angle-left"></i>,
+     nextArrow: <SampleNextArrow />,
+     prevArrow: <SamplePrevArrow />,
     autoplaySpeed: 2000,
   };
   return (
@@ -80,18 +67,27 @@ export default  function HomePage({data}:{data:Destacados[]}) {
            
 
           </section>
-          <section>
-            <h3>Categorias</h3>
-            {arrayCategoriaPrincipal.map((elem, i) => (
-              <section key={i}>
-                <Image alt="imgCat" src={"/api/images/category/"+elem.id} width={100} height={100}/>
-              <Link href={'/catalogo/'+elem.name} >
-                              
-                              {elem.name}
+          <section >
+            <h3 className={styles.catTitle}>Categorias</h3>
+            <section className={styles.catProd}>
+              {arrayCategoriaPrincipal.map((elem, i) => (
+                  <Link key={i} href={'/catalogo/'+elem.name} >
+                    <div >
+                      <div className={styles.catProdcont}>
+                      <span className={styles.catProdText}>{elem.name} </span> 
+                      </div>
+                   
+
+                  
+                      <Image alt="imgCat" src={"/api/images/category/"+elem.id} unoptimized={true} width={200} height={200}/>
+                    </div>
+                   
+
                   </Link>
-              </section>
-              
-            ))}
+
+                
+              ))}
+            </section>
           </section>
 
 
