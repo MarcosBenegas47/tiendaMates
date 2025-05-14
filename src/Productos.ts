@@ -20,9 +20,18 @@ export interface ProductosDB{
     queryLink:string,
 
 }
+export interface Category{
+    id_categoria:number,
+    categoria:string
+
+}
+
 
 export interface ProductosDBconCat extends ProductosDB{
-    categorias:string[]
+    categorias:Category[]
+}
+export interface ProductosDBconCatnum extends ProductosDB{
+    categorias:number[]
 }
 export interface ImagenInter {
     original:string,

@@ -77,7 +77,7 @@ const DashboardClient = ({data}:{data:ProductosDBconCat[]})=>{
                         </td>
                         <td>
                             <Link href={`/dashboard/editar/${elem.queryLink}`} className={styles.actionButton}>Editar</Link>
-                            <button onClick={() => deleteProduct(elem)} className={styles.actionButton}>Eliminar</button>
+                            {/* <button onClick={() => deleteProduct(elem)} className={styles.actionButton}>Eliminar</button> */}
                         </td>
                         
                     

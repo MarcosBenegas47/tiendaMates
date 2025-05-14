@@ -16,9 +16,9 @@ import {
     startAt, 
     endAt,
     setDoc,
-    deleteDoc} from "@firebase/firestore"
+    } from "@firebase/firestore"
 import app from "./firebaseConfig"
-import { Destacados, Productos, ProductosDB, ProductosDBconCat } from "@/Productos";
+import { Category, Destacados, Productos, ProductosDB, ProductosDBconCat, ProductosDBconCatnum } from "@/Productos";
 import client from "./clientTurso";
 
 
@@ -45,30 +45,37 @@ export const baseClientTurso = async ():Promise<ProductosDBconCat[]> =>{
             eliminado,
             precio,
             nombre_Link,
-            GROUP_CONCAT(c.categoria) AS categorias
-             FROM productos p LEFT JOIN producto_categoria pc ON p.id_mate = pc.id_producto LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria LEFT JOIN nombreLink n ON p.id_mate = n.id_producto
-               GROUP BY p.id_mate`)).rows ;
+            GROUP_CONCAT(c.categoria) AS categorias,
+            GROUP_CONCAT(c.id_categoria) AS id_categorias
+            FROM productos p LEFT JOIN producto_categoria pc ON p.id_mate = pc.id_producto LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria LEFT JOIN nombreLink n ON p.id_mate = n.id_producto
+              WHERE eliminado = 0 GROUP BY p.id_mate `)).rows ;
 
     const data: ProductosDBconCat[] =[]
   
-        producto.forEach((elem) =>  {
-            data.push({
-            id_mate: Number(elem.id_mate) || 0,
-            codigo: elem.codigo? elem.codigo.toString(): "" ,
-            cantidad: Number(elem.cantidad)||0 , 
-            descripcion:elem.descripcion? elem.descripcion.toString(): "", 
-            estado:elem.estado == 1? true:false|| true, 
-            eliminado:elem.eliminado == 1? true:false || true, 
-            precio: elem.precio? elem.precio.toString(): "",
-            queryLink: elem.nombre_Link? elem.nombre_Link.toString(): "",
-            categorias:elem.categorias? elem.categorias.toString().split(','): [], 
+    producto.forEach((elem) =>  {
+        const id_categorias = elem.id_categorias ? elem.id_categorias.toString().split(',').map(Number): [];
+        const categorias = elem.categorias ? elem.categorias.toString().split(','): [];
 
-        })
+        data.push({
+        id_mate: Number(elem.id_mate) || 0,
+        codigo: elem.codigo? elem.codigo.toString(): "" ,
+        cantidad: Number(elem.cantidad)||0 , 
+        descripcion:elem.descripcion? elem.descripcion.toString(): "", 
+        estado:elem.estado == 1? true:false|| true, 
+        eliminado:elem.eliminado == 1? true:false || true, 
+        precio: elem.precio? elem.precio.toString(): "",
+        queryLink: elem.nombre_Link? elem.nombre_Link.toString(): "",
+        categorias:categorias.map((categoria, index) => ({
+            id_categoria: id_categorias[index],
+            categoria: categoria
+          })), 
 
-        } )
-        console.log(data)
+    })
 
-   
+    } );
+    console.log(data)
+
+
     return data;
 }
 type ProductosResult = {
@@ -120,10 +127,20 @@ export const baseClientLimitadoTurso = async (lastDataPos =0 , filter ="Todo") =
                  FROM productos 
                   LEFT JOIN nombreLink ON id_mate = id_producto
                    WHERE id_mate IN (SELECT id_producto FROM producto_categoria pc LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria WHERE categoria = '${filter}' )
-                    AND estado = '1'  ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6 `)).rows ;
+                    AND estado = '1' AND eliminado = 0  ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6 `)).rows ;
 
         }else{
-             producto = (await client.execute(`SELECT id_mate, codigo, cantidad, descripcion, estado, eliminado, precio, nombre_Link FROM productos LEFT JOIN nombreLink ON  id_mate = id_producto WHERE estado = '1' ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6`)).rows ;
+             producto = (await client.execute(`SELECT id_mate,
+                 codigo, 
+                 cantidad,
+                  descripcion,
+                   estado,
+                    eliminado,
+                     precio,
+                      nombre_Link
+                       FROM productos 
+                       LEFT JOIN nombreLink ON  id_mate = id_producto 
+                       WHERE estado = '1' AND eliminado = 0 ORDER BY id_mate DESC LIMIT ${lastDataPos}, 6`)).rows ;
 
         }
         const dataT: ProductosDB[] =[]
@@ -161,21 +178,31 @@ export const productBySlug = async (slug:string):Promise<Productos>=>{
 
 
 
-
 export const productBySlugTurso = async (slug:string):Promise<ProductosDB>=>{
     console.log(slug)
     let query = (await client.execute(`SELECT
-            id_mate,
-            codigo,
-            cantidad, 
-            descripcion, 
-            estado, 
-            eliminado,
-            precio,
-            nombre_Link
-            FROM productos LEFT JOIN nombreLink ON id_mate = id_producto WHERE nombre_Link = '${slug}' `)).rows ;
+            p.id_mate,
+            p.codigo,
+            p.cantidad, 
+            p.descripcion, 
+            p.estado, 
+            p.eliminado,
+            p.precio,
+            nl.nombre_Link,
+            GROUP_CONCAT(c.id_categoria) AS id_categorias,
+            GROUP_CONCAT(c.categoria) AS categorias
+            FROM productos p 
+            LEFT JOIN nombreLink nl ON p.id_mate = nl.id_producto
 
-            const prod:ProductosDB = {
+            LEFT JOIN producto_categoria pc ON p.id_mate = pc.id_producto
+            LEFT JOIN categorias c ON pc.id_categoria = c.id_categoria
+
+            WHERE nombre_Link = '${slug}' `)).rows ;
+            console.log(query)
+            const categorias = query[0].categorias ? query[0].categorias.toString().split(',') : [];
+            const id_categorias = query[0].id_categorias ? query[0].id_categorias.toString().split(',').map(Number) : [];
+
+            const prod:ProductosDBconCat = {
                 id_mate: Number(query[0].id_mate) || 0,
                 codigo: query[0].codigo? query[0].codigo.toString(): "" ,
                 cantidad: Number(query[0].cantidad)||0 , 
@@ -183,12 +210,17 @@ export const productBySlugTurso = async (slug:string):Promise<ProductosDB>=>{
                 estado:query[0].estado == 1? true:false|| true, 
                 eliminado:query[0].eliminado == 1? true:false || true, 
                 precio: query[0].precio? query[0].precio.toString(): "",
-                queryLink: query[0].nombre_Link? query[0].nombre_Link.toString(): ""
+                queryLink: query[0].nombre_Link? query[0].nombre_Link.toString(): "",
+                categorias:categorias.map((categoria, index) => ({
+                    id_categoria: id_categorias[index],
+                    categoria: categoria
+                  })), 
             }
 console.log(prod)
-
-     return prod as ProductosDB;
+     return prod as ProductosDBconCat;
 }
+
+
 export const productById = async (id:number):Promise<Productos>=>{
     const query = await getDoc(doc(db, "productosV2", id.toString()));
     return query.data() as Productos;
@@ -268,15 +300,8 @@ export const baseClientSearchTurso = async (str:string):Promise<ProductosDB[]> =
             precio: doc.precio? doc.precio.toString(): "",
             queryLink: doc.nombre_Link? doc.nombre_Link.toString(): ""
         })
-
-    
-    
-        
-        
     })
     return data as ProductosDB[];
-
-
 }
 
 
@@ -291,6 +316,19 @@ export const dbDestacados = async ():Promise<Destacados[]> =>{
     })
     return des;
 }
+export const categoryProductTurso = async ():Promise<Category[]> => {
+    const query = (await client.execute(`SELECT * FROM categorias`)).rows;
+    console.log(query)
+    const cat:Category[] =[];
+    query.forEach(elem => {
+        cat.push({
+            id_categoria: Number(elem.id_categoria) || 0,
+            categoria: elem.categoria? elem.categoria.toString(): "" ,
+        })
+    });
+    return cat as Category[];
+}
+
 
 export const dbDestacadosTurso = async ():Promise<Destacados[]> =>{
     let query = (await client.execute(`SELECT
@@ -345,18 +383,29 @@ export const editProduct = async ( id:number,producto:Productos)=>{
     }
 }
 
-export const agregarProductoTurso = async (productos:Productos )=>{
+export const agregarProductoTurso = async (productos:ProductosDBconCatnum )=>{
     
 console.log(productos);
 
 
     try {
         let query = await client.execute(`INSERT INTO productos (codigo , cantidad, descripcion, estado, eliminado, precio)
-            VALUES (${productos.codigo}, ${productos.cantidad}, ${productos.descripcion},${productos.estado} ,0,${productos.p_Unitario_final})`) ;
+            VALUES ('${productos.codigo}', ${productos.cantidad}, '${productos.descripcion}', ${productos.estado} ,0 , '${productos.precio}')`) ;
             console.log( query)
 
-            const id = await client.execute(`SELECT last_insert_rowid()  as id_mate`)
-  
+            const id = await client.execute(`SELECT MAX(id_mate) as id_mate FROM productos`);
+            console.log(id)
+            const id_new_mate = id.rows[0].id_mate
+            console.log(id_new_mate)
+           
+            await client.execute(`INSERT INTO nombrelink (id_producto, nombre_Link)
+            VALUES (${id_new_mate}, '${productos.queryLink}')`)
+           
+            productos.categorias.forEach( async (elem)  => {
+                await client.execute(`INSERT INTO producto_categoria (id_categoria, id_producto)
+                VALUES (${elem}, ${id_new_mate})`)
+            })
+
             return true;
         
 
@@ -365,14 +414,51 @@ console.log(productos);
         return false;
     }
 }
-export const editProductTurso = async ( id:number,producto:Productos)=>{
-    producto.id = id
-    try {
-        await setDoc(doc(db,"productosV2",String(id)),producto );
 
-        return true;
+
+export const deleteProductDB = async ( id:number) => {
+    let query = await client.execute(`UPDATE productos
+        SET 
+        eliminado = 1
+        WHERE id_mate = ${id}`) ;
+        console.log( query)
+
+}
+
+export const editProductTurso = async ( id:number,productos:ProductosDBconCatnum)=>{
+    console.log(productos);
+
+
+    try {
+        let query = await client.execute(`UPDATE productos
+            SET codigo ='${productos.codigo}',
+            cantidad = ${productos.cantidad},
+            descripcion = '${productos.descripcion}',
+            estado = ${productos.estado},
+            eliminado = 0,
+            precio = '${productos.precio}'
+            WHERE id_mate = ${id}`) ;
+            console.log( query)
+
+          
+            console.log(id)
+
+            await client.execute(`DELETE FROM producto_categoria WHERE id_producto = ${id};`)
+
+            await client.execute(`UPDATE nombrelink SET                
+                 nombre_Link = '${productos.queryLink}'
+            WHERE id_producto = ${id} `)
+           
+            productos.categorias.forEach( async (elem)  => {
+                await client.execute(`INSERT INTO producto_categoria (id_categoria, id_producto)
+                VALUES (${elem}, ${id})`)
+            })
+
+            return true;
+        
+
     } catch (error) {
-        console.log(error);
+        console.log(error)
         return false;
     }
 }

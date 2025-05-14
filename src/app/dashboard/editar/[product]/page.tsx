@@ -1,5 +1,5 @@
 "use client";
-import {editProduct, productBySlug } from "@/lib/firebase/baseClient";
+import {categoryProductTurso, editProduct, editProductTurso, productBySlug, productBySlugTurso } from "@/lib/firebase/baseClient";
 
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,8 +11,7 @@ import InputLabel from "@mui/material/InputLabel";
 
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useEffect, useState } from "react";
-import { arrayCategory } from "@/app/utility/categorias";
-import { Productos } from "@/Productos";
+import { Category, Productos, ProductosDB, ProductosDBconCat, ProductosDBconCatnum } from "@/Productos";
 import slug from "slug";
 import { redirect } from "next/navigation";
 
@@ -31,15 +30,26 @@ const MenuProps = {
 
 const editar = ({params}:{params:{product:string}}) => {
 const {product} = params;
-const [producto, setProduct] = useState<Productos>();  
+const [producto, setProduct] = useState<ProductosDBconCat>();  
 const [categorias, setCategorias] = useState<string[]>([]);
 const [estado, setEstado] = useState("1");
+const [cat, setcat] = useState<{ [key: string]: number }>({});
+  const [arrayCategory, setarrayCategory] = useState<Category[]>([]);
+  
 
+ 
+  
 useEffect(()=> {
   const queryProuct = async ()=> {
-    const productoDB = await productBySlug(product);
-    setProduct(productoDB);
-    setCategorias(productoDB.categoria)
+    const productoDB = await productBySlugTurso(product);
+    const cat = await categoryProductTurso();
+      setarrayCategory(cat);
+      setcat(Object.fromEntries(cat.map(({id_categoria,categoria}:Category)=>[categoria,id_categoria])));
+
+
+
+    // setProduct(productoDB);
+    // setCategorias(productoDB.categorias.map(cat => cat.categoria))
 
     setEstado(productoDB.estado ? "1": "0");
   }
@@ -62,15 +72,15 @@ useEffect(()=> {
   };
 
   const subtmitForm = async (formData:FormData) => {
-    
+    console.log( categorias.map(elem => cat[elem]));
 
-    let prod:Productos = {} as Productos;
+    let prod:ProductosDBconCatnum = {} as ProductosDBconCatnum;
 
     prod.descripcion=formData.get("title")?.toString() ?? "";
-    prod.p_Unitario_final = formData.get("price")?.toString() ??  "";
+    prod.precio = formData.get("price")?.toString() ??  "";
     prod.codigo = formData.get( "cod")?.toString() ?? "";
     prod.cantidad = parseInt(formData.get("cant")?.toString() ?? "0");
-    prod.categoria = categorias;
+    prod.categorias = categorias.map(elem => cat[elem]);
     prod.estado = formData.get("estado") =="1"? true : false;
     prod.queryLink = slug(formData.get("title")?.toString() ?? "");
     
@@ -78,8 +88,10 @@ useEffect(()=> {
     //       console.log("vacio");
           
     // }
-  if(producto?.id ){
-    if( await editProduct(producto?.id ,prod )){
+    console.log(prod)
+
+  if(producto ){
+    if( await editProductTurso(producto?.id_mate ,prod )){
       redirect('/dashboard/admin');
     }
   }
@@ -109,7 +121,7 @@ useEffect(()=> {
           />
           <TextField
             id="outlined-basic"
-            type="number"
+            type="text"
             name="price"
             label="Precio"
             variant="outlined"
@@ -120,7 +132,7 @@ useEffect(()=> {
               },
             }}
             required
-            defaultValue= {parseInt(producto?.p_Unitario_final)}
+            defaultValue= {producto?.precio}
           />
         </div>
         <div>
@@ -169,9 +181,9 @@ useEffect(()=> {
             MenuProps={MenuProps}
           >
             {arrayCategory.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={categorias.includes(name)} />
-                <ListItemText primary={name} />
+              <MenuItem key={name.id_categoria} value={name.categoria}>
+                <Checkbox checked={categorias.includes(name.categoria)} />
+                <ListItemText primary={name.categoria} />
               </MenuItem>
             ))}
           </Select>

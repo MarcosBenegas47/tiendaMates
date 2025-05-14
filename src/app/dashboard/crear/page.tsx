@@ -1,5 +1,5 @@
 "use client";
-import { agregarProducto, agregarProductoTurso } from "@/lib/firebase/baseClient";
+import { agregarProducto, agregarProductoTurso, categoryProductTurso } from "@/lib/firebase/baseClient";
 
 import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
@@ -12,9 +12,8 @@ import InputLabel from "@mui/material/InputLabel";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from '@mui/material/styles';
-import { useState } from "react";
-import { arrayCategory } from "@/app/utility/categorias";
-import { Productos } from "@/Productos";
+import { useEffect, useState } from "react";
+import { Category, ProductosDBconCatnum } from "@/Productos";
 import slug from "slug";
 import { redirect } from "next/navigation";
 import { Button } from "@mui/material";
@@ -49,7 +48,20 @@ const crear = () => {
 
   const [categorias, setCategorias] = useState<string[]>([]);
   const [estado, setEstado] = useState("1");
-  console.log(categorias);
+  const [cat, setcat] = useState<{ [key: string]: number }>({});
+  const [arrayCategory, setarrayCategory] = useState<Category[]>([]);
+  
+
+  useEffect(() => {
+    const categoriasDB  = async()=> {
+      const cat = await categoryProductTurso();
+      setarrayCategory(cat)
+      setcat(Object.fromEntries(cat.map(({id_categoria,categoria}:Category)=>[categoria,id_categoria])));
+    }
+    categoriasDB();
+  }, []);
+  
+  
 
   const handleChange2 = (event: SelectChangeEvent) => {
     setEstado(event.target.value);
@@ -65,18 +77,19 @@ const crear = () => {
   };
 
   const subtmitForm = async (formData:FormData) => {
-    console.log(formData);
     
-
-    let prod:Productos = {} as Productos;
+    // const categ = categorias.map(elem => cat[elem]);
+    // console.log(categ);
+    
+    let prod:ProductosDBconCatnum = {}as ProductosDBconCatnum;
     prod.descripcion=formData.get("title")?.toString() ?? "";
-    prod.p_Unitario_final = formData.get("price")?.toString() ??  "";
-    prod.codigo = formData.get( "cod")?.toString() ?? "";
-    prod.cantidad = parseInt(formData.get("cant")?.toString() ?? "0");
-    prod.categoria = categorias;
-    prod.estado = formData.get("estado") =="1"? true : false;
-    prod.queryLink = slug(formData.get("title")?.toString() ?? "");
-    
+    prod.precio= formData.get("price")?.toString() ??  "";
+    prod.codigo= formData.get( "cod")?.toString() ?? "";
+    prod.cantidad= parseInt(formData.get("cant")?.toString() ?? "0");
+    prod.categorias= categorias.map(elem => cat[elem]);
+    prod.estado=formData.get("estado") =="1"? true : false;
+    prod.queryLink= slug(formData.get("title")?.toString() ?? "");
+    console.log( slug(formData.get("title")?.toString() ?? ""));
     // if(Object.keys(formData.getAll()).length === 0){
     //       console.log("vacio");
           
@@ -149,9 +162,9 @@ const crear = () => {
             MenuProps={MenuProps}
           >
             {arrayCategory.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={categorias.includes(name)} />
-                <ListItemText primary={name} />
+              <MenuItem key={name.id_categoria} value={name.categoria}>
+                <Checkbox checked={categorias.includes(name.categoria)} />
+                <ListItemText primary={name.categoria} />
               </MenuItem>
             ))}
           </Select>
