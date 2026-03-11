@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.routes.productos.products import router 
+from app.api.routes.router import apiRouter 
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
@@ -16,7 +16,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
     )
-app.include_router(router,prefix="/api/routes")
+
+
+app.include_router(apiRouter,prefix="/api/routes")
 
 @app.get("/",include_in_schema=False)
 async def root():
