@@ -20,7 +20,7 @@ class ProducRepository:
         slug = re.sub(r'[^a-z0-9-]', '', slug)
         newProduct = Product(
             codigo= product.codigo,
-            nombre = product.descripcion,
+            nombre = product.nombre,
             precio_unitario = product.precio_unitario,
             cantidad = product.cantidad,
             eliminado = False,

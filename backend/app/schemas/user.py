@@ -1,8 +1,9 @@
 from pydantic import BaseModel, EmailStr
 
-class UseLogin(BaseModel):
+class UserSchema(BaseModel):
     email: EmailStr
     password:str
+
 
 class UserResponse(BaseModel):
     id: int

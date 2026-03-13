@@ -26,15 +26,18 @@ def getDataBase():
     finally:
         db.close()
 
-oAuthSchema = OAuth2PasswordBearer(tokenUrl="login")
-
+oAuthSchema = OAuth2PasswordBearer(tokenUrl="/api/routes/auth/login")
+userRepo = userRepository()
 def getDbUser(token:str = Depends(oAuthSchema), db:Session =Depends(getDataBase)):
     try:
         payload = jwt.decode(token,secretKey, algorithms=[algoritmo] )
         userID = payload.get("sub")
+        if userID is None:
+            raise HTTPException(status_code=401, detail="token invalido")
     except Exception:
         raise HTTPException(status_code=401,detail="token invalido")
-    user  = userRepository.getUserById(db, userID)
+    print(userID)
+    user  = userRepo.getUserByEmail(db, userID)
     return user
 
 
