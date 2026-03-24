@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean
+from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean,ForeignKey
 from app.db.classDatabase import Base
 
 class Product(Base):
@@ -11,3 +11,9 @@ class Product(Base):
     eliminado = Column(Boolean)
     estado = Column(Boolean)
     query_link = Column(Text)
+
+class Product_destacados(Base):
+    __tablename__= "productos_destacados"
+    producto_id = Column(Integer, ForeignKey("productos.id"), primary_key=True)
+    
+    

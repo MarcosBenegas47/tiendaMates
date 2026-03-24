@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models.product import Product
+from app.models.product import Product,Product_destacados
+from app.models.category import Categoy
 from app.schemas.product import ProductResponse
 from fastapi import Query
 from app.schemas.product import ProductCreate , GetProductResponse
@@ -47,8 +48,53 @@ class ProducRepository:
             )
     
     def searchByQueryLink(self,db:Session,queryLink:str= Query(..., min_length=2, max_length=50) ):
-        return(db.query(Product).filter(Product.query_link.ilike(f"%{queryLink}%")).all())
+        products = db.query(Product).filter(Product.query_link.ilike(f"%{queryLink}%")).all()
+        results =[]
+        for product in products:
+            imageURL = imagesProduct.getImages(product.codigo)
+          
+            results.append(
+                ProductResponse(
+            id=product.id,
+            codigo=product.codigo,
+            nombre=product.nombre,
+            precio_unitario=product.precio_unitario,
+            cantidad=product.cantidad,
+            eliminado=product.eliminado,
+            estado=product.estado,
+            query_link=product.query_link,
+            imgURL=imageURL
+            )
+            )
+
+        return results
+
     
+    def getCategory(self, db:Session):
+        return (db.query(Categoy).all())
+    
+    def getDestacados(self, db:Session):
+        products = db.query(Product).select_from(Product_destacados).join(Product, Product.id ==Product_destacados.producto_id).all()
+        results =[]
+        for product in products:
+            imageURL = imagesProduct.getImages(product.codigo)
+          
+            results.append(
+                ProductResponse(
+            id=product.id,
+            codigo=product.codigo,
+            nombre=product.nombre,
+            precio_unitario=product.precio_unitario,
+            cantidad=product.cantidad,
+            eliminado=product.eliminado,
+            estado=product.estado,
+            query_link=product.query_link,
+            imgURL=imageURL
+            )
+            )
+        return results
+    
+
     def productNew(self,db:Session, product:ProductCreate):
         slug = product.nombre.lower()
         slug =slug.replace(" ", "-")

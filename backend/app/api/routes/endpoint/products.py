@@ -21,6 +21,12 @@ def getProduct(queryLink:str,db:Session = Depends(getDataBase)):
 def searchProduct(queryLink:str,db:Session = Depends(getDataBase)):
     return responseProduct.searchByQueryLink(db,queryLink)
 
+@router.get("/categorys")
+def getCategory(db:Session = Depends(getDataBase)):
+    return responseProduct.getCategory(db)
+@router.get("/destacados")
+def getDestacados(db:Session = Depends(getDataBase)):
+    return responseProduct.getDestacados(db)
 @router.post("/create/product")
 def createProduct(product:ProductCreate,
                   db:Session=Depends(getDataBase),
