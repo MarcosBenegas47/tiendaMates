@@ -1,15 +1,50 @@
 from sqlalchemy.orm import Session
 from app.models.product import Product
+from app.schemas.product import ProductResponse
 from fastapi import Query
-from app.schemas.product import ProductCreate
+from app.schemas.product import ProductCreate , GetProductResponse
 import re
-
+from app.repositories.images import imagesProduct
 class ProducRepository:
     def get_all(self, db:Session):
-        return (db.query(Product).filter(Product.estado ==True).filter(Product.eliminado == False).all())
+        products= db.query(Product).filter(Product.estado ==True).filter(Product.eliminado == False).all()
+        results =[]
+        for product in products:
+            imageURL = imagesProduct.getImages(product.codigo)
+          
+            results.append(
+                ProductResponse(
+            id=product.id,
+            codigo=product.codigo,
+            nombre=product.nombre,
+            precio_unitario=product.precio_unitario,
+            cantidad=product.cantidad,
+            eliminado=product.eliminado,
+            estado=product.estado,
+            query_link=product.query_link,
+            imgURL=imageURL
+            )
+            )
+
+        return results
     
     def getProd(self, db:Session, queryLink:str):
-        return(db.query(Product).filter(Product.query_link ==queryLink).first())
+        product = db.query(Product).filter(Product.query_link ==queryLink).first()
+        imageURL = imagesProduct.getImages(product.codigo)
+        product.image_id = imageURL
+        galeryImages = imagesProduct.getProductImages(product.codigo)
+        return GetProductResponse(
+            id=product.id,
+            codigo=product.codigo,
+            nombre=product.nombre,
+            precio_unitario=product.precio_unitario,
+            cantidad=product.cantidad,
+            eliminado=product.eliminado,
+            estado=product.estado,
+            query_link=product.query_link,
+            imgURL=imageURL,
+            galery=galeryImages
+            )
     
     def searchByQueryLink(self,db:Session,queryLink:str= Query(..., min_length=2, max_length=50) ):
         return(db.query(Product).filter(Product.query_link.ilike(f"%{queryLink}%")).all())
@@ -30,6 +65,7 @@ class ProducRepository:
         db.add(newProduct)
         db.commit()
         db.refresh(newProduct)
+
         return newProduct
     
     def deleteLogic(self, db:Session, id):
