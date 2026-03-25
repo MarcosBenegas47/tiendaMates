@@ -13,7 +13,13 @@ export interface ImagenInter {
 }
 
 export interface Destacados {
-    codigo:string,
-    descripcion: string,
-    id:number
+    id: number,
+    codigo: string,
+    nombre:string,
+    precio_unitario: string,
+    cantidad: number,
+    eliminado:boolean,
+    estado: boolean,
+    query_link:string,
+    imgURL:string
 }

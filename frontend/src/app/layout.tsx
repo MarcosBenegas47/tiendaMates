@@ -21,30 +21,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
-      <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" ></link>
+        <link
+          rel="stylesheet"
+          href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div >
-            {/* <Sidebar/> */}
-          {/* <div className={styles.cont}> */}
-            
+          {children}
+          <SpeedInsights />
 
-            {children}
-            <SpeedInsights />
-          {/* </div> */}
-        
-      </div>
-        
-      <footer >
-
-  
-</footer>
+        <footer>
+          <p>© 2026 Tienda Mates</p>
+        </footer>
       </body>
     </html>
   );
