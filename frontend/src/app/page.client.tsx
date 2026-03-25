@@ -8,7 +8,7 @@ export default function HomePage() {
 
   return (
     <main className=" flex flex-col">
-      <NavBar/>
+      {/* <NavBar/> */}
       <section className="bg-black py-12 md:py-24 lg:py-29 flex items-center justify-center px-6"> 
         <div className="max-w-2xl flex flex-col gap-6 md:gap-8">
 
@@ -29,10 +29,10 @@ export default function HomePage() {
           {/* En móvil los botones se ponen uno arriba del otro (flex-col) y en desktop de lado (md:flex-row) */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 mt-4">
             <div className="w-full md:w-auto text-center">
-              <ButtonWhite text="Ver Productos" />
+              <ButtonWhite link="/productos" text="Ver Productos" />
             </div>
             <div className="w-full md:w-auto text-center">
-              <ButtonBlack text="Cómo curar un mate" />
+              <ButtonBlack link="" text="Cómo curar un mate" />
             </div>
           </div>
       
@@ -55,7 +55,7 @@ export default function HomePage() {
     </div>
 
     <div className="mt-10 flex justify-center">
-      <ButtonWhite text="Ver Catálogo completo"/>
+      <ButtonWhite link="/productos" text="Ver Catálogo completo"/>
     </div>
   </div>
 </section>

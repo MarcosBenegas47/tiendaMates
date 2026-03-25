@@ -12,8 +12,8 @@ export function CardDest({prod}:{prod:Destacados}){
             <p className="text-2xl font-bold">${prod.precio_unitario}</p>
         </div>
         <div className="flex  justify-between m-5">
-            <ButtonBlack text="Agregar al carrito"/>
-            <ButtonWhite text="Reservar"/>
+            <ButtonBlack link="" text="Agregar al carrito"/>
+            <ButtonWhite link="" text="Reservar"/>
         </div>
     </div>
     )

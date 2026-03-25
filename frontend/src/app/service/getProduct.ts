@@ -1,4 +1,4 @@
-import { Destacados } from "@/Productos";
+import { Destacados, ProductosInter,  } from "@/Productos";
 
 const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const getDestacados = async ():Promise<Destacados[] | null> =>{
@@ -15,7 +15,20 @@ export const getDestacados = async ():Promise<Destacados[] | null> =>{
         
     }
 
-
-
 }
 
+export const getProduct = async ():Promise<ProductosInter[] | null> =>{
+    try {
+        const response = await fetch(`${url}/api/routes/store/products`);
+        if (!response.ok) {
+        throw new Error(response.statusText);
+        }
+        const resultado:ProductosInter[] = await response.json()
+        return resultado
+    } catch (error) {
+        console.log("Fetch error Destacados", error)
+        return null
+        
+    }
+
+}

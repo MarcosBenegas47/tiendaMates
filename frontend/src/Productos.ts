@@ -1,10 +1,13 @@
-export interface Productos  {
+export interface ProductosInter  {
     id: number,
     codigo: string,
     cantidad: number,
-    descripcion: string,
-    p_Unitario_final:string
-    categoria:string[]
+    nombre: string,
+    p_Unitario_final:string,
+    eliminado:boolean,
+    estado:boolean,
+    query_link:string
+    imgURL:string
 }
 
 export interface ImagenInter {
