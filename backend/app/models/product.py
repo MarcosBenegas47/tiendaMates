@@ -15,5 +15,10 @@ class Product(Base):
 class Product_destacados(Base):
     __tablename__= "productos_destacados"
     producto_id = Column(Integer, ForeignKey("productos.id"), primary_key=True)
+
+class Producto_categoria(Base):
+    __tablename__= "producto_categoria"
+    producto_id = Column(Integer, ForeignKey("productos.id"), primary_key=True)
+    categoria_id = Column(Integer, ForeignKey("categoria.id"), primary_key=True)
     
     
