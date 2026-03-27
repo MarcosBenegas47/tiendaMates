@@ -1,23 +1,12 @@
-"use client"
 
-import { ProductosInter } from "@/Productos"
-import { useEffect, useState } from "react"
-import { getProduct } from "../service/getProduct"
+import { getCategory, getProduct } from "../service/getProduct"
+import { Productos } from "./page.client"
 
-export default function Productos() {
-   const [productos, setProductos] = useState<ProductosInter[] | null>([])
-       useEffect(()=>{
-         async function getProducts(){
-            const productos =await getProduct()
-            setProductos(productos)
-         }
-         getProducts()
-       },[])
+export default async function Page() {
+         const productos = await getProduct()
+         const cats = await getCategory()
 
-   return (<>
-      {productos?.map(prod=> (
-         <p key={prod.id}>{prod.nombre}</p>
-      ))}
-   </>)
+       return <Productos productos={productos} categorias={cats} />
+   
 
 }   

@@ -1,6 +1,5 @@
 
 import { ButtonBlack, ButtonWhite } from "./component/ui/Button";
-import { NavBar } from "./layouts/NavBar";
 import { Destacados } from "./component/Destacados";
 
 export default function HomePage() {
