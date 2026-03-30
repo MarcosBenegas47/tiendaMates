@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export function NavBar(){
     return ( <>
-    <header className=" flex  ">
+    <header className=" flex  bg-white">
         <nav className="h-24 flex items-center justify-around  w-full ">
             <div className="flex items-center ">
                             <h1 className="text-2xl uppercase">Tienda Mates </h1>

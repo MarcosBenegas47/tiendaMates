@@ -10,11 +10,6 @@ export interface ProductosInter  {
     imgURL:string
 }
 
-export interface ImagenInter {
-    original:string,
-    thumbnail:string
-}
-
 export interface Destacados {
     id: number,
     codigo: string,

@@ -1,8 +1,7 @@
 import { Destacados } from "@/Productos";
-import { ButtonBlack, ButtonWhite } from "./ui/Button";
+import { ButtonBlackLink, ButtonWhiteLink } from "./ui/Button";
 
 export function CardDest({prod}:{prod:Destacados}){
-    console.log(prod.imgURL)
     return(
     <div className="max-w-90 border flex flex-col justify-between border-black/10 rounded">
         <img 
@@ -12,8 +11,8 @@ export function CardDest({prod}:{prod:Destacados}){
             <p className="text-2xl font-bold">${prod.precio_unitario}</p>
         </div>
         <div className="flex  justify-between m-5">
-            <ButtonBlack link="" text="Agregar al carrito"/>
-            <ButtonWhite link="" text="Reservar"/>
+            <ButtonBlackLink link="" text="Agregar al carrito"/>
+            <ButtonWhiteLink link="" text="Reservar"/>
         </div>
     </div>
     )

@@ -1,5 +1,5 @@
 
-import { ButtonBlack, ButtonWhite } from "./component/ui/Button";
+import { ButtonBlackLink, ButtonWhiteLink } from "./component/ui/Button";
 import { Destacados } from "./component/Destacados";
 
 export default function HomePage() {
@@ -28,10 +28,10 @@ export default function HomePage() {
           {/* En móvil los botones se ponen uno arriba del otro (flex-col) y en desktop de lado (md:flex-row) */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 mt-4">
             <div className="w-full md:w-auto text-center">
-              <ButtonWhite link="/productos" text="Ver Productos" />
+              <ButtonWhiteLink link="/productos" text="Ver Productos" />
             </div>
             <div className="w-full md:w-auto text-center">
-              <ButtonBlack link="" text="Cómo curar un mate" />
+              <ButtonBlackLink link="" text="Cómo curar un mate" />
             </div>
           </div>
       
@@ -54,7 +54,7 @@ export default function HomePage() {
     </div>
 
     <div className="mt-10 flex justify-center">
-      <ButtonWhite link="/productos" text="Ver Catálogo completo"/>
+      <ButtonWhiteLink link="/productos" text="Ver Catálogo completo"/>
     </div>
   </div>
 </section>
