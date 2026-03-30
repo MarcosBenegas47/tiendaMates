@@ -28,7 +28,7 @@ export function Productos({ productos, categorias }: prop) {
     }
     return (<>
         <div className="flex justify-center  md:flex-row  gap-10 bg-white">
-            <section>
+            <section className="hidden md:block">
                 <div >
                     <h2 className="font-bold flex gap-2">
                         <Funnel /> Filtros de búsqueda
@@ -55,6 +55,10 @@ export function Productos({ productos, categorias }: prop) {
             <section className="flex flex-col justify-center  gap-10">
 
                 <Search onSearch={conultaProducto}/>
+                <div className="flex gap-2 overflow-x-auto md:hidden">
+                    
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3  gap-4">
                     {prods?.map(producto => (
                         <CardProd key={producto.id} prod={producto} />

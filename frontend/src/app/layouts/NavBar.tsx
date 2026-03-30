@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search, TableOfContents } from "lucide-react";
 import Link from "next/link";
 
 
@@ -11,13 +11,17 @@ export function NavBar(){
 
                     <img width="30" height="30" src="https://img.icons8.com/officel/80/mate.png" alt="mate"/>
             </div>
-            <div className="flex gap-5 ">
+            <div className="block md:hidden">
+                <TableOfContents/>
+            </div>
+
+            <div className="md:flex gap-5 hidden ">
                 <Link href={"/"}>Inicio</Link>
                 <Link href={"/productos"}>Productos</Link>
                 <Link href={""}>Nosotros</Link>
 
             </div>
-            <div>
+            <div className="hidden md:block">
                 <Search/>
 
             </div>
