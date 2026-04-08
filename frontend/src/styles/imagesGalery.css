@@ -1,0 +1,33 @@
+/* Thumbnails borde activo */
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  border: 3px solid black !important;
+}
+
+/* Hover en thumbnails */
+.image-gallery-thumbnail:hover {
+  border: 3px solid black !important;
+}
+
+/* Flechas (opcional) */
+.image-gallery-icon:hover {
+  color: black !important;
+}
+
+/* Quitar outline azul feo */
+.image-gallery-thumbnail:focus {
+  outline: none !important;
+}
+
+/* Bullets (si usás dots) */
+.image-gallery-bullet.active {
+  background: black !important;
+}
+
+.image-gallery-bullet:hover {
+  background: black !important;
+}
+.image-gallery {
+  width: 611px;
+  margin: 0 auto;
+}

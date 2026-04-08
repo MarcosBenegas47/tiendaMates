@@ -3,7 +3,7 @@
 import { Category, ProductosInter } from "@/Productos"
 import { CardProd } from "../component/CardProd"
 import { filtrarProductos, searchProd, toSlug } from "../service/funcionAux"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight, Funnel } from "lucide-react"
 import { Search } from "../component/Search"
 type prop = {
@@ -13,13 +13,25 @@ type prop = {
 export function Productos({ productos, categorias }: prop) {
     const [prods, setProds] = useState<ProductosInter[] | null>(productos)
     const [selected, setSelected] = useState<number[]>([])
-    const [offset, setoffset] = useState<number>(6)
+    const [offset, setoffset] = useState<number>(()=>{
+        if(typeof window !== "undefined"){
+        const saved = sessionStorage.getItem("offset")
+        return saved? Number(saved ): 0
+        }
+        return 0
+    })
     console.log(offset)
-    const getProd = async (offset: number = 0) => {
+
+    const getProd = async (offset: number = 0 ) => {
         const productos = await filtrarProductos(selected, offset)
         console.log(offset)
         setProds(productos)
     }
+        
+    useEffect(() => {
+        sessionStorage.setItem("offset", offset.toString())
+        getProd(offset)
+    }, [offset])
     const conultaProducto = async (elem:string) => {
         
         const productos = await searchProd(toSlug(elem.trim()))

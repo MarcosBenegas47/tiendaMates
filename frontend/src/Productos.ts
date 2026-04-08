@@ -3,12 +3,25 @@ export interface ProductosInter  {
     codigo: string,
     cantidad: number,
     nombre: string,
+    descripcion:string
     precio_unitario:string,
     eliminado:boolean,
     estado:boolean,
     query_link:string
-    imgURL:string
+    imgURL:string,
+    galery:string[],
+    configuracion:ConfigProduct
+
 }
+
+export interface ConfigProduct {
+    capacidad: string ,
+    capacidad_ml: number,
+    estilo:string,
+    material:string,
+    virola:string
+}
+
 
 export interface Destacados {
     id: number,
