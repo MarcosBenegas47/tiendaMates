@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Form
 from sqlalchemy.orm import Session
 
 from app.db.database import getDataBase, getDbAdmin
@@ -39,7 +39,7 @@ def getproducts(db:Session = Depends(getDataBase), id:Optional[str] = None,limit
 def getDestacados(db:Session = Depends(getDataBase)):
     return responseProduct.getDestacados(db)
 @router.post("/create/product")
-def createProduct(product:ProductCreate,
+def createProduct(product:str =Form(...),
                   db:Session=Depends(getDataBase),
                   admin =Depends(getDbAdmin)):
     return responseProduct.productNew(db, product)
@@ -51,3 +51,6 @@ def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(get
 @router.delete("/product/delete/fisica/{id}")
 def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
     return responseProduct.delete(db,id)
+
+# @router.put("/product/update/{id}")
+# def updateProduct(id:int, data:Prod )

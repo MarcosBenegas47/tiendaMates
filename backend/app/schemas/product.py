@@ -15,10 +15,19 @@ class ProductResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+class ConfigResponse(BaseModel):
+    estilo: str
+    material: str
+    virola: str
+    capacidad: str
+    capacidad_ml: int
+
 class GetProductResponse(BaseModel):
     id:int
     codigo:str
     nombre:str
+    descripcion:str
     precio_unitario:Decimal
     cantidad:int
     eliminado:bool
@@ -26,13 +35,24 @@ class GetProductResponse(BaseModel):
     query_link:str
     imgURL:str
     galery:list[str]
-    
+    configuracion: ConfigResponse
     class Config:
         from_attributes = True
 
-
+class ConfiProductCreate(BaseModel):
+    idEstilo: int
+    idMaterial: int
+    idVirola: int
+    idCapacidad: int
 class ProductCreate(BaseModel):
     codigo: str
     nombre: str
     precio_unitario: Decimal
     cantidad: int
+    descripcion:str
+    imgFirst:str
+    galery:list[str]
+    configuracion:ConfiProductCreate
+
+
+

@@ -1,11 +1,13 @@
 from sqlalchemy.orm import Session
-from app.models.product import Product,Product_destacados ,Producto_categoria
+from app.models.product import Product,Product_destacados ,Producto_categoria, ProductoConfiguracion, ProductoImagen
 from app.models.category import Categoy
 from app.schemas.product import ProductResponse
 from fastapi import Query
-from app.schemas.product import ProductCreate , GetProductResponse
+from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse
 import re
 from app.repositories.images import imagesProduct
+
+from sqlalchemy import text
 class ProducRepository:
     def get_all(self, db:Session, id = None,limit = 6, offset = 0):
         products = db.query(Product)
@@ -21,7 +23,6 @@ class ProducRepository:
         querys = products.offset(offset).limit(limit).all()
         results =[]
         for product in querys:
-            imageURL = imagesProduct.getImages(product.codigo)
           
             results.append(
                 ProductResponse(
@@ -33,7 +34,7 @@ class ProducRepository:
             eliminado=product.eliminado,
             estado=product.estado,
             query_link=product.query_link,
-            imgURL=imageURL
+            imgURL=product.img
             )
             )
 
@@ -41,24 +42,41 @@ class ProducRepository:
     
 
 
-
     def getProd(self, db:Session, queryLink:str):
         product = db.query(Product).filter(Product.query_link ==queryLink).first()
         imageURL = imagesProduct.getImages(product.codigo)
         product.image_id = imageURL
-        galeryImages = imagesProduct.getProductImages(product.codigo)
-        return GetProductResponse(
+
+        imagesUrls = db.query(ProductoImagen).filter(ProductoImagen.producto_id == product.id ).all()
+
+        galeryImages = [imgs.url for imgs in imagesUrls]
+
+
+
+        config = product.configuracion
+
+
+        return GetProductResponse(  
             id=product.id,
             codigo=product.codigo,
             nombre=product.nombre,
             precio_unitario=product.precio_unitario,
             cantidad=product.cantidad,
             eliminado=product.eliminado,
+            descripcion=product.descripcion,
             estado=product.estado,
             query_link=product.query_link,
-            imgURL=imageURL,
-            galery=galeryImages
+            imgURL=product.img,
+            galery=galeryImages,
+            configuracion= ConfigResponse(
+                estilo= config.estilo.nombre,
+                material=config.material.nombre,
+                virola=config.virola.nombre,
+                capacidad=config.capacidad.descripcion,
+                capacidad_ml=config.capacidad.ml
             )
+    )
+            
     
     def searchByQueryLink(self,db:Session,queryLink:str= Query(..., min_length=2, max_length=50) ):
         products = db.query(Product)\
@@ -79,7 +97,7 @@ class ProducRepository:
             eliminado=product.eliminado,
             estado=product.estado,
             query_link=product.query_link,
-            imgURL=imageURL
+            imgURL=product.img
             )
             )
 
@@ -105,13 +123,14 @@ class ProducRepository:
             eliminado=product.eliminado,
             estado=product.estado,
             query_link=product.query_link,
-            imgURL=imageURL
+            imgURL=product.img
             )
             )
         return results
     
 
     def productNew(self,db:Session, product:ProductCreate):
+
         slug = product.nombre.lower()
         slug =slug.replace(" ", "-")
         slug = re.sub(r'[^a-z0-9-]', '', slug)
@@ -119,14 +138,24 @@ class ProducRepository:
             codigo= product.codigo,
             nombre = product.nombre,
             precio_unitario = product.precio_unitario,
+            descripcion = product.descripcion,
             cantidad = product.cantidad,
             eliminado = False,
             estado = True,
             query_link = slug
         )
         db.add(newProduct)
+        db.flush()
+        config = product.configuracion
+        newConfig= ProductoConfiguracion(
+            producto_id = newProduct.id ,
+            estilo_id = config.idEstilo,
+            virola_id = config.idVirola,
+            material_id = config.idMaterial,
+            capacidad_id = config.idCapacidad,
+        )
+        db.add(newConfig)
         db.commit()
-        db.refresh(newProduct)
 
         return newProduct
     
