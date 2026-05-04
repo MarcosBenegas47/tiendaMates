@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from app.models.product import Product,Product_destacados ,Producto_categoria, ProductoConfiguracion, ProductoImagen
 from app.models.category import Categoy
 from app.schemas.product import ProductResponse
-from fastapi import Query
-from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse
+from fastapi import Query, HTTPException
+from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse,ProductUpdate
 import re
 from app.repositories.images import imagesProduct
 
@@ -55,6 +55,16 @@ class ProducRepository:
 
         config = product.configuracion
 
+        config_response = None
+
+        if config:
+            config_response = ConfigResponse(
+                estilo=config.estilo.nombre if config.estilo else None,
+                material=config.material.nombre if config.material else None,
+                virola=config.virola.nombre if config.virola else None,
+                capacidad=config.capacidad.descripcion if config.capacidad else None,
+                capacidad_ml=config.capacidad.ml if config.capacidad else None
+            )
 
         return GetProductResponse(  
             id=product.id,
@@ -68,20 +78,13 @@ class ProducRepository:
             query_link=product.query_link,
             imgURL=product.img,
             galery=galeryImages,
-            configuracion= ConfigResponse(
-                estilo= config.estilo.nombre,
-                material=config.material.nombre,
-                virola=config.virola.nombre,
-                capacidad=config.capacidad.descripcion,
-                capacidad_ml=config.capacidad.ml
-            )
+            configuracion= config_response
     )
             
     
     def searchByQueryLink(self,db:Session,queryLink:str= Query(..., min_length=2, max_length=50) ):
         products = db.query(Product)\
-            .select_from(Product_destacados)\
-            .join(Product, Product.id ==Product_destacados.producto_id)\
+            .filter(Product.estado ==True).filter(Product.eliminado == False)\
             .filter(Product.query_link.ilike(f"%{queryLink}%")).all()
         results =[]
         for product in products:
@@ -166,7 +169,50 @@ class ProducRepository:
         return {"message": "Producto Eliminado con exito"}
     
     def delete(self, db:Session, id):
+        
         product = db.query(Product).filter(Product.id== id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
         db.delete(product)
         db.commit()
         return {"message":"Producto eliminado de la base correctamente"}
+    
+    def update(self, db:Session, id:int, data:ProductUpdate):
+        product = db.query(Product).filter(Product.id == id).first()
+
+        if not product:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+
+        product.codigo = data.codigo
+        product.nombre = data.nombre
+        product.precio_unitario = data.precio_unitario
+        product.cantidad = data.cantidad
+        product.descripcion = data.descripcion
+        product.estado = data.estado
+        product.query_link = data.query_link
+
+
+        config = db.query(ProductoConfiguracion)\
+            .filter(ProductoConfiguracion.producto_id == product.id)\
+            .first()
+        if not config:
+            config = ProductoConfiguracion(
+                producto_id=product.id
+            )
+            db.add(config)
+
+        config.estilo_id = data.configuracion.idEstilo
+        config.material_id = data.configuracion.idMaterial
+        config.virola_id = data.configuracion.idVirola
+        config.capacidad_id = data.configuracion.idCapacidad
+
+   
+       
+        # -------------------------
+        # 💾 GUARDAR
+        # -------------------------
+        db.commit()
+        db.refresh(product)
+
+        return {"message": "Producto actualizado correctamente"}

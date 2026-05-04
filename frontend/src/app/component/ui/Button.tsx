@@ -18,3 +18,10 @@ export function ButtonWhiteLink({link="",text}:ButtonWhiteProps){
     return <Link href={link} className="bg-white w-full  text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">{text}</Link>
 
 }
+export function ButtonBlack({text}:{text:string}){
+    return <button  className="bg-black pt-3 pb-3 pl-5 pr-5 !text-white border border-white rounded">{text}</button>
+}
+export function ButtonWhite({text}:{text:string}){
+    return <button  className="bg-white w-full  text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">{text}</button>
+
+}

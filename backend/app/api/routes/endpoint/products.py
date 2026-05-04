@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.db.database import getDataBase, getDbAdmin
 from app.repositories.product_repositoriy import ProducRepository
 
-from app.schemas.product import ProductCreate
+from app.schemas.product import ProductCreate, ProductUpdate
 import json
 
 from typing import Optional 
@@ -38,19 +38,22 @@ def getproducts(db:Session = Depends(getDataBase), id:Optional[str] = None,limit
 @router.get("/destacados")
 def getDestacados(db:Session = Depends(getDataBase)):
     return responseProduct.getDestacados(db)
-@router.post("/create/product")
-def createProduct(product:str =Form(...),
-                  db:Session=Depends(getDataBase),
-                  admin =Depends(getDbAdmin)):
-    return responseProduct.productNew(db, product)
 
-@router.put("/product/delete/{id}")
-def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
-    return responseProduct.deleteLogic(db, id)
 
-@router.delete("/product/delete/fisica/{id}")
-def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
-    return responseProduct.delete(db,id)
+# @router.post("/create/product")
+# def createProduct(product:str =Form(...),
+#                   db:Session=Depends(getDataBase),
+#                   admin =Depends(getDbAdmin)):
+#     return responseProduct.productNew(db, product)
+
+# @router.put("/product/delete/{id}")
+# def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
+#     return responseProduct.deleteLogic(db, id)
+
+# @router.delete("/product/delete/fisica/{id}")
+# def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
+#     return responseProduct.delete(db,id)
 
 # @router.put("/product/update/{id}")
-# def updateProduct(id:int, data:Prod )
+# def updateProduct(id:int, data:ProductUpdate, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin) ):
+#     return responseProduct.update(db, id, data)

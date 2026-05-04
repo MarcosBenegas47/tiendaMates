@@ -1,4 +1,4 @@
-import { getProduct, getProductBySearch } from "./getProduct"
+import { getProduct, getProductBySearch, getProductBySlug } from "./getProduct"
 
 export async function filtrarProductos(categorias: number[] , offset= 0) {
   console.log("Categorias:", categorias)
@@ -24,3 +24,8 @@ export async function  searchProd(slug:string){
   }
   return await getProductBySearch(slug)
 }
+
+export async function  getBySlug(slug:string){
+  return await getProductBySlug(slug)
+}
+

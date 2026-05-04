@@ -22,16 +22,6 @@ def regiser(user:UserSchema, db:Session= Depends(getDataBase)):
     return newUser 
 
 
-# @router.post("/login")
-# def login(user:UserSchema, db:Session =Depends(getDataBase)):
-#     dbUser = userRepo.getUserByEmail(db, user.email)
-#     if not dbUser:
-#         raise HTTPException(401, "Credencial incorrectas" )
-#     if not verfyPassword(user.password, dbUser.password):
-#         raise HTTPException(401,"Credencial incorrectas")
-#     token = createAccesToken({"sub":dbUser.email,"userID":dbUser.id})
-#     return {"token": token, "tokenType":"bearer"}
-
 
 @router.post("/login")
 def login(

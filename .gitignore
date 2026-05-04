@@ -1,7 +1,14 @@
-/.env
+
 frontend/package-lock.json
 frontend/package.json
 *.pyc
 *.txt
 *.dump
 *.sql
+*.pyc
+*.gpg
+*.sources
+
+backend/venv/
+backend/.env
+__init__*

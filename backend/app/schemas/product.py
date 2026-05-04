@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from decimal import Decimal
+from typing import Optional
 
 class ProductResponse(BaseModel):
     id:int
@@ -35,7 +36,7 @@ class GetProductResponse(BaseModel):
     query_link:str
     imgURL:str
     galery:list[str]
-    configuracion: ConfigResponse
+    configuracion: Optional[ConfigResponse] = None
     class Config:
         from_attributes = True
 
@@ -53,6 +54,19 @@ class ProductCreate(BaseModel):
     imgFirst:str
     galery:list[str]
     configuracion:ConfiProductCreate
+    query_link: str
 
-
+class ProductUpdate(BaseModel):
+    id: int
+    codigo: str
+    nombre: str
+    precio_unitario:Decimal
+    descripcion:str
+    cantidad:int
+    eliminado:bool
+    estado:bool
+    query_link:str
+    imgURL:str
+    galery:list[str]
+    configuracion:ConfiProductCreate
 

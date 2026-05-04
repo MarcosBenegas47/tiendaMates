@@ -1,4 +1,4 @@
-import { Search, TableOfContents } from "lucide-react";
+import { Search, ShoppingCart, TableOfContents } from "lucide-react";
 import Link from "next/link";
 
 
@@ -21,7 +21,8 @@ export function NavBar(){
                 <Link href={""}>Nosotros</Link>
 
             </div>
-            <div className="hidden md:block">
+            <div className="hidden md:flex gap-3">
+                <ShoppingCart/>
                 <Search/>
 
             </div>

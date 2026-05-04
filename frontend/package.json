@@ -10,7 +10,10 @@
     "tailwind:init": "tailwindcss init -p"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@firebase/firestore": "^4.7.3",
+    "@mui/material": "^9.0.0",
     "@types/crypto-js": "^4.2.2",
     "@vercel/speed-insights": "^1.1.0",
     "crypto-js": "^4.2.0",
@@ -31,8 +34,8 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-image-gallery": "^1.2.4",
-    "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.1",
+    "eslint": "^10.1.0",
+    "eslint-config-next": "^0.2.4",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
     "ts-node": "^10.9.2",

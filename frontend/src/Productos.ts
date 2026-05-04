@@ -34,7 +34,7 @@ export interface Destacados {
     query_link:string,
     imgURL:string
 }
-export interface Category{
-    nombre:string,
-    id:number
-} 
+export interface Category {
+  id: string;
+  nombre: string;
+};

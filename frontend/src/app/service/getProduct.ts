@@ -1,5 +1,4 @@
 import { Category, Destacados, ProductosInter,  } from "@/Productos";
-import { promises } from "dns";
 
 const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
