@@ -17,12 +17,31 @@ class ProductResponse(BaseModel):
         from_attributes = True
 
 
+
+class EstiloMate(BaseModel):
+    id:int
+    nombre:str
+
+
+class Material(BaseModel):
+    id:int
+    nombre:str
+
+
+class Virola(BaseModel):
+    id:int
+    nombre:str
+
+
+class Capacidad(BaseModel):
+    id:int
+    ml:int
+    descripcion:str
 class ConfigResponse(BaseModel):
-    estilo: str
-    material: str
-    virola: str
-    capacidad: str
-    capacidad_ml: int
+    estilo: EstiloMate
+    material: Material
+    virola: Virola
+    capacidad: Capacidad
 
 class GetProductResponse(BaseModel):
     id:int
@@ -45,6 +64,8 @@ class ConfiProductCreate(BaseModel):
     idMaterial: int
     idVirola: int
     idCapacidad: int
+
+
 class ProductCreate(BaseModel):
     codigo: str
     nombre: str
@@ -60,7 +81,7 @@ class ProductUpdate(BaseModel):
     id: int
     codigo: str
     nombre: str
-    precio_unitario:Decimal
+    precio_unitario:str
     descripcion:str
     cantidad:int
     eliminado:bool
@@ -69,4 +90,6 @@ class ProductUpdate(BaseModel):
     imgURL:str
     galery:list[str]
     configuracion:ConfiProductCreate
+
+
 

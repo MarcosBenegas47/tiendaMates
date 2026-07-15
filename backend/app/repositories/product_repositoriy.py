@@ -59,11 +59,23 @@ class ProducRepository:
 
         if config:
             config_response = ConfigResponse(
-                estilo=config.estilo.nombre if config.estilo else None,
-                material=config.material.nombre if config.material else None,
-                virola=config.virola.nombre if config.virola else None,
-                capacidad=config.capacidad.descripcion if config.capacidad else None,
-                capacidad_ml=config.capacidad.ml if config.capacidad else None
+                estilo={ 
+                    "id":config.estilo.id if config.estilo else None,
+                    "nombre":config.estilo.nombre if config.estilo else None
+                    },
+                material={
+                    "id":config.material.id if config.material else None,
+                    "nombre":config.material.nombre if config.material else None
+                    },
+                virola={
+                    "id":config.virola.id if config.virola else None,
+                    "nombre": config.virola.nombre if config.virola else None
+                    },
+                capacidad={
+                    "id":config.capacidad.id if config.capacidad else None,
+                    "ml":config.capacidad.ml if config.capacidad else None,
+                    "descripcion":config.capacidad.descripcion if config.capacidad else None},
+
             )
 
         return GetProductResponse(  
@@ -179,6 +191,7 @@ class ProducRepository:
     
     def update(self, db:Session, id:int, data:ProductUpdate):
         product = db.query(Product).filter(Product.id == id).first()
+        print(product)
 
         if not product:
             raise HTTPException(status_code=404, detail="Producto no encontrado")
@@ -191,7 +204,6 @@ class ProducRepository:
         product.descripcion = data.descripcion
         product.estado = data.estado
         product.query_link = data.query_link
-
 
         config = db.query(ProductoConfiguracion)\
             .filter(ProductoConfiguracion.producto_id == product.id)\
@@ -206,7 +218,7 @@ class ProducRepository:
         config.material_id = data.configuracion.idMaterial
         config.virola_id = data.configuracion.idVirola
         config.capacidad_id = data.configuracion.idCapacidad
-
+        print(config)
    
        
         # -------------------------

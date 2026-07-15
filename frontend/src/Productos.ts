@@ -1,5 +1,5 @@
 export interface ProductosInter  {
-    id: number,
+    id: number| undefined,
     codigo: string,
     cantidad: number,
     nombre: string,
@@ -15,11 +15,10 @@ export interface ProductosInter  {
 }
 
 export interface ConfigProduct {
-    capacidad: string ,
-    capacidad_ml: number,
-    estilo:string,
-    material:string,
-    virola:string
+    capacidad: Capacidad ,
+    estilo:EstiloMate,
+    material:Material,
+    virola:Virola
 }
 
 
@@ -38,3 +37,82 @@ export interface Category {
   id: string;
   nombre: string;
 };
+
+
+
+
+export interface  ConfiProductCreate{
+    idEstilo: number | undefined,
+    idMaterial: number | undefined,
+    idVirola: number | undefined,
+    idCapacidad: number | undefined,
+}
+export interface ProductCreate{
+    codigo: string,
+    nombre: string,
+    precio_unitario: number
+    cantidad: number,
+    descripcion:string,
+    imgFirst:string,
+    galery:string[]
+    configuracion:ConfiProductCreate
+    query_link: string
+}
+
+export interface ProductUpdate{
+    id: number | undefined,
+    codigo: string | undefined,
+    nombre: string | undefined,
+    precio_unitario:string | undefined,
+    descripcion:string | undefined,
+    cantidad:number | undefined,
+    eliminado:boolean | undefined,
+    estado:boolean| undefined,
+    query_link:string | undefined,
+    imgURL:string | undefined,
+    galery:string[] | undefined,
+    configuracion:ConfiProductCreate
+}
+
+
+export interface Producto_categoria{
+
+    producto_id:number
+    categoria_id :number
+    }
+export interface EstiloMate{
+    id:number
+    nombre:string
+}
+
+
+export interface Material{
+    id:number
+    nombre:string
+}
+
+
+export interface Virola{
+    id:number
+    nombre:string
+}
+
+export interface Capacidad{
+    id:number
+    ml:number
+    descripcion:string
+}
+
+
+export interface ProductForm {
+  codigo: string;
+  nombre: string;
+  precio_unitario: number;
+  cantidad: number;
+  descripcion: string;
+  imgFirst: string;
+  galery: string[];
+  configuracion: ConfiProductCreate;
+  query_link: string;
+}
+

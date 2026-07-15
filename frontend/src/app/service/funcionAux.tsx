@@ -29,3 +29,10 @@ export async function  getBySlug(slug:string){
   return await getProductBySlug(slug)
 }
 
+export function formatearPrecio(precio:string) {
+  return Number(precio)
+    .toLocaleString("es-AR", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+}

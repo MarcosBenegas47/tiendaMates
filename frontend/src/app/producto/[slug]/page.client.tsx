@@ -7,6 +7,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import  "@/styles/imagesGalery.css"
 import { ButtonBlack, ButtonWhite } from "@/app/component/ui/Button";
 import { CalendarClock } from "lucide-react";
+import { formatearPrecio } from "@/app/service/funcionAux";
 export default function Producto({product}:{product: ProductosInter | null}) {
    let listaImages = []
    listaImages.push(product?.imgURL)
@@ -33,27 +34,27 @@ export default function Producto({product}:{product: ProductosInter | null}) {
             <h2 className="font-bold text-4xl">
                {product?.nombre}
             </h2>
-            <p className="font-bold text-4xl">${product?.precio_unitario}</p>
+            <p className="font-bold text-4xl">${formatearPrecio( product?.precio_unitario ?? "0")}</p>
             <p className="text-black/45 text-sm">{product?.descripcion}</p>
          <div className="grid grid-cols-2 grid-rows-2 gap-4">
             <div className="bg-[#F2F2F2] p-4 rounded-md ">
                <h3 className="text-[#7A7A7A]">Estilo</h3>
-               <p>{product?.configuracion.estilo}</p>
+               <p>{product?.configuracion?.estilo?.nombre ?? ""}</p>
 
             </div>
                <div className="bg-[#F2F2F2] p-4 rounded-md ">
                   <h3 className="text-[#7A7A7A]">Material</h3>
-                  <p>{product?.configuracion.material}</p>
+                  <p>{product?.configuracion?.material?.nombre ?? ""}</p>
 
                </div>
                <div className="bg-[#F2F2F2] p-4 rounded-md ">
                   <h3 className="text-[#7A7A7A]">Virola</h3>
-                  <p>{product?.configuracion.virola}</p>
+                  <p>{product?.configuracion?.virola?.nombre ?? ""}</p>
 
                </div>
                <div className="bg-[#F2F2F2] p-4 rounded-md " >
                   <h3 className="text-[#7A7A7A]">Capacidad</h3>
-                  <p>{product?.configuracion.capacidad}</p>
+                  <p>{product?.configuracion?.capacidad?.descripcion ?? ""}</p>
 
                </div>
                

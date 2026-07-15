@@ -1,9 +1,10 @@
 "use client"
-import { Category, ProductosInter } from "@/Productos";
+import { Capacidad, Category, EstiloMate, Material, ProductosInter, ProductUpdate, Virola } from "@/Productos";
 import { getProductBySlug } from "../../service/getProduct";
 import { getBySlug } from "@/app/service/funcionAux";
 import { useEffect, useState } from "react";
-import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmin, getVirolaAdmin } from "@/app/service/serviceUser";
+import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmin, getVirolaAdmin } from "@/app/service/adminUser";
+import { updateProduct } from "@/app/service/adminProduct";
 
 type Props = {
   open: boolean;
@@ -15,10 +16,11 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
     
     const [producto, setProducto] = useState <ProductosInter | null>(null);
     const [category, setCategory] = useState<Category[]>([])
-    const [virola, setvirola] = useState<any[]>()
-    const [capacidad, setCapacidad] = useState<any[]>()
-    const [material, setMaterial] = useState<any[]>()
-    const [esilo, setEstilo] = useState<any[]>()
+    const [virola, setvirola] = useState<Virola[]>()
+    const [capacidad, setCapacidad] = useState<Capacidad[]>()
+    const [material, setMaterial] = useState<Material[]>()
+    const [esilo, setEstilo] = useState<EstiloMate[]>()
+    
 
 
     useEffect(() => {
@@ -26,7 +28,30 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
 
       const fetchData = async () => {
         const prod = await getBySlug(slug);
-        if(prod != undefined) setProducto(prod);
+        if (prod) {
+        setProducto({
+          ...prod,
+          configuracion: prod.configuracion ?? {
+            capacidad: {
+              id:null,
+              ml:null,
+              descripcion:null,
+            },
+            estilo: {
+                id:null,
+                nombre:null
+            },
+            material: {
+              id:null,
+              nombre:null
+            },
+            virola: {
+              id:null,
+              nombre:null
+            }
+          }
+        });
+      }
       };
       const getCat = async()=> {
         const cat = await getCategorysAdmin()
@@ -61,7 +86,32 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
       fetchData();
     }, [open, slug]);
 
-    const handleform=()=>{
+    const handleform= (e: React.FormEvent)=>{
+      e.preventDefault();
+      const id = producto?.id;
+      console.log(producto)
+      const productNew:ProductUpdate = {
+        id: producto?.id ,
+        codigo: producto?.codigo ,
+        nombre: producto?.nombre ,
+        precio_unitario: producto?.precio_unitario,
+        descripcion:producto?.descripcion ,
+        cantidad:producto?.cantidad ?? 0,
+        eliminado:producto?.eliminado ,
+        estado:producto?.estado ,
+        query_link:producto?.query_link ,
+        imgURL:producto?.imgURL ,
+        galery: producto?.galery,
+        configuracion:{
+          idCapacidad: producto?.configuracion.capacidad.id,
+          idEstilo: producto?.configuracion.estilo.id,
+          idMaterial:producto?.configuracion.material.id,
+          idVirola: producto?.configuracion.virola.id
+        }
+      }
+      console.log(productNew)
+
+      updateProduct(id, productNew)
       
     }
   return (
@@ -79,7 +129,7 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
       </div>
 
       {/* CONTENIDO */}
-      <form onSubmit={handleform} className="p-6 space-y-4 overflow-y-auto h-[calc(100%-120px)]">
+      <form onSubmit={handleform} className="p-6 space-y-4 overflow-y-auto h-[calc(100%-100px)]">
         
         <div className="border rounded-lg h-40 flex items-center justify-center text-gray-400">
         
@@ -110,22 +160,25 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
         </div>
         <div className="flex gap-3">
           <select
-           value={producto?.configuracion.virola ?? ""}
-          onChange={(event) =>
+           value={producto?.configuracion?.material?.id ?? ""}
+          onChange={(event) =>{
+            const materialSeleccionada = material?.find(
+              v => v.id === Number(event.target.value)
+            );
             setProducto(prev =>
-              prev
+              prev && materialSeleccionada
                 ? {
                     ...prev,
                     configuracion: {
-                      ...prev.configuracion,
-                      material: event.target.value,
+                      ...(prev.configuracion ?? {}),
+                      material: materialSeleccionada,
                     },
                   }
-                : prev)} 
+                : prev)} } 
           
           className="w-full border rounded-lg px-3 py-2">
          {material?.map(material =>(
-          <option key={material.id}>{material.nombre}</option>
+          <option value={material.id} key={material.id}>{material.nombre}</option>
 
          ))}
 
@@ -133,22 +186,26 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
         </select>
 
         <select
-          value={producto?.configuracion.virola ?? ""}
-          onChange={(event) =>
+          value={producto?.configuracion?.virola?.id ?? ""}
+          onChange={(event) =>{
+            const virolaSeleccionada = virola?.find(
+              v => v.id === Number(event.target.value)
+            );
             setProducto(prev =>
-              prev
+              
+              prev && virolaSeleccionada
                 ? {
                     ...prev,
                     configuracion: {
-                      ...prev.configuracion,
-                      virola: event.target.value,
+                      ...(prev.configuracion ?? {}),
+                      virola: virolaSeleccionada,
                     },
                   }
                 : prev
-            )}  
+            )  }}  
           className="w-full border rounded-lg px-3 py-2">
           {virola?.map(viro =>(
-          <option key={viro.id}>{viro.nombre}</option>
+          <option key={viro.id} value={viro.id}>{viro.nombre}</option>
 
          ))}
           
@@ -159,46 +216,52 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
         </div>
         <div className="flex gap-3">
           <select 
-          value={producto?.configuracion.capacidad}
-            onChange={(event) =>
+          value={producto?.configuracion?.capacidad?.id}
+            onChange={(event) =>{
+              const capacudadSeleccionada = capacidad?.find(
+              v => v.id === Number(event.target.value)
+              );
               setProducto(prev =>
-                prev
+                prev && capacudadSeleccionada
                   ? {
                       ...prev,
                       configuracion: {
-                        ...prev.configuracion,
-                        capacidad: event.target.value,
+                        ...(prev.configuracion ?? {}),
+                        capacidad: capacudadSeleccionada,
                       },
                     }
                   : prev
-              )
+              )}
             }
           
           className="w-full border rounded-lg px-3 py-2">
           {capacidad?.map(cap =>(
-          <option key={cap.id}>{cap.descripcion}</option>))
+          <option value={cap.id} key={cap.id}>{cap.descripcion}</option>))
         }
           
         </select>
         <select
-        value={producto?.configuracion.estilo || ""}
-            onChange={(event) =>
+        value={producto?.configuracion?.estilo?.id || ""}
+            onChange={(event) =>{
+              const estiloSeleccionada = esilo?.find(
+              v => v.id === Number(event.target.value)
+              );
               setProducto(prev =>
-                prev
+                prev && estiloSeleccionada
                   ? {
                       ...prev,
                       configuracion: {
-                        ...prev.configuracion,
-                        estilo: event.target.value,
+                        ...(prev.configuracion ?? {}),
+                        estilo: estiloSeleccionada,
                       },
                     }
                   : prev
-              )
+              )}
             }
         
         className="w-full border rounded-lg px-3 py-2">
           {esilo?.map(est =>(
-          <option key={est.id}>{est.nombre}</option>))
+          <option value={est.id} key={est.id}>{est.nombre}</option>))
         }
           
           

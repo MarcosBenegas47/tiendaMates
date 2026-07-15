@@ -1,7 +1,6 @@
 "use client";
 import DrawerEditar from "@/app/component/DrawerEditar/DrawerEditar";
 import AlertDialogSlide from "@/app/component/ui/AlertDialogSlide";
-import { deleteProduct } from "@/app/service/adminProduct";
 import { ProductosInter } from "@/Productos";
 import { Package, Pencil, Trash } from "lucide-react";
 import Link from "next/link";

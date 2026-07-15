@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   open: boolean;
-  id:number;
+  id:number ;
   onClose: () => void;
 };
 

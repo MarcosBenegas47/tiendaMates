@@ -1,5 +1,5 @@
 "use client"
-import { login } from "@/app/service/serviceUser";
+import { login } from "@/app/service/adminUser";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
