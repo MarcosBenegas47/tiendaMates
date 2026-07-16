@@ -1,7 +1,9 @@
 import cloudinary
 import cloudinary.utils
 import cloudinary.search
+import cloudinary.uploader
 import os
+from fastapi import UploadFile 
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -33,3 +35,19 @@ class imagesProduct:
             .execute()
         
         return [recurse["secure_url"] for recurse in result.get('resources', [])]
+    async def uploadImg(imgFirst:UploadFile):
+        if(imgFirst):
+            result= cloudinary.uploader.upload(
+                await imgFirst.read()
+            )
+            print(result["secure_url"])
+            return result["secure_url"]
+    async def uploadGalery(galery:list[UploadFile]):
+        urls = []
+        for img in galery:
+            result= cloudinary.uploader.upload(
+                await img.read()
+            )
+            urls.append(result["secure_url"])
+            print(result["secure_url"])
+        return urls

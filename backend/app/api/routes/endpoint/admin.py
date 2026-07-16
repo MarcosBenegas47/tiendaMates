@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Form
+from fastapi import UploadFile,File, APIRouter, Depends, Form
 from sqlalchemy.orm import Session
 
 from app.db.database import getDataBase, getDbAdmin
@@ -16,10 +16,11 @@ router = APIRouter( prefix="/admin", tags=["Administracion"])
 responseAdmin = AdminRepository()
 
 @router.post("/create/product")
-def createProduct(product:str =Form(...),
-                  db:Session=Depends(getDataBase),
-                  admin =Depends(getDbAdmin)):
-    return responseAdmin.productNew(db, product)
+async def createProduct(product:str =Form(...),db:Session=Depends(getDataBase),imgFirst:UploadFile | None = File(None),galery: list[UploadFile] = File([]),admin =Depends(getDbAdmin)):
+    product_obj = ProductCreate.model_validate_json(product)
+    print(product_obj)
+
+    return await responseAdmin.productNew(db, product_obj,imgFirst,galery )
 
 @router.put("/product/delete/{id}")
 def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):

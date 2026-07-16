@@ -22,8 +22,9 @@ class ProducRepository:
         
         querys = products.offset(offset).limit(limit).all()
         results =[]
+        
         for product in querys:
-          
+            print("id:" ,product.id,"url",product.img)
             results.append(
                 ProductResponse(
             id=product.id,

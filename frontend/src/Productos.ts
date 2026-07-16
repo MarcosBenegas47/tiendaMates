@@ -53,10 +53,10 @@ export interface ProductCreate{
     precio_unitario: number
     cantidad: number,
     descripcion:string,
-    imgFirst:string,
-    galery:string[]
+    // imgFirst:string,
+    // galery:string[]
     configuracion:ConfiProductCreate
-    query_link: string
+    // query_link: string
 }
 
 export interface ProductUpdate{
@@ -69,8 +69,6 @@ export interface ProductUpdate{
     eliminado:boolean | undefined,
     estado:boolean| undefined,
     query_link:string | undefined,
-    imgURL:string | undefined,
-    galery:string[] | undefined,
     configuracion:ConfiProductCreate
 }
 

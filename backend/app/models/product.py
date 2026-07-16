@@ -17,7 +17,8 @@ class Product(Base):
     configuracion = relationship(
         "ProductoConfiguracion",
         back_populates="producto",
-        uselist=False  # 👈 clave: 1 a 1
+        uselist=False,  # 👈 clave: 1 a 1
+        passive_deletes=True
     )
     imagenes = relationship(
         "ProductoImagen",

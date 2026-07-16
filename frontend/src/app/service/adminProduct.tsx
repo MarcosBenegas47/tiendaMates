@@ -1,6 +1,6 @@
 "use server"
 
-import { Category, Destacados, ProductosInter, ProductUpdate,  } from "@/Productos";
+import { Category, Destacados, ProductCreate, ProductosInter, ProductUpdate,  } from "@/Productos";
 import { cookies } from "next/headers";
 
 const url = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -32,7 +32,6 @@ export const updateProduct = async (id:number | undefined, product:ProductUpdate
         const coolie = await cookies()
         const token = coolie.get("token")?.value
         const payload = JSON.parse(JSON.stringify(product));
-        console.log(JSON.stringify(payload))
         try {
             const response = await fetch(`${url}/api/routes/admin/product/update/${id}`, {
                 method:"PUT",
@@ -57,25 +56,39 @@ export const updateProduct = async (id:number | undefined, product:ProductUpdate
 }
 
 
-export const createNewProduct = async (id:number | undefined, product:ProductUpdate)=>{
+export const createNewProduct = async ( product:ProductCreate, image:File | null, galery:File[])=>{
         const coolie = await cookies()
         const token = coolie.get("token")?.value
-        const payload = JSON.parse(JSON.stringify(product));
-        console.log(JSON.stringify(payload))
+        // const payload = JSON.parse(JSON.stringify(product));
+        const formData = new FormData();
+        formData.append("product", JSON.stringify(product))
+        console.log(image)
+        if(image) formData.append("imgFirst", image)
+        galery.forEach(file => {
+            formData.append("galery", file)
+        })
+        console.log(formData);
+
+
         try {
             const response = await fetch(`${url}/api/routes/admin/create/product`, {
-                method:"PUT",
+                method:"POST",
                 headers:{
-                    "Content-Type": "application/json",
+                    // "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
     
                 },
-                body:  JSON.stringify(payload)
+                body: formData
 
                 
             })
             if (!response.ok) {
-                throw new Error("Error en el fetch");
+                console.log("Status:", response.status);
+
+                const error = await response.text();
+                console.log("Error FastAPI:", error);
+
+                throw new Error(error);
             }
     
             return response.json();

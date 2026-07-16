@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.product import Product,Capacidad, EstiloMate,Material,Virola , Producto_categoria, ProductoConfiguracion, ProductoImagen
 from app.models.category import Categoy
 from app.schemas.product import ProductResponse
-from fastapi import Query, HTTPException
+from fastapi import Query, HTTPException,UploadFile
 from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse,ProductUpdate
 import re
 from app.repositories.images import imagesProduct
@@ -25,8 +25,9 @@ class AdminRepository:
         material = db.query(Material).all()
         return material
 
-    def productNew(self,db:Session, product:ProductCreate):
-
+    async def productNew(self,db:Session, product:ProductCreate, imaFirst:UploadFile, galery:list[UploadFile]):
+        imgfirtsURL = await imagesProduct.uploadImg(imaFirst)
+        imgGalery = await imagesProduct.uploadGalery(galery)
         slug = product.nombre.lower()
         slug =slug.replace(" ", "-")
         slug = re.sub(r'[^a-z0-9-]', '', slug)
@@ -38,7 +39,9 @@ class AdminRepository:
             cantidad = product.cantidad,
             eliminado = False,
             estado = True,
-            query_link = slug
+            query_link = slug,
+            img = imgfirtsURL
+            
         )
         db.add(newProduct)
         db.flush()
@@ -51,18 +54,28 @@ class AdminRepository:
             capacidad_id = config.idCapacidad,
         )
         db.add(newConfig)
+
+        for url in imgGalery:
+            db.add(
+                ProductoImagen(
+                    producto_id=newProduct.id,
+                    url=url
+                )
+            )
+
         db.commit()
 
         return newProduct
     
     def deleteLogic(self, db:Session, id):
+        print(id)
         product = db.query(Product).filter(Product.id == id).first()
         product.eliminado = True
         db.commit()
         return {"message": "Producto Eliminado con exito"}
     
     def delete(self, db:Session, id):
-        
+        print(id)
         product = db.query(Product).filter(Product.id== id).first()
         if not product:
             raise HTTPException(status_code=404, detail="Producto no encontrado")

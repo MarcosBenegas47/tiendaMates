@@ -16,15 +16,15 @@ const initialForm: ProductCreate = {
   precio_unitario: 0,
   cantidad: 0,
   descripcion: "",
-  imgFirst: "",
-  galery: [],
+  // imgFirst: "",
+  // galery: [],
   configuracion: {
     idEstilo: 0,
     idMaterial: 0,
     idVirola: 0,
     idCapacidad: 0,
   },
-  query_link: "",
+  // query_link: "",
 };
 
 function Field({
@@ -52,6 +52,7 @@ export default function Nuevo() {
   const [esilo, setEstilo] = useState<EstiloMate[]>()
 
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [galery, setGalery] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState("");
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -61,8 +62,18 @@ export default function Nuevo() {
     if (!file) return;
 
     setImageFile(file);
+
     setImagePreview(URL.createObjectURL(file));
   };
+
+const handleGaleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = Array.from(e.target.files || []);
+  setGalery((prev) => [...prev ,...file])
+};
+const removeImage =(indexToremove:number ) => {
+    setGalery((prev) => prev.filter((_, index)=> index != indexToremove));
+
+} 
   useEffect(() => {
     return () => {
       if (imagePreview) {
@@ -101,37 +112,9 @@ export default function Nuevo() {
     getCat()
   }, []);
 
-  // const handleform= (e: React.FormEvent)=>{
-  //   e.preventDefault();
-  //   const id = producto?.id;
-  //   console.log(producto)
-  //   const productNew:ProductUpdate = {
-  //     id: producto?.id ,
-  //     codigo: producto?.codigo ,
-  //     nombre: producto?.nombre ,
-  //     precio_unitario: producto?.precio_unitario,
-  //     descripcion:producto?.descripcion ,
-  //     cantidad:producto?.cantidad ?? 0,
-  //     eliminado:producto?.eliminado ,
-  //     estado:producto?.estado ,
-  //     query_link:producto?.query_link ,
-  //     imgURL:producto?.imgURL ,
-  //     galery: producto?.galery,
-  //     configuracion:{
-  //       idCapacidad: producto?.configuracion.capacidad.id,
-  //       idEstilo: producto?.configuracion.estilo.id,
-  //       idMaterial:producto?.configuracion.material.id,
-  //       idVirola: producto?.configuracion.virola.id
-  //     }
-  //   }
-  //   console.log(productNew)
 
-  //   createNewProduct(id, productNew)
-
-  // }
 
   const [form, setForm] = useState<ProductCreate>(initialForm);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -139,8 +122,13 @@ export default function Nuevo() {
     setForm((prev) => ({
       ...prev,
       [name]:
-        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+         type === "number"
+        ? Number(value)
+        : type === "checkbox"
+        ? (e.target as HTMLInputElement).checked
+        : value,
     }));
+    // console.log(form.imgFirst)
   };
   const handleConfigChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -160,14 +148,17 @@ export default function Nuevo() {
       precio_unitario: form.precio_unitario,
       cantidad: form.cantidad,
       descripcion: form.descripcion,
-      imgFirst: form.imgFirst,
-      galery: form.galery,
+      // imgFirst: form.imgFirst,
+      // galery: form.galery,
       configuracion: form.configuracion, // ya tiene la forma exacta del back
-      query_link: form.query_link,
+      // query_link: form.query_link,
     };
 
     console.log(`Guardar como ${tipo}:`, payload);
-    // createNewProduct(payload); // o lo que uses para llamar al back
+    console.log(imageFile)
+    console.log(galery)
+
+     createNewProduct( payload, imageFile, galery); // o lo que uses para llamar al back
   };
   return (<>
     <section className="h-[calc(100dvh-96px)] bg-white flex ">
@@ -281,7 +272,7 @@ export default function Nuevo() {
                     </div>
                     <Field label="Precio unitario">
                       <input
-                        name="precioUnitario"
+                        name="precio_unitario"
                         type="number"
                         value={form.precio_unitario}
                         onChange={handleChange}
@@ -375,15 +366,7 @@ export default function Nuevo() {
                         ))}
                       </select>
                     </Field>
-                    {/* <Field label="Capacidad ml">
-                      <input
-                        name="capacidadMl"
-                        type="number"
-                        value={form.capacidadMl}
-                        onChange={handleChange}
-                        className={inputCls}
-                      />
-                    </Field> */}
+
                   </div>
                 </section>
               </div>
@@ -406,6 +389,7 @@ export default function Nuevo() {
                       <input
                         type="file"
                         accept="image/*"
+
                         onChange={handleImageChange}
                         className="hidden"
                       />
@@ -447,12 +431,27 @@ export default function Nuevo() {
 
                   <Field label="Galería">
                     <input
-                      name="galeria"
-                      value={form.galery}
-                      onChange={handleChange}
-                      placeholder="Sin imágenes adicionales (gallery: [])"
-                      className={inputCls}
-                    />
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleGaleryChange}
+                  />
+   
+                    {
+                      galery.map((file, index )=> (<div key={index}>
+                        <button type="button"
+                        onClick={ ()=>removeImage(index) }>
+                          
+                        <span> [X] </span>
+
+                        </button>
+                      <span>{file.name}</span>
+                      <span className="text-xs text-gray-500">
+                        {(file.size / 1024).toFixed(1)} KB
+                      </span>
+                      </div>
+                    ))
+                    }
                   </Field>
                 </section>
 
@@ -473,31 +472,9 @@ export default function Nuevo() {
                           Producto activo en catálogo.
                         </p>
                       </div>
-                      {/* <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          name="activo"
-                          checked={form.}
-                          onChange={handleChange}
-                          className="sr-only peer"
-                        />
-                        <div className="w-10 h-6 bg-gray-200 peer-checked:bg-gray-900 rounded-full transition-colors after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:w-[18px] after:h-[18px] after:transition-all peer-checked:after:translate-x-4" />
-                      </label> */}
+
                     </div>
 
-                    {/* <div className="flex items-center justify-between py-3">
-                      <div>
-                        <p className="text-sm font-medium text-gray-800">
-                          Eliminado
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          Valor actual: {form ? "true" : "false"}
-                        </p>
-                      </div>
-                      <span className="text-xs bg-gray-100 text-gray-500 px-4 py-1.5 rounded-md">
-                        No
-                      </span>
-                    </div> */}
                   </div>
                 </section>
 

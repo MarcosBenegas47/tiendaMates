@@ -11,7 +11,7 @@ class ProductResponse(BaseModel):
     eliminado:bool
     estado:bool
     query_link:str
-    imgURL:str
+    imgURL:Optional[str] = None
     
     class Config:
         from_attributes = True
@@ -72,10 +72,10 @@ class ProductCreate(BaseModel):
     precio_unitario: Decimal
     cantidad: int
     descripcion:str
-    imgFirst:str
-    galery:list[str]
+    # imgFirst:str
+    # galery:list[str]
     configuracion:ConfiProductCreate
-    query_link: str
+    # query_link: str
 
 class ProductUpdate(BaseModel):
     id: int

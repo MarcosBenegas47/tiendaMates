@@ -10,9 +10,14 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
     const [open, setOpen] = useState(false);
     const [producto, setProducto] = useState("")
     const [openAlert, setOpenAlert] = useState(false);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    console.log(product)
 
-  const handleClickOpenAlert = () => {
+  const handleClickOpenAlert = (id:number) => {
     setOpenAlert(true);
+        setSelectedId(id);
+
+
   };
 
   const handleCloseAlert = () => {
@@ -50,12 +55,14 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
 
                     {/* FILAS */}
                     {product?.map(prod => (
+                        
                         <div
                             key={prod.id}
                             className="grid grid-cols-6 items-center px-6 py-4 border-t hover:bg-gray-50 transition"
                         >
                             {/* PRODUCTO */}
                             <div className="flex items-center gap-3">
+
                                 <img
                                     src={prod.imgURL}
                                     alt={prod.nombre}
@@ -99,16 +106,17 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                                 <button onClick={() => {setOpen(true); setProducto(prod.query_link)}} className="hover:text-black transition">
                                     <Pencil />
                                 </button>
-                                <button onClick={() => handleClickOpenAlert()} className="hover:text-red-500 transition">
+                                <button onClick={() => handleClickOpenAlert(prod.id)} className="hover:text-red-500 transition">
                                     <Trash />
                                 </button>
-                                <AlertDialogSlide open={openAlert} onClose={handleCloseAlert} id={prod.id}  />
                             </div>
                         </div>
                     ))}
 
                 </div>
             </div>
+             <AlertDialogSlide open={openAlert} onClose={handleCloseAlert} id={selectedId}  />
+
             <div>
                 <DrawerEditar open={open} onClose={() => setOpen(false)} slug={producto}/>
             </div>

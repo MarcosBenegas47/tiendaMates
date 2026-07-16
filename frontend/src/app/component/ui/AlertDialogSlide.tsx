@@ -19,6 +19,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
     const eliminar = async (id:number) =>{
+      console.log(id)
         deleteProduct(id)
 
     }
@@ -26,13 +27,13 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   open: boolean;
-  id:number ;
+  id:number | undefined;
   onClose: () => void;
 };
 
 export default function AlertDialogSlide({ open, onClose,id }: Props) {
 
-
+  console.log(id)
   return (
     <React.Fragment>
 

@@ -43,7 +43,6 @@ export const login = async (username:string, password:string) => {
 export const getCategorysAdmin = async () => {
     const coolie = await cookies()
     const token = coolie.get("token")?.value
-    console.log(token)
     try {
         const response = await fetch(`${url}/api/routes/admin/product/categorys`, {
             method:"GET",
@@ -66,7 +65,6 @@ export const getCategorysAdmin = async () => {
 export const getCapacidadAdmin = async () => {
     const coolie = await cookies()
     const token = coolie.get("token")?.value
-    console.log(token)
     try {
         const response = await fetch(`${url}/api/routes/admin/product/capacidad`, {
             method:"GET",
@@ -89,7 +87,6 @@ export const getCapacidadAdmin = async () => {
 export const getEstiliosAdmin = async () => {
     const coolie = await cookies()
     const token = coolie.get("token")?.value
-    console.log(token)
     try {
         const response = await fetch(`${url}/api/routes/admin/product/estilos`, {
             method:"GET",
@@ -113,7 +110,6 @@ export const getEstiliosAdmin = async () => {
 export const getVirolaAdmin = async () => {
     const coolie = await cookies()
     const token = coolie.get("token")?.value
-    console.log(token)
     try {
         const response = await fetch(`${url}/api/routes/admin/product/virola`, {
             method:"GET",
@@ -136,7 +132,6 @@ export const getVirolaAdmin = async () => {
 export const getMaterialAdmin = async () => {
     const coolie = await cookies()
     const token = coolie.get("token")?.value
-    console.log(token)
     try {
         const response = await fetch(`${url}/api/routes/admin/product/material`, {
             method:"GET",

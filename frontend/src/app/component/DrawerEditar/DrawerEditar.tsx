@@ -100,8 +100,8 @@ export default  function DrawerEditar({ open, onClose,slug }: Props) {
         eliminado:producto?.eliminado ,
         estado:producto?.estado ,
         query_link:producto?.query_link ,
-        imgURL:producto?.imgURL ,
-        galery: producto?.galery,
+        // imgURL:producto?.imgURL ,
+        // galery: producto?.galery,
         configuracion:{
           idCapacidad: producto?.configuracion.capacidad.id,
           idEstilo: producto?.configuracion.estilo.id,
