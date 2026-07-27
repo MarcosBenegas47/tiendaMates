@@ -34,7 +34,7 @@ export interface Destacados {
     imgURL:string
 }
 export interface Category {
-  id: string;
+  id: number;
   nombre: string;
 };
 

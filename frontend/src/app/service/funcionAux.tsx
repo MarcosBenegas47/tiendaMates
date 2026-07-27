@@ -1,7 +1,6 @@
 import { getProduct, getProductBySearch, getProductBySlug } from "./getProduct"
 
 export async function filtrarProductos(categorias: number[] , offset= 0) {
-  console.log("Categorias:", categorias)
 
   const productos = await getProduct(categorias,offset)
 

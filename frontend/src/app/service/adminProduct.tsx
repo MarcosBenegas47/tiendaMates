@@ -62,12 +62,10 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
         // const payload = JSON.parse(JSON.stringify(product));
         const formData = new FormData();
         formData.append("product", JSON.stringify(product))
-        console.log(image)
         if(image) formData.append("imgFirst", image)
         galery.forEach(file => {
             formData.append("galery", file)
         })
-        console.log(formData);
 
 
         try {

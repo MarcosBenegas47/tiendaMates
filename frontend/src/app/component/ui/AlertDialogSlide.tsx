@@ -4,7 +4,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { deleteProduct } from '@/app/service/adminProduct';
@@ -18,9 +17,8 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-    const eliminar = async (id:number) =>{
-      console.log(id)
-        deleteProduct(id)
+    const eliminar = async (id:number | undefined) =>{
+      if( id) deleteProduct(id);
 
     }
 
@@ -33,7 +31,6 @@ type Props = {
 
 export default function AlertDialogSlide({ open, onClose,id }: Props) {
 
-  console.log(id)
   return (
     <React.Fragment>
 

@@ -1,9 +1,8 @@
-
 import { ButtonBlackLink, ButtonWhiteLink } from "./component/ui/Button";
 import { Destacados } from "./component/Destacados";
 
 export default function HomePage() {
-  
+
 
   return (
     <main className=" flex flex-col">

@@ -12,7 +12,6 @@ export default function Producto({product}:{product: ProductosInter | null}) {
    let listaImages = []
    listaImages.push(product?.imgURL)
    const listaImagagenesConcatenada = listaImages.concat(product?.galery)
-   console.log(product)
    const images = listaImagagenesConcatenada.map(imagen=>({
       original: imagen || "",
       thumbnail: imagen || ""

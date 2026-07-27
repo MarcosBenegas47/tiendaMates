@@ -10,15 +10,14 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
     const [open, setOpen] = useState(false);
     const [producto, setProducto] = useState("")
     const [openAlert, setOpenAlert] = useState(false);
-    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [selectedId, setSelectedId] = useState<number | undefined>();
     console.log(product)
 
-  const handleClickOpenAlert = (id:number) => {
-    setOpenAlert(true);
+  const handleClickOpenAlert = (id:number | undefined) => {
+
+        setOpenAlert(true);
         setSelectedId(id);
-
-
-  };
+    };
 
   const handleCloseAlert = () => {
     setOpenAlert(false);
@@ -106,9 +105,10 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                                 <button onClick={() => {setOpen(true); setProducto(prod.query_link)}} className="hover:text-black transition">
                                     <Pencil />
                                 </button>
-                                <button onClick={() => handleClickOpenAlert(prod.id)} className="hover:text-red-500 transition">
+                                
+                                {(<button onClick={() => handleClickOpenAlert(prod.id)} className="hover:text-red-500 transition">
                                     <Trash />
-                                </button>
+                                </button>)}
                             </div>
                         </div>
                     ))}

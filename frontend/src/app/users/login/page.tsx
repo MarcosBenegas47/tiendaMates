@@ -33,7 +33,7 @@ export default function Login(){
                     <input className="p-3 bg-[#F7F7F7] "
                     placeholder="******"
                     onChange={(e) => setPassword(e.target.value)}
-
+                        type="password"
                      />
                 </div>
                 <div>

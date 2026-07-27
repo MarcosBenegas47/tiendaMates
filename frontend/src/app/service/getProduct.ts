@@ -31,7 +31,6 @@ const buildQuery =(id:number[] | []=[] , offset:number = 0) => {
 
 export const getProduct = async (id:number[] | []=[] , offset:number = 0):Promise<ProductosInter[] | null> =>{
 
-    console.log()
     try {
         const response = await fetch(`${url}/api/routes/store/categorys/products${buildQuery(id, offset)}`);
         if (!response.ok) {

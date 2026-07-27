@@ -1,8 +1,19 @@
+"use client"
+
 import { Search, ShoppingCart, TableOfContents } from "lucide-react";
 import Link from "next/link";
+import { cleanOffset } from "../service/utils";
+import { useRouter } from "next/navigation";
 
 
 export function NavBar(){
+    const router = useRouter();
+    
+        const goToProducts = (ruta:string) =>{
+            cleanOffset(ruta)
+            router.push(ruta);  
+        }
+        
     return ( <>
     <header className=" flex  bg-white">
         <nav className="h-24 flex items-center justify-around  w-full ">
@@ -17,7 +28,7 @@ export function NavBar(){
 
             <div className="md:flex gap-5 hidden ">
                 <Link href={"/"}>Inicio</Link>
-                <Link href={"/productos"}>Productos</Link>
+                <button onClick={()=> goToProducts("/productos")}>Productos</button>
                 <Link href={""}>Nosotros</Link>
 
             </div>
