@@ -41,14 +41,14 @@ export function Productos({ productos, categorias }: prop) {
     return (<>
         <div className="flex justify-center  md:flex-row  gap-10 bg-white">
             <section className="hidden md:block">
-                <div >
+                <div className="flex flex-col gap-2.5" >
                     <h2 className="font-bold flex gap-2">
                         <Funnel /> Filtros de búsqueda
                     </h2>
                     <div className="flex flex-col">
-                        <p className="font-bold">Categorias</p>
+                        {/* <p className="font-bold">Categorias</p> */}
                         {categorias?.map(cat => (
-                            <label key={cat.id}>
+                            <label className="flex gap-1 items-center " key={cat.id}>
                                 <input
                                     type="checkbox"
                                     onChange={() => {
@@ -60,14 +60,25 @@ export function Productos({ productos, categorias }: prop) {
                             </label>
                         ))}
                     </div>
-                    <button onClick={() => getProd()}>Filtrar</button>
+                    <button className="bg-white w-full  text-center pt-1 pb-1 pl-5 pr-5 border border-black rounded" onClick={() => getProd()}>Filtrar</button>
                 </div>
-            </section>
+                
 
+
+            </section>
+            
             <section className="flex flex-col justify-center  gap-10">
 
                 <Search onSearch={conultaProducto}/>
                 <div className="flex gap-2 overflow-x-auto md:hidden">
+                    
+
+
+
+
+
+
+
                     
                 </div>
 

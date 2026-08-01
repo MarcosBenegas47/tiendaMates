@@ -16,6 +16,23 @@ export default function Producto({product}:{product: ProductosInter | null}) {
       original: imagen || "",
       thumbnail: imagen || ""
    }))|| []
+   const productUrl =
+  typeof window !== "undefined"
+    ? window.location.href
+    : "";
+   const enviarMensajeDeCompra = ()=>{
+      window.open(
+         `https://wa.me/5491158095101?text=${encodeURIComponent(
+         `¡Hola! Vi este producto en la tienda y me gustaría comprarlo:`)}%20${productUrl} `,
+         "_blank"
+      )
+   }
+   const enviarMensajeDeInformacion= ()=>{
+      window.open(
+         `https://wa.me/5491158095101?text=Hola,%20quiero%20mas%20informacion%20${productUrl}`,
+         "_blank"
+      )
+   }
        
    return (<>
       <section className="flex justify-center border-t border-black/10 pt-9 w-full bg-white">
@@ -59,8 +76,8 @@ export default function Producto({product}:{product: ProductosInter | null}) {
                
             </div>
             <div className="flex flex-col md:flex-row gap-5">
-               <button  className=" flex items-center gap-2 bg-black pt-3 pb-3 pl-5 pr-5 text-sm  !text-white border border-white rounded"> <CalendarClock/> Reservar producto 🧉</button>
-                <button  className="bg-white text-sm text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">💬 Consultar por WhatsApp</button>
+               <button onClick={enviarMensajeDeCompra}  className="cursor-pointer flex items-center gap-2 bg-black pt-3 pb-3 pl-5 pr-5 text-sm  !text-white border border-white rounded"> <CalendarClock/> Reservar producto 🧉</button>
+               <button onClick={enviarMensajeDeInformacion} className="bg-white cursor-pointer text-sm text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">💬 Consultar por WhatsApp</button>
             </div>
          </div>
          

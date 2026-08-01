@@ -73,7 +73,7 @@ class ProductCreate(BaseModel):
     cantidad: int
     descripcion:str
     # imgFirst:str
-    # galery:list[str]
+    categoria:list[int]
     configuracion:ConfiProductCreate
     # query_link: str
 

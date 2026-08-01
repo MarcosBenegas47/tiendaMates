@@ -3,6 +3,9 @@ import DrawerEditar from "@/app/component/DrawerEditar/DrawerEditar";
 import AlertDialogSlide from "@/app/component/ui/AlertDialogSlide";
 import { ProductosInter } from "@/Productos";
 import { Package, Pencil, Trash } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { filtrarProductos } from "../../../service/funcionAux"
+
 import Link from "next/link";
 import { useState } from "react";
 
@@ -10,8 +13,17 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
     const [open, setOpen] = useState(false);
     const [producto, setProducto] = useState("")
     const [openAlert, setOpenAlert] = useState(false);
+
     const [selectedId, setSelectedId] = useState<number | undefined>();
-    console.log(product)
+    const [offset, setoffset] = useState<number>(0)
+    const [prods, setProds] = useState<ProductosInter[] | null>(product)
+
+    const getProd = async (offset: number = 0 ) => {
+        const productos = await filtrarProductos([], offset)
+        console.log(offset)
+        setProds(productos)
+    }
+
 
   const handleClickOpenAlert = (id:number | undefined) => {
 
@@ -53,7 +65,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                     </div>
 
                     {/* FILAS */}
-                    {product?.map(prod => (
+                    {prods?.map(prod => (
                         
                         <div
                             key={prod.id}
@@ -114,6 +126,31 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                     ))}
 
                 </div>
+                <section className="flex justify-center gap-4">
+                    <div className="flex">
+                        <ChevronLeft />
+                        <button onClick={
+                            () => {
+                                if (offset > 0) {
+                                    setoffset(offset - 6)
+                                    getProd(offset - 6)
+                                }
+
+                            }}>Anterior</button>
+                    </div>
+
+
+                    <div className="flex">
+
+                        <button onClick={() => {
+                            setoffset(offset + 6)
+                            getProd(offset + 6)
+                        }}>Next</button>
+                        <ChevronRight />
+                    </div>
+
+
+                </section>
             </div>
              <AlertDialogSlide open={openAlert} onClose={handleCloseAlert} id={selectedId}  />
 

@@ -17,7 +17,7 @@ const initialForm: ProductCreate = {
   cantidad: 0,
   descripcion: "",
   // imgFirst: "",
-  // galery: [],
+  categoria: [],
   configuracion: {
     idEstilo: 0,
     idMaterial: 0,
@@ -105,6 +105,11 @@ const removeImage =(indexToremove:number ) => {
       const virola = await getVirolaAdmin()
       if (virola != undefined) setvirola(virola);
     }
+    const getcategoy = async() =>{
+      const categoria = await getCategorysAdmin()
+      if(categoria != undefined) setCategory(categoria)
+    }
+    getcategoy()
     getEstilos()
     getCapacidad()
     getVirola()
@@ -148,20 +153,18 @@ const removeImage =(indexToremove:number ) => {
       precio_unitario: form.precio_unitario,
       cantidad: form.cantidad,
       descripcion: form.descripcion,
-      // imgFirst: form.imgFirst,
-      // galery: form.galery,
+      categoria:form.categoria,
+
       configuracion: form.configuracion, // ya tiene la forma exacta del back
-      // query_link: form.query_link,
     };
 
-    console.log(`Guardar como ${tipo}:`, payload);
-    console.log(imageFile)
-    console.log(galery)
+    console.log(payload);
 
-     createNewProduct( payload, imageFile, galery); // o lo que uses para llamar al back
+
+    createNewProduct( payload, imageFile, galery); 
   };
   return (<>
-    <section className="h-[calc(100dvh-96px)] bg-white flex ">
+    <section className=" bg-white flex ">
       <div className="flex flex-col  justify-between w-65 border border-black/10">
         <section className=" flex flex-col gap-2">
           <Link href={"/users/admin/dashboard"} className="flex items-center">
@@ -367,6 +370,30 @@ const removeImage =(indexToremove:number ) => {
                       </select>
                     </Field>
 
+
+                    <Field label="Categorías">
+                        <div className="flex flex-col gap-2">
+                          {category?.map((c) => (
+                            <label key={c.id} className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={form.categoria.includes(c.id)}
+                                onChange={(e) => {
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    categoria: e.target.checked
+                                      ? [...prev.categoria, c.id]
+                                      : prev.categoria.filter((id) => id !== c.id),
+                                  }));
+                                }}
+                              />
+                              {c.nombre}
+                            </label>
+                          ))}
+                      </div>
+                    </Field>
+
+
                   </div>
                 </section>
               </div>
@@ -500,13 +527,7 @@ const removeImage =(indexToremove:number ) => {
                           ? `$${form.precio_unitario.toFixed(2)}`
                           : "—",
                       },
-                      // {
-                      //   key: "Configuración",
-                      //   val:
-                      //     form.configuracion. && form.configuracion.capacidadMl
-                      //       ? `${form.material} · ${form.configuracion.capacidadMl} ml`
-                      //       : "—",
-                      // },
+
                     ].map(({ key, val }) => (
                       <div
                         key={key}

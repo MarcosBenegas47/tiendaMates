@@ -36,7 +36,7 @@
     "src/app/script/create-image-webp.js",
     "src/app/script/rename-Image.js",
     ".next/dev/types/**/*.ts"
-  ],
+, "src/app/component/Menubar"  ],
   "exclude": [
     "node_modules"
   ]

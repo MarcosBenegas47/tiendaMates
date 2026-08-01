@@ -63,9 +63,31 @@ class AdminRepository:
                 )
             )
 
-        db.commit()
+        for id in product.categoria:
+            db.add(
+                Producto_categoria(
+                    producto_id =  newProduct.id,
+                    categoria_id = id
+                )
+            )
+        # db.commit()
 
-        return newProduct
+        try:
+            db.commit()
+            db.refresh(newProduct)
+
+            return {
+                "success": True,
+                "message": "Producto creado correctamente",
+                "id": newProduct.id
+            }
+
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(
+                status_code=500,
+                detail=str(e)
+            )
     
     def deleteLogic(self, db:Session, id):
         print(id)
@@ -76,6 +98,7 @@ class AdminRepository:
     
     def delete(self, db:Session, id):
         print(id)
+        
         product = db.query(Product).filter(Product.id== id).first()
         if not product:
             raise HTTPException(status_code=404, detail="Producto no encontrado")

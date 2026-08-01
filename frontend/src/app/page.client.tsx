@@ -7,8 +7,26 @@ export default function HomePage() {
   return (
     <main className=" flex flex-col">
       {/* <NavBar/> */}
-      <section className="bg-black py-12 md:py-24 lg:py-29 flex items-center justify-center px-6"> 
-        <div className="max-w-2xl flex flex-col gap-6 md:gap-8">
+      {/* <section className="bg-black py-12 md:py-24 lg:py-29 flex items-center justify-center px-6">  */}
+        <section className="relative h-[80vh] min-h-[600px] overflow-hidden flex items-center justify-center">
+
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source 
+          src="https://res.cloudinary.com/dbw43etz4/video/upload/v1774402434/72761-544342500_small.webm"
+          type="video/mp4" />
+        </video>
+
+        {/* Capa oscura */}
+        <div className="absolute inset-0 bg-black/60" />
+        
+        {/* <div className="max-w-2xl flex flex-col gap-6 md:gap-8"> */}
+  <div className="relative z-10 max-w-2xl flex flex-col gap-8 px-6">
 
           <div>
             {/* Reducimos el texto en móvil (text-4xl) y lo agrandamos en desktop (md:text-6xl) */}
@@ -30,7 +48,7 @@ export default function HomePage() {
               <ButtonWhiteLink link="/productos" text="Ver Productos" />
             </div>
             <div className="w-full md:w-auto text-center">
-              <ButtonBlackLink link="" text="Cómo curar un mate" />
+              <ButtonBlackLink link="/como_curar_el_mate" text="Cómo curar un mate" />
             </div>
           </div>
       
@@ -76,7 +94,7 @@ export default function HomePage() {
       <video
         className="w-full h-auto rounded-lg"
         controls
-        src="https://res.cloudinary.com/dbw43etz4/video/upload/v1774402434/72761-544342500_small.webm"
+        src="https://res.cloudinary.com/dbw43etz4/video/upload/v1785347126/16412293_3840_2160_25fps.mp4"
       />
     </div>
   </div>

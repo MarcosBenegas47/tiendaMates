@@ -53,6 +53,7 @@ export interface ProductCreate{
     precio_unitario: number
     cantidad: number,
     descripcion:string,
+    categoria:number[],
     // imgFirst:string,
     // galery:string[]
     configuracion:ConfiProductCreate

@@ -59,7 +59,6 @@ export const updateProduct = async (id:number | undefined, product:ProductUpdate
 export const createNewProduct = async ( product:ProductCreate, image:File | null, galery:File[])=>{
         const coolie = await cookies()
         const token = coolie.get("token")?.value
-        // const payload = JSON.parse(JSON.stringify(product));
         const formData = new FormData();
         formData.append("product", JSON.stringify(product))
         if(image) formData.append("imgFirst", image)
@@ -88,7 +87,8 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
 
                 throw new Error(error);
             }
-    
+            const data = await response.json()
+            console.log(data)
             return response.json();
     
         } catch (error) {

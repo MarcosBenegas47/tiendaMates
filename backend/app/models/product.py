@@ -45,7 +45,7 @@ class Product_destacados(Base):
 class Producto_categoria(Base):
     __tablename__= "producto_categoria"
     producto_id = Column(Integer, ForeignKey("productos.id"), primary_key=True)
-    categoria_id = Column(Integer, ForeignKey("categoria.id"), primary_key=True)
+    categoria_id = Column(Integer, ForeignKey("categorias.id"), primary_key=True)
     
 class EstiloMate(Base):
     __tablename__ = "estilos_mate"

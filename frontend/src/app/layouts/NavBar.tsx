@@ -1,14 +1,17 @@
 "use client"
 
-import { Search, ShoppingCart, TableOfContents } from "lucide-react";
+import { Drone, Search, ShoppingCart, TableOfContents } from "lucide-react";
 import Link from "next/link";
 import { cleanOffset } from "../service/utils";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import DrowerMenu from "../component/DrowerMenu";
 
 
 export function NavBar(){
     const router = useRouter();
-    
+    const [open, setOpen] = useState(false);
+    console.log(open)
         const goToProducts = (ruta:string) =>{
             cleanOffset(ruta)
             router.push(ruta);  
@@ -23,13 +26,16 @@ export function NavBar(){
                     <img width="30" height="30" src="https://img.icons8.com/officel/80/mate.png" alt="mate"/>
             </div>
             <div className="block md:hidden">
-                <TableOfContents/>
+                <TableOfContents onClick={()=>setOpen(true)}/>
             </div>
 
             <div className="md:flex gap-5 hidden ">
                 <Link href={"/"}>Inicio</Link>
                 <button onClick={()=> goToProducts("/productos")}>Productos</button>
+                <Link href={"como_curar_el_mate"}>¿Como curar el mate?</Link>
+
                 <Link href={""}>Nosotros</Link>
+                
 
             </div>
             <div className="hidden md:flex gap-3">
@@ -38,6 +44,7 @@ export function NavBar(){
 
             </div>
         </nav>
+        <DrowerMenu open={open} onClose={()=>setOpen(false)}/>
     </header>
     </>)
 }
