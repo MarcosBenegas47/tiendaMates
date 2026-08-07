@@ -9,8 +9,9 @@ export interface ProductosInter  {
     estado:boolean,
     query_link:string
     imgURL:string,
-    galery:string[],
+    galery:string[] ,
     configuracion:ConfigProduct
+    categorias:number[],
 
 }
 
@@ -70,6 +71,7 @@ export interface ProductUpdate{
     eliminado:boolean | undefined,
     estado:boolean| undefined,
     query_link:string | undefined,
+    categoria:number[],
     configuracion:ConfiProductCreate
 }
 

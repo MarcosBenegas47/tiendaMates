@@ -65,7 +65,7 @@ export default function HomePage() {
       <p className="mt-5">Descubrí los mates más elegidos por nuestra comunidad. Calidad premium garantizada</p>
       
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mt-10 grid grid-cols-1 justify-items-center md:grid-cols-3 gap-4">
         <Destacados/>
       </div>
     </div>

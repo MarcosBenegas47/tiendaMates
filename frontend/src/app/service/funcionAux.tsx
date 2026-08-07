@@ -1,3 +1,4 @@
+import { getProductAdmin } from "./adminProduct";
 import { getProduct, getProductBySearch, getProductBySlug } from "./getProduct"
 
 export async function filtrarProductos(categorias: number[] , offset= 0) {
@@ -34,4 +35,10 @@ export function formatearPrecio(precio:string) {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     });
+}
+export async function filtrarProductosAdmin(categorias: number[] , offset= 0) {
+
+  const productos = await getProductAdmin(categorias,offset)
+
+  return productos
 }

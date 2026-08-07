@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.product import Product,Product_destacados ,Producto_categoria, ProductoConfiguracion, ProductoImagen
-from app.models.category import Categoy
+from app.models.category import Category
 from app.schemas.product import ProductResponse
 from fastapi import Query, HTTPException
 from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse,ProductUpdate
@@ -89,6 +89,7 @@ class ProducRepository:
             descripcion=product.descripcion,
             estado=product.estado,
             query_link=product.query_link,
+            categorias=[categoria.id for categoria in product.categorias],
             imgURL=product.img,
             galery=galeryImages,
             configuracion= config_response
@@ -121,7 +122,7 @@ class ProducRepository:
 
     
     def getCategory(self, db:Session):
-        return (db.query(Categoy).all())
+        return (db.query(Category).all())
     
     def getDestacados(self, db:Session):
         products = db.query(Product).select_from(Product_destacados).join(Product, Product.id ==Product_destacados.producto_id).all()

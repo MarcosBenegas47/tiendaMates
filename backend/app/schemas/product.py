@@ -53,6 +53,7 @@ class GetProductResponse(BaseModel):
     eliminado:bool
     estado:bool
     query_link:str
+    categorias:Optional[list[int]] = None
     imgURL:str
     galery:list[str]
     configuracion: Optional[ConfigResponse] = None
@@ -72,10 +73,8 @@ class ProductCreate(BaseModel):
     precio_unitario: Decimal
     cantidad: int
     descripcion:str
-    # imgFirst:str
     categoria:list[int]
     configuracion:ConfiProductCreate
-    # query_link: str
 
 class ProductUpdate(BaseModel):
     id: int
@@ -87,9 +86,23 @@ class ProductUpdate(BaseModel):
     eliminado:bool
     estado:bool
     query_link:str
-    imgURL:str
-    galery:list[str]
+    categoria:list[int]
     configuracion:ConfiProductCreate
 
+class ProductResponseAdmin(BaseModel):
+    id:int
+    codigo:str
+    nombre:str
+    precio_unitario:Decimal
+    cantidad:int
+    eliminado:bool
+    estado:bool
+    query_link:str
+    categoria: Optional[list[int]] = None
+    imgURL:Optional[str] = None
+    descripcion:str
+    galery:Optional[list[str]] = None
+    class Config:
+        from_attributes = True
 
 

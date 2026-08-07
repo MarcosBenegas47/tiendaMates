@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.product import Product,Capacidad, EstiloMate,Material,Virola , Producto_categoria, ProductoConfiguracion, ProductoImagen
-from app.models.category import Categoy
-from app.schemas.product import ProductResponse
+from app.models.category import Category
+from app.schemas.product import ProductResponseAdmin
 from fastapi import Query, HTTPException,UploadFile
 from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse,ProductUpdate
 import re
@@ -9,8 +9,41 @@ from app.repositories.images import imagesProduct
 
 from sqlalchemy import text
 class AdminRepository:
+    def get_all_admin(self, db:Session, id = None,limit = 6, offset = 0):
+            products = db.query(Product)
+            if id:
+                products= products.select_from(Producto_categoria)\
+                .join(Product, Product.id ==Producto_categoria.producto_id)\
+                .filter(Producto_categoria.categoria_id.in_(id))
+
+            querys = products.offset(offset).limit(limit).all()
+            results =[]
+            # imagesUrls = db.query(ProductoImagen).filter(ProductoImagen.producto_id == product.id ).all()
+            # galeryImages = [imgs.url for imgs in imagesUrls]
+            for product in querys:
+                categorias = [categoria.id for categoria in product.categorias]
+                galeryImages = [imagen.url for imagen in product.imagenes]
+                results.append(
+                    ProductResponseAdmin(
+                id=product.id,
+                codigo=product.codigo,
+                nombre=product.nombre,
+                precio_unitario=product.precio_unitario,
+                cantidad=product.cantidad,
+                eliminado=product.eliminado,
+                estado=product.estado,
+                query_link=product.query_link,
+                categoria= categorias,
+                imgURL=product.img,
+                galery=galeryImages,
+                descripcion =product.descripcion
+                )
+                )
+    
+            return results
+        
     def getCategoryList(self, db:Session):
-        categoy = db.query(Categoy).all()
+        categoy = db.query(Category).all()
         return categoy
     def getCapacidadList(self, db:Session):
         capacidad= db.query(Capacidad).all()
@@ -90,14 +123,12 @@ class AdminRepository:
             )
     
     def deleteLogic(self, db:Session, id):
-        print(id)
         product = db.query(Product).filter(Product.id == id).first()
         product.eliminado = True
         db.commit()
         return {"message": "Producto Eliminado con exito"}
     
     def delete(self, db:Session, id):
-        print(id)
         
         product = db.query(Product).filter(Product.id== id).first()
         if not product:

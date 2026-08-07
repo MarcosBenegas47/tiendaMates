@@ -1,6 +1,6 @@
 "use client"
 import { getProduct } from "@/app/service/getProduct";
-import { Package } from "lucide-react";
+import { Package, X } from "lucide-react";
 import Link from "next/link";
 import { Capacidad, Category, EstiloMate, Material, ProductCreate, ProductosInter, ProductUpdate, Virola } from "@/Productos";
 import { useEffect, useState } from "react";
@@ -66,14 +66,14 @@ export default function Nuevo() {
     setImagePreview(URL.createObjectURL(file));
   };
 
-const handleGaleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = Array.from(e.target.files || []);
-  setGalery((prev) => [...prev ,...file])
-};
-const removeImage =(indexToremove:number ) => {
-    setGalery((prev) => prev.filter((_, index)=> index != indexToremove));
+  const handleGaleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = Array.from(e.target.files || []);
+    setGalery((prev) => [...prev, ...file])
+  };
+  const removeImage = (indexToremove: number) => {
+    setGalery((prev) => prev.filter((_, index) => index != indexToremove));
 
-} 
+  }
   useEffect(() => {
     return () => {
       if (imagePreview) {
@@ -105,9 +105,9 @@ const removeImage =(indexToremove:number ) => {
       const virola = await getVirolaAdmin()
       if (virola != undefined) setvirola(virola);
     }
-    const getcategoy = async() =>{
+    const getcategoy = async () => {
       const categoria = await getCategorysAdmin()
-      if(categoria != undefined) setCategory(categoria)
+      if (categoria != undefined) setCategory(categoria)
     }
     getcategoy()
     getEstilos()
@@ -127,11 +127,11 @@ const removeImage =(indexToremove:number ) => {
     setForm((prev) => ({
       ...prev,
       [name]:
-         type === "number"
-        ? Number(value)
-        : type === "checkbox"
-        ? (e.target as HTMLInputElement).checked
-        : value,
+        type === "number"
+          ? Number(value)
+          : type === "checkbox"
+            ? (e.target as HTMLInputElement).checked
+            : value,
     }));
     // console.log(form.imgFirst)
   };
@@ -153,7 +153,7 @@ const removeImage =(indexToremove:number ) => {
       precio_unitario: form.precio_unitario,
       cantidad: form.cantidad,
       descripcion: form.descripcion,
-      categoria:form.categoria,
+      categoria: form.categoria,
 
       configuracion: form.configuracion, // ya tiene la forma exacta del back
     };
@@ -161,7 +161,7 @@ const removeImage =(indexToremove:number ) => {
     console.log(payload);
 
 
-    createNewProduct( payload, imageFile, galery); 
+    createNewProduct(payload, imageFile, galery);
   };
   return (<>
     <section className=" bg-white flex ">
@@ -372,24 +372,24 @@ const removeImage =(indexToremove:number ) => {
 
 
                     <Field label="Categorías">
-                        <div className="flex flex-col gap-2">
-                          {category?.map((c) => (
-                            <label key={c.id} className="flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                checked={form.categoria.includes(c.id)}
-                                onChange={(e) => {
-                                  setForm((prev) => ({
-                                    ...prev,
-                                    categoria: e.target.checked
-                                      ? [...prev.categoria, c.id]
-                                      : prev.categoria.filter((id) => id !== c.id),
-                                  }));
-                                }}
-                              />
-                              {c.nombre}
-                            </label>
-                          ))}
+                      <div className="flex flex-col gap-2">
+                        {category?.map((c) => (
+                          <label key={c.id} className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={form.categoria.includes(c.id)}
+                              onChange={(e) => {
+                                setForm((prev) => ({
+                                  ...prev,
+                                  categoria: e.target.checked
+                                    ? [...prev.categoria, c.id]
+                                    : prev.categoria.filter((id) => id !== c.id),
+                                }));
+                              }}
+                            />
+                            {c.nombre}
+                          </label>
+                        ))}
                       </div>
                     </Field>
 
@@ -458,26 +458,25 @@ const removeImage =(indexToremove:number ) => {
 
                   <Field label="Galería">
                     <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleGaleryChange}
-                  />
-   
-                    {
-                      galery.map((file, index )=> (<div key={index}>
-                        <button type="button"
-                        onClick={ ()=>removeImage(index) }>
-                          
-                        <span> [X] </span>
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleGaleryChange}
+                    />
 
+                    {
+                      galery.map((file, index) => (<div key={index}>
+                        <button type="button"
+                          onClick={() => removeImage(index)}>
+
+                          <span><X /></span>
                         </button>
-                      <span>{file.name}</span>
-                      <span className="text-xs text-gray-500">
-                        {(file.size / 1024).toFixed(1)} KB
-                      </span>
+                        <span>{file.name}</span>
+                        <span className="text-xs text-gray-500">
+                          {(file.size / 1024).toFixed(1)} KB
+                        </span>
                       </div>
-                    ))
+                      ))
                     }
                   </Field>
                 </section>

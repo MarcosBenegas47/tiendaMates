@@ -1,7 +1,8 @@
 "use server"
 
-import { Category, Destacados, ProductCreate, ProductosInter, ProductUpdate,  } from "@/Productos";
+import { ProductCreate, ProductosInter, ProductUpdate} from "@/Productos";
 import { cookies } from "next/headers";
+import { buildQuery } from "./utils";
 
 const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -32,6 +33,7 @@ export const updateProduct = async (id:number | undefined, product:ProductUpdate
         const coolie = await cookies()
         const token = coolie.get("token")?.value
         const payload = JSON.parse(JSON.stringify(product));
+        console.log( payload)
         try {
             const response = await fetch(`${url}/api/routes/admin/product/update/${id}`, {
                 method:"PUT",
@@ -96,3 +98,21 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
         }
 }
 
+
+export const getProductAdmin = async (id:number[] | []=[] , offset:number = 0):Promise<ProductosInter[] | null> =>{
+
+    try {
+        const response = await fetch(`${url}/api/routes/admin/categorys/products${buildQuery(id, offset)}`);
+        if (!response.ok) {
+        throw new Error(response.statusText);
+        }
+        const resultado:ProductosInter[] = await response.json()
+        console.log(resultado)
+        return resultado
+    } catch (error) {
+        console.log("Fetch error Destacados", error)
+        return null
+        
+    }
+
+}

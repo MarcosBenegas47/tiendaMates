@@ -4,23 +4,25 @@ import AlertDialogSlide from "@/app/component/ui/AlertDialogSlide";
 import { ProductosInter } from "@/Productos";
 import { Package, Pencil, Trash } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { filtrarProductos } from "../../../service/funcionAux"
+import { filtrarProductosAdmin, getBySlug } from "../../../service/funcionAux"
 
 import Link from "next/link";
 import { useState } from "react";
+import Alert from "@/app/component/ui/Alert";
 
 export default function Dashboard({ product }: { product: ProductosInter[] | null }) {
     const [open, setOpen] = useState(false);
-    const [producto, setProducto] = useState("")
+    const [producto, setProducto] = useState<ProductosInter | null> (null)
     const [openAlert, setOpenAlert] = useState(false);
+    const [openAlertDrower, setOpenAlertDrower] = useState(false);
 
     const [selectedId, setSelectedId] = useState<number | undefined>();
     const [offset, setoffset] = useState<number>(0)
     const [prods, setProds] = useState<ProductosInter[] | null>(product)
 
     const getProd = async (offset: number = 0 ) => {
-        const productos = await filtrarProductos([], offset)
-        console.log(offset)
+        const productos = await filtrarProductosAdmin([], offset)
+        console.log(productos)
         setProds(productos)
     }
 
@@ -34,6 +36,14 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
   const handleCloseAlert = () => {
     setOpenAlert(false);
   };
+  const handleEdit  = async (slug:string)=>{
+    const prod = await getBySlug(slug); 
+    if(prod){
+        setProducto(prod)
+        setOpen(true); 
+    }
+    
+  }
     return <>
         <div className="h-[calc(100dvh-96px)] bg-white flex ">
             <div className="flex flex-col  justify-between w-65 border border-black/10">
@@ -114,7 +124,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
 
                             {/* ACCIONES */}
                             <div className="flex justify-center gap-3 text-gray-500">
-                                <button onClick={() => {setOpen(true); setProducto(prod.query_link)}} className="hover:text-black transition">
+                                <button onClick={() => { handleEdit(prod.query_link)}} className="hover:text-black transition">
                                     <Pencil />
                                 </button>
                                 
@@ -155,10 +165,14 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
              <AlertDialogSlide open={openAlert} onClose={handleCloseAlert} id={selectedId}  />
 
             <div>
-                <DrawerEditar open={open} onClose={() => setOpen(false)} slug={producto}/>
+                <DrawerEditar open={open} onAlert={() => setOpenAlertDrower(true)} onClose={() => setOpen(false)} prod={producto}/>
+                    <Alert open={openAlertDrower}   onClose={() => setOpenAlertDrower(false)} texto="No se pueden dejar campos nulos"  />
+                    <Alert open={openAlertDrower}   onClose={() => setOpenAlertDrower(false)} texto="Guardado con exito"  />
+
             </div>
 
         </div>
+    
 
     </>
 }

@@ -52,3 +52,10 @@ def getCategorys(  db:Session = Depends(getDataBase), admin = Depends(getDbAdmin
 def getCategorys(  db:Session = Depends(getDataBase), admin = Depends(getDbAdmin) ):
     return responseAdmin.getMaterialList(db )
 
+@router.get("/categorys/products")
+def getproducts(db:Session = Depends(getDataBase), id:Optional[str] = None,limit:int = 6 ,offset:int=0):
+    ids_list= None
+    if id:
+        ids_list = json.loads(id)  
+    return responseAdmin.get_all_admin(db, id = ids_list ,limit = limit, offset = offset)
+

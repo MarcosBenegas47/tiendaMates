@@ -1,7 +1,7 @@
 from sqlalchemy import  Column, Integer, String, Text, Numeric, Boolean,ForeignKey
 from app.db.classDatabase import Base
 from sqlalchemy.orm import relationship
-
+from app.models.category import Category
 class Product(Base):
     __tablename__ = "productos"
     id = Column(Integer, primary_key=True, index=True)
@@ -24,6 +24,11 @@ class Product(Base):
         "ProductoImagen",
         back_populates="producto",
         cascade="all, delete-orphan"
+    )
+    categorias = relationship(
+    "Category",
+    secondary="producto_categoria",
+    back_populates="productos"
     )
 
 

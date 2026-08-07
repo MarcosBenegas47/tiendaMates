@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { cleanOffset } from "../service/utils";
 import { useRouter } from "next/navigation";
+import { Heart, House, Package, Sparkles } from "lucide-react";
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -18,7 +19,7 @@ export default function DrowerMenu({ open, onClose }: Props) {
   return (
     <div
       className={`
-        fixed top-0 right-0 h-screen bg-white border-l shadow-lg
+        fixed z-50 top-0 right-0 h-screen bg-white border-l shadow-lg
         transition-all duration-300 ease-in-out overflow-hidden
         ${open ? "w-[300px]" : "w-0"}
       `}
@@ -37,20 +38,24 @@ export default function DrowerMenu({ open, onClose }: Props) {
         <Link
           href="/"
           onClick={onClose}
-          className="rounded-lg px-4 py-3 hover:bg-gray-100"
+          className="rounded-lg flex items-center  gap-1 px-4 py-3 hover:bg-gray-100"
         >
-          Inicio
+          <House/>
+          <span>Inicio</span>
+          
         </Link>
 
-        <button onClick={()=> goToProducts("/productos")}>Productos</button>
-        <Link href={"/como_curar_el_mate"}>¿Como curar el mate?</Link>
+        <button className="rounded-lg flex items-center  gap-1 px-4 py-3 text-left hover:bg-gray-100"
+ onClick={()=> goToProducts("/productos")}><Package/> Productos</button>
+        <Link className="rounded-lg flex items-center  gap-1 px-4 py-3 hover:bg-gray-100" href={"/como_curar_el_mate"}><Sparkles/> ¿Como curar el mate?</Link>
 
 
         <Link
           href=""
           onClick={onClose}
-          className="rounded-lg px-4 py-3 hover:bg-gray-100"
+          className=" rounded-lg px-4 flex items-center  gap-1 py-3 hover:bg-gray-100"
         >
+          <Heart/>
           Nosotros
         </Link>
       </nav>

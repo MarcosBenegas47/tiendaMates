@@ -39,21 +39,3 @@ def getproducts(db:Session = Depends(getDataBase), id:Optional[str] = None,limit
 def getDestacados(db:Session = Depends(getDataBase)):
     return responseProduct.getDestacados(db)
 
-
-# @router.post("/create/product")
-# def createProduct(product:str =Form(...),
-#                   db:Session=Depends(getDataBase),
-#                   admin =Depends(getDbAdmin)):
-#     return responseProduct.productNew(db, product)
-
-# @router.put("/product/delete/{id}")
-# def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
-#     return responseProduct.deleteLogic(db, id)
-
-# @router.delete("/product/delete/fisica/{id}")
-# def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin)):
-#     return responseProduct.delete(db,id)
-
-# @router.put("/product/update/{id}")
-# def updateProduct(id:int, data:ProductUpdate, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin) ):
-#     return responseProduct.update(db, id, data)

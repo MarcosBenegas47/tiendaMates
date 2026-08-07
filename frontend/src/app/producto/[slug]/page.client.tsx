@@ -16,11 +16,12 @@ export default function Producto({product}:{product: ProductosInter | null}) {
       original: imagen || "",
       thumbnail: imagen || ""
    }))|| []
-   const productUrl =
+   
+   const enviarMensajeDeCompra = ()=>{
+      const productUrl =
   typeof window !== "undefined"
     ? window.location.href
     : "";
-   const enviarMensajeDeCompra = ()=>{
       window.open(
          `https://wa.me/5491158095101?text=${encodeURIComponent(
          `¡Hola! Vi este producto en la tienda y me gustaría comprarlo:`)}%20${productUrl} `,
@@ -28,6 +29,10 @@ export default function Producto({product}:{product: ProductosInter | null}) {
       )
    }
    const enviarMensajeDeInformacion= ()=>{
+      const productUrl =
+  typeof window !== "undefined"
+    ? window.location.href
+    : "";
       window.open(
          `https://wa.me/5491158095101?text=Hola,%20quiero%20mas%20informacion%20${productUrl}`,
          "_blank"
@@ -36,8 +41,8 @@ export default function Producto({product}:{product: ProductosInter | null}) {
        
    return (<>
       <section className="flex justify-center border-t border-black/10 pt-9 w-full bg-white">
-         <section className="flex  flex-col md:flex-row justify-center gap-14 max-w-[70%]">
-            <div >
+         <section className="flex flex-col md:flex-row justify-center gap-14 w-full p-2 md:p-0 md:max-w-[70%]">
+            <div className="   ">
              <ImageGallery 
 
                items={images}
@@ -47,7 +52,7 @@ export default function Producto({product}:{product: ProductosInter | null}) {
                thumbnailPosition="bottom"/>
          </div>
          <div className="  flex flex-col gap-6">
-            <h2 className="font-bold text-4xl">
+            <h2 className="font-bold text-3xl md:text-4xl">
                {product?.nombre}
             </h2>
             <p className="font-bold text-4xl">${formatearPrecio( product?.precio_unitario ?? "0")}</p>

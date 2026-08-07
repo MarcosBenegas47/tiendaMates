@@ -7,7 +7,7 @@ export function CardProd({ prod }: { prod: ProductosInter }) {
 
     return (
         // max-w-90
-            <Link href={"/producto/"+prod.query_link} className=" border flex md:flex-col justify-between border-black/10 max-w-sm  rounded gap-4  h-44 md:h-auto" >
+            <Link href={"/producto/"+prod.query_link} className=" border flex md:flex-col justify-between border-black/10 max-w-sm w-full rounded gap-4  h-44 md:h-auto" >
                 <div className=" md:w-auto md:h-auto flex items-center justify-center mx-auto">
                     <img className="max-w-full max-h-full object-contain" src={prod.imgURL} />
                 </div>
