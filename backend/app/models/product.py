@@ -14,6 +14,7 @@ class Product(Base):
     estado = Column(Boolean)
     query_link = Column(Text)
     img = Column(Text)
+    
     configuracion = relationship(
         "ProductoConfiguracion",
         back_populates="producto",

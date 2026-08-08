@@ -129,12 +129,16 @@ class AdminRepository:
         return {"message": "Producto Eliminado con exito"}
     
     def delete(self, db:Session, id):
+        product = db.query(Product).filter(Product.id == id).first()
+        print(product.img)
+        resultado=imagesProduct.deleteImg(product.img)
+        print(resultado)
         
-        product = db.query(Product).filter(Product.id== id).first()
-        if not product:
-            raise HTTPException(status_code=404, detail="Producto no encontrado")
-        db.delete(product)
-        db.commit()
+        # product = db.query(Product).filter(Product.id== id).first()
+        # if not product:
+        #     raise HTTPException(status_code=404, detail="Producto no encontrado")
+        # db.delete(product)
+        # db.commit()
         return {"message":"Producto eliminado de la base correctamente"}
     
     def update(self, db:Session, id:int, data:ProductUpdate):

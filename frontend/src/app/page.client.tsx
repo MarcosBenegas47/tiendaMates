@@ -18,7 +18,7 @@ export default function HomePage() {
           className="absolute inset-0 h-full w-full object-cover"
         >
           <source 
-          src="https://res.cloudinary.com/dbw43etz4/video/upload/v1774402434/72761-544342500_small.webm"
+          src="https://res.cloudinary.com/dbw43etz4/video/upload/v1786158138/video-intro.webm"
           type="video/mp4" />
         </video>
 
