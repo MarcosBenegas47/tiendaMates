@@ -44,10 +44,10 @@ export default function HomePage() {
           
           {/* En móvil los botones se ponen uno arriba del otro (flex-col) y en desktop de lado (md:flex-row) */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 mt-4">
-            <div className="w-full md:w-auto text-center">
+            <div className=" md:w-auto text-center">
               <ButtonWhiteLink link="/productos" text="Ver Productos" />
             </div>
-            <div className="w-full md:w-auto text-center">
+            <div className=" md:w-auto text-center">
               <ButtonBlackLink link="/como_curar_el_mate" text="Cómo curar un mate" />
             </div>
           </div>

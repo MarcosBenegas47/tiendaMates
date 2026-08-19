@@ -1,11 +1,12 @@
 "use client"
-import { getProduct } from "@/app/service/getProduct";
 import { Package, X } from "lucide-react";
 import Link from "next/link";
 import { Capacidad, Category, EstiloMate, Material, ProductCreate, ProductosInter, ProductUpdate, Virola } from "@/Productos";
 import { useEffect, useState } from "react";
-import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmin, getVirolaAdmin } from "@/app/service/adminUser";
+import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmin, getVirolaAdmin, verificarToken } from "@/app/service/adminUser";
 import { createNewProduct } from "@/app/service/adminProduct";
+import { tengoToken } from "@/app/service/useAuthStore";
+import { useRouter } from "next/navigation";
 
 
 
@@ -50,10 +51,29 @@ export default function Nuevo() {
   const [capacidad, setCapacidad] = useState<Capacidad[]>()
   const [material, setMaterial] = useState<Material[]>()
   const [esilo, setEstilo] = useState<EstiloMate[]>()
+    const [isLoading, setIsLoading] = useState(true);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [galery, setGalery] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState("");
+    const router = useRouter();
+    
+    useEffect(()=>{
+        const verificarSiHayToken = async () =>{
+            if( !await tengoToken()) {
+                setIsLoading(false)
+                router.push("/users/login")
+            }
+            const data = await verificarToken() || {ok: false}
+            if (!data.ok) {
+            router.push("/users/login");
+        }
+
+        }
+        verificarSiHayToken()   
+     },[])
+
+
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {

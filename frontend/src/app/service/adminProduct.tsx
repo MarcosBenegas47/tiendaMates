@@ -33,7 +33,6 @@ export const updateProduct = async (id:number | undefined, product:ProductUpdate
         const coolie = await cookies()
         const token = coolie.get("token")?.value
         const payload = JSON.parse(JSON.stringify(product));
-        console.log( payload)
         try {
             const response = await fetch(`${url}/api/routes/admin/product/update/${id}`, {
                 method:"PUT",
@@ -89,8 +88,6 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
 
                 throw new Error(error);
             }
-            const data = await response.json()
-            console.log(data)
             return response.json();
     
         } catch (error) {
@@ -107,7 +104,6 @@ export const getProductAdmin = async (id:number[] | []=[] , offset:number = 0):P
         throw new Error(response.statusText);
         }
         const resultado:ProductosInter[] = await response.json()
-        console.log(resultado)
         return resultado
     } catch (error) {
         console.log("Fetch error Destacados", error)

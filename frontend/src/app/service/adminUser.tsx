@@ -152,3 +152,27 @@ export const getMaterialAdmin = async () => {
 }
 
 
+export const verificarToken = async() =>{
+    const coolie = await cookies()
+    const token = coolie.get("token")?.value
+    try {
+        const response = await fetch(`${url}/api/routes/auth/validar/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain",
+            },
+            body: token
+        })
+        if (!response.ok) {
+            throw new Error("Error en el login");
+        }
+        if (!response.ok) {
+        return { ok: false };
+    }
+        
+         return {ok:true};
+
+    } catch (error) {
+        console.log("Login error:", error);
+    }
+}

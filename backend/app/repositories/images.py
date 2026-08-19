@@ -2,9 +2,10 @@ import cloudinary
 import cloudinary.utils
 import cloudinary.search
 import cloudinary.uploader
+import cloudinary.api
 import os
 import re
-from fastapi import UploadFile 
+from fastapi import UploadFile
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -14,7 +15,7 @@ API_SECRET= os.getenv("API_SECRET")
 cloudinary.config(
     cloud_name= CLOUD_NAME,
     api_key=API_KEY,
-    api_secret=API_SECRET 
+    api_secret=API_SECRET
 )
 
 BASE_URL = f"https://res.cloudinary.com/dbw43etz4/image/upload"
@@ -29,19 +30,18 @@ class imagesProduct:
     def getProductImages(codigo: str):
 
         search_expression = f"folder:images/{codigo}/*"
-    
+
         result = cloudinary.search.Search() \
             .expression(search_expression) \
             .max_results(500) \
             .execute()
-        
+
         return [recurse["secure_url"] for recurse in result.get('resources', [])]
     async def uploadImg(imgFirst:UploadFile):
         if(imgFirst):
             result= cloudinary.uploader.upload(
                 await imgFirst.read()
             )
-            print(result["secure_url"])
             return result["secure_url"]
     async def uploadGalery(galery:list[UploadFile]):
         urls = []
@@ -50,7 +50,6 @@ class imagesProduct:
                 await img.read()
             )
             urls.append(result["secure_url"])
-            print(result["secure_url"])
         return urls
     def deleteImg(urlImage:str):
         urlSplit = urlImage.split('upload')
@@ -60,11 +59,18 @@ class imagesProduct:
         print(public_id)
         resultado = cloudinary.uploader.destroy(public_id)
         return resultado
-    def deleteGaleryImg(urlImage:str):
-            urlSplit = urlImage.split('upload')
-            segmentos_sin_version = re.sub(r'^v\d+/', '', urlSplit[1])
-            public_id = segmentos_sin_version.rsplit('.', 1)[0]
-            public_id = public_id.split('/', 1)[1]
+    def deleteGaleryImg(urlsGalery:list[str]):
+        listaPublicId = []
+        if not urlsGalery : return []
+        for urls in urlsGalery:
+            urlSplit = urls.split('/upload/',1)[1]
+            # segmentos_sin_version = re.sub(r'^v\d+/', '', urlSplit[1])
+            public_id = urlSplit.split('/', 1)
+            # public_id = public_id.rsplit('.', 1)[0]
+            if public_id[0].startswith('v') and public_id[0][1:].isdigit():
+                path = public_id[1]
+            public_id = path.rsplit('.', 1)[0]
+            listaPublicId.append(public_id)
             print(public_id)
-            cloudinary.api.delete_resources([])
-            return resultado
+        resultado = cloudinary.api.delete_resources(public_ids= listaPublicId)
+        return resultado

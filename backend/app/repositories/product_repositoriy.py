@@ -24,7 +24,6 @@ class ProducRepository:
         results =[]
         
         for product in querys:
-            print("id:" ,product.id,"url",product.img)
             results.append(
                 ProductResponse(
             id=product.id,
@@ -78,7 +77,9 @@ class ProducRepository:
                     "descripcion":config.capacidad.descripcion if config.capacidad else None},
 
             )
-
+        destacado =False 
+        if product.destacados: 
+            destacado = True 
         return GetProductResponse(  
             id=product.id,
             codigo=product.codigo,
@@ -90,6 +91,7 @@ class ProducRepository:
             estado=product.estado,
             query_link=product.query_link,
             categorias=[categoria.id for categoria in product.categorias],
+            destacado= destacado ,
             imgURL=product.img,
             galery=galeryImages,
             configuracion= config_response
@@ -102,7 +104,6 @@ class ProducRepository:
             .filter(Product.query_link.ilike(f"%{queryLink}%")).all()
         results =[]
         for product in products:
-            imageURL = imagesProduct.getImages(product.codigo)
           
             results.append(
                 ProductResponse(
@@ -128,7 +129,6 @@ class ProducRepository:
         products = db.query(Product).select_from(Product_destacados).join(Product, Product.id ==Product_destacados.producto_id).all()
         results =[]
         for product in products:
-            imageURL = imagesProduct.getImages(product.codigo)
           
             results.append(
                 ProductResponse(

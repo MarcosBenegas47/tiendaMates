@@ -1,12 +1,12 @@
 "use client"
 
-import { Drone, Search, ShoppingCart, Sparkles, TableOfContents } from "lucide-react";
+import { TableOfContents } from "lucide-react";
 import Link from "next/link";
 import { cleanOffset } from "../service/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DrowerMenu from "../component/DrowerMenu";
-import CarrtoDropDown from "../component/CarrtoDropDown";
+// import CarrtoDropDown from "../component/CarrtoDropDown";
 
 
 export function NavBar(){
@@ -14,7 +14,6 @@ export function NavBar(){
     const [open, setOpen] = useState(false);
     const [openCarrito, setOpenCarrito] = useState(false);
     
-    console.log(openCarrito)
         const goToProducts = (ruta:string) =>{
             cleanOffset(ruta)
             router.push(ruta);  

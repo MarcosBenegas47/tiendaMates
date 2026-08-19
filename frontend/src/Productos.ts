@@ -9,6 +9,7 @@ export interface ProductosInter  {
     estado:boolean,
     query_link:string
     imgURL:string,
+    destacado:boolean,
     galery:string[] ,
     configuracion:ConfigProduct
     categorias:number[],
@@ -72,7 +73,8 @@ export interface ProductUpdate{
     estado:boolean| undefined,
     query_link:string | undefined,
     categoria:number[],
-    configuracion:ConfiProductCreate
+    configuracion:ConfiProductCreate,
+    destacado:boolean
 }
 
 

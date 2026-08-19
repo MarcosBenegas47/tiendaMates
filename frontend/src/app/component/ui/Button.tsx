@@ -25,7 +25,7 @@ export function ButtonWhiteLink({link="",text}:ButtonWhiteProps){
     }
     
 
-    return <button onClick={() => goToProducts(link)} className="bg-white w-full  text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">{text}</button>
+    return <button onClick={() => goToProducts(link)} className="bg-white w-full  text-center pt-[9px] pb-[9px] pl-5 pr-5 border border-black rounded">{text}</button>
 
 }
 export function ButtonBlack({text}:{text:string}){

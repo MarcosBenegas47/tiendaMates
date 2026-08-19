@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Body
 from sqlalchemy.orm import Session
 
 from app.db.database import getDataBase
 from app.repositories.userRepository import userRepository
 from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas.user import UserResponse, UserSchema
-from app.core.security import verfyPassword, createAccesToken
+from app.core.security import verfyPassword, createAccesToken, veryToken
 
 router = APIRouter( prefix="/auth", tags=["Autenticacion"])
 userRepo = userRepository()
@@ -43,3 +43,20 @@ def login(
         "access_token": token,
         "token_type": "bearer"
     }
+
+@router.post("/validar/login")
+# def tokenValidar(autorization:str =Header(None)):
+def tokenValidar(token: str = Body(..., media_type="text/plain"), db: Session = Depends(getDataBase)):
+
+    if not token:
+        raise HTTPException(status_code=401,detail="No se proporciono un token")
+  
+    respuesta = veryToken(token,db )
+    if not respuesta:
+        raise HTTPException(status_code=401,detail="Token no valido")
+
+    return {"ok":True}
+# @router.post("/logout")
+# def logout():
+
+

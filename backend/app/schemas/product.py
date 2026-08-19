@@ -50,6 +50,7 @@ class GetProductResponse(BaseModel):
     descripcion:str
     precio_unitario:Decimal
     cantidad:int
+    destacado:bool
     eliminado:bool
     estado:bool
     query_link:str
@@ -82,6 +83,7 @@ class ProductUpdate(BaseModel):
     nombre: str
     precio_unitario:str
     descripcion:str
+    destacado:bool
     cantidad:int
     eliminado:bool
     estado:bool
@@ -97,6 +99,7 @@ class ProductResponseAdmin(BaseModel):
     cantidad:int
     eliminado:bool
     estado:bool
+    destacado:bool
     query_link:str
     categoria: Optional[list[int]] = None
     imgURL:Optional[str] = None

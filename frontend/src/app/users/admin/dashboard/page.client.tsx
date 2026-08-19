@@ -7,27 +7,48 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { filtrarProductosAdmin, getBySlug } from "../../../service/funcionAux"
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alert from "@/app/component/ui/Alert";
+import { verificarToken } from "@/app/service/adminUser";
+import { tengoToken } from "@/app/service/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard({ product }: { product: ProductosInter[] | null }) {
     const [open, setOpen] = useState(false);
     const [producto, setProducto] = useState<ProductosInter | null> (null)
     const [openAlert, setOpenAlert] = useState(false);
     const [openAlertDrower, setOpenAlertDrower] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [selectedId, setSelectedId] = useState<number | undefined>();
     const [offset, setoffset] = useState<number>(0)
     const [prods, setProds] = useState<ProductosInter[] | null>(product)
+    const router = useRouter();
 
     const getProd = async (offset: number = 0 ) => {
         const productos = await filtrarProductosAdmin([], offset)
         console.log(productos)
         setProds(productos)
     }
+     useEffect(()=>{
+        const verificarSiHayToken = async () =>{
+            if( !await tengoToken()) {
+                setIsLoading(false)
+                router.push("/users/login")
+            }
+            const data = await verificarToken() || {ok: false}
+            if (!data.ok) {
+            router.push("/users/login");
+        }
 
+        }
+        verificarSiHayToken()   
+     },[product])
 
-  const handleClickOpenAlert = (id:number | undefined) => {
+    
+    
+    
+    const handleClickOpenAlert = (id:number | undefined) => {
 
         setOpenAlert(true);
         setSelectedId(id);
@@ -45,7 +66,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
     
   }
     return <>
-        <div className="h-[calc(100dvh-96px)] bg-white flex ">
+        {isLoading && (<div className="h-[calc(100dvh-96px)] bg-white flex ">
             <div className="flex flex-col  justify-between w-65 border border-black/10">
                 <section className=" flex flex-col gap-2">
                     <Link href={"/users/admin/dashboard"} className="flex items-center">
@@ -67,7 +88,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                     {/* HEADER */}
                     <div className="grid grid-cols-6 px-6 py-3 bg-gray-100 text-gray-600 text-sm font-medium">
                         <span>Producto</span>
-                        <span>Categoría</span>
+                        <span>Destacado</span>
                         <span>Precio</span>
                         <span>Stock</span>
                         <span>Estado</span>
@@ -95,8 +116,23 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                             </div>
 
                             {/* CATEGORIA */}
-                            <span className="text-gray-600">Categoria</span>
-
+                            
+                            {/* <span className="text-gray-600">   </span> */}
+                            <input
+                                type="checkbox"
+                                checked={!prod.destacado}
+                                onChange={(e) => {
+                                // setProducto(prev => {
+                                //     if (!prev) return prev;
+                                //     const categoriasActuales = prev.categorias
+                                //     return {
+                                //     ...prev,
+                                //     categorias: e.target.checked ? [...categoriasActuales, c.id] : categoriasActuales.filter((id) => id !== c.id)
+                                //     }
+                                // });
+                                }
+                                 }
+                            />
                             {/* PRECIO */}
                             <span className="font-medium text-gray-800">
                                 ${prod.precio_unitario}
@@ -171,7 +207,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
 
             </div>
 
-        </div>
+        </div>)}
     
 
     </>

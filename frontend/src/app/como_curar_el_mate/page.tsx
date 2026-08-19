@@ -19,7 +19,7 @@ const pasos = [
     tag: "SOLO CALABAZA",
     titulo: "Agregar agua tibia",
     descripcion:
-      "Echá un poco de agua tibia para que la yerba (o la grasa en madera) penetre todos los poros del mate.",
+      "Echá un poco de agua tibia para que la yerba penetre todos los poros del mate.",
   },
   {
     id: 4,

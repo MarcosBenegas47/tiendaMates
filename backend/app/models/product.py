@@ -31,6 +31,12 @@ class Product(Base):
     secondary="producto_categoria",
     back_populates="productos"
     )
+    destacados = relationship(
+        "Product_destacados",
+        back_populates="producto",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
 
 
 class ProductoImagen(Base):
@@ -47,6 +53,7 @@ class ProductoImagen(Base):
 class Product_destacados(Base):
     __tablename__= "productos_destacados"
     producto_id = Column(Integer, ForeignKey("productos.id"), primary_key=True)
+    producto = relationship("Product", back_populates="destacados")
 
 class Producto_categoria(Base):
     __tablename__= "producto_categoria"

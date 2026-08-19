@@ -1,13 +1,12 @@
 from sqlalchemy.orm import Session
-from app.models.product import Product,Capacidad, EstiloMate,Material,Virola , Producto_categoria, ProductoConfiguracion, ProductoImagen
+from app.models.product import Product,Capacidad, Product_destacados, EstiloMate,Material,Virola , Producto_categoria, ProductoConfiguracion, ProductoImagen
 from app.models.category import Category
 from app.schemas.product import ProductResponseAdmin
-from fastapi import Query, HTTPException,UploadFile
+from fastapi import HTTPException,UploadFile
 from app.schemas.product import ProductCreate , GetProductResponse, ConfigResponse,ProductUpdate
 import re
 from app.repositories.images import imagesProduct
 
-from sqlalchemy import text
 class AdminRepository:
     def get_all_admin(self, db:Session, id = None,limit = 6, offset = 0):
             products = db.query(Product)
@@ -18,28 +17,30 @@ class AdminRepository:
 
             querys = products.offset(offset).limit(limit).all()
             results =[]
-            # imagesUrls = db.query(ProductoImagen).filter(ProductoImagen.producto_id == product.id ).all()
-            # galeryImages = [imgs.url for imgs in imagesUrls]
+            
             for product in querys:
                 categorias = [categoria.id for categoria in product.categorias]
                 galeryImages = [imagen.url for imagen in product.imagenes]
+
                 results.append(
                     ProductResponseAdmin(
-                id=product.id,
-                codigo=product.codigo,
-                nombre=product.nombre,
-                precio_unitario=product.precio_unitario,
-                cantidad=product.cantidad,
-                eliminado=product.eliminado,
-                estado=product.estado,
-                query_link=product.query_link,
-                categoria= categorias,
-                imgURL=product.img,
-                galery=galeryImages,
-                descripcion =product.descripcion
+                    id=product.id,
+                    codigo=product.codigo,
+                    nombre=product.nombre,
+                    precio_unitario=product.precio_unitario,
+                    cantidad=product.cantidad,
+                    eliminado=product.eliminado,
+                    estado=product.estado,
+                    query_link=product.query_link,
+                    categoria= categorias,
+                    destacado= product.destacados is None ,
+                    imgURL=product.img,
+                    galery=galeryImages,
+                    descripcion =product.descripcion
                 )
                 )
-    
+                
+
             return results
         
     def getCategoryList(self, db:Session):
@@ -103,7 +104,6 @@ class AdminRepository:
                     categoria_id = id
                 )
             )
-        # db.commit()
 
         try:
             db.commit()
@@ -130,15 +130,13 @@ class AdminRepository:
     
     def delete(self, db:Session, id):
         product = db.query(Product).filter(Product.id == id).first()
-        print(product.img)
         resultado=imagesProduct.deleteImg(product.img)
-        print(resultado)
-        
+        resultado=imagesProduct.deleteGaleryImg([imagen.url for imagen in product.imagenes])
         # product = db.query(Product).filter(Product.id== id).first()
-        # if not product:
-        #     raise HTTPException(status_code=404, detail="Producto no encontrado")
-        # db.delete(product)
-        # db.commit()
+        if not product:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+        db.delete(product)
+        db.commit()
         return {"message":"Producto eliminado de la base correctamente"}
     
     def update(self, db:Session, id:int, data:ProductUpdate):
@@ -147,7 +145,7 @@ class AdminRepository:
         if not product:
             raise HTTPException(status_code=404, detail="Producto no encontrado")
 
-
+        print(data)
         product.codigo = data.codigo
         product.nombre = data.nombre
         product.precio_unitario = data.precio_unitario
@@ -155,8 +153,14 @@ class AdminRepository:
         product.descripcion = data.descripcion
         product.estado = data.estado
         product.query_link = data.query_link
-
-
+        if(data.destacado ):
+            product.destacados = Product_destacados(
+                producto_id = product.id
+            )
+        else:
+            if product.destacados:
+                db.delete(product.destacados)
+            
         config = db.query(ProductoConfiguracion)\
             .filter(ProductoConfiguracion.producto_id == product.id)\
             .first()

@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmin, getVirolaAdmin } from "@/app/service/adminUser";
 import { updateProduct } from "@/app/service/adminProduct";
 import {  X } from "lucide-react";
-import AlertDialogSlide from "../ui/AlertDialogSlide";
-import Alert from "../ui/Alert";
 
 type Props = {
   open: boolean;
@@ -25,10 +23,8 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
   const [imagePreview, setImagePreview] = useState <string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [galery, setGalery] = useState<File[]>(  []);
-  const [openAlert, setOpenAlert] = useState(false);
 
-  console.log(producto)
-
+  
   useEffect(() => {
     if (!open) return;
 
@@ -63,6 +59,7 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
       const cat = await getCategorysAdmin()
       if (cat != undefined) setCategory(cat);
     }
+    console.log(producto)
 
 
     const getCapacidad = async () => {
@@ -134,7 +131,6 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
   const handleform = (e: React.FormEvent) => {
     e.preventDefault();
     const id = producto?.id;
-    console.log(producto)
     const productNew: ProductUpdate = {
       id: producto?.id,
       codigo: producto?.codigo,
@@ -144,6 +140,7 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
       cantidad: producto?.cantidad ?? 0,
       eliminado: producto?.eliminado,
       estado: producto?.estado,
+      destacado:producto?.destacado ?? false,
       categoria: producto?.categorias || [],
       query_link: producto?.query_link,
       configuracion: {
@@ -156,7 +153,6 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
     console.log(productNew)
     // validar antes de enviar
     const validarNulo = Object.values(productNew).some(valor => valor=== null) || Object.values(productNew.configuracion).some(valor => valor=== null)
-    console.log( validarNulo);
     if( validarNulo) onAlert();
     if(!validarNulo) updateProduct(id, productNew);
 
@@ -453,6 +449,23 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
               descripcion: e.target.value
             })}
           className="w-full border rounded-lg px-3 py-2" rows={4} />
+          <label title="Destacar" className="flex items-center gap-2">
+          <input
+                type="checkbox"
+                checked={Boolean(producto?.destacado)}
+                onChange={(e) => {
+                   setProducto(prev =>prev&& {
+
+                       ...prev,
+                      destacado: e.target.checked 
+                    
+                  });
+                }}
+                
+              />
+             <p>Destacar</p>
+          </label>
+          
 
         <div className=" bottom-0 w-full mb-5 p-4 border-t flex justify-end gap-3 bg-white">
           <button onClick={onClose}>Cancelar</button>

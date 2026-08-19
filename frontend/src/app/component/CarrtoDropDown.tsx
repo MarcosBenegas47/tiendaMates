@@ -1,6 +1,5 @@
 "use client";
 
-import { ButtonBlack, ButtonWhite } from "./ui/Button";
 
 type Props = {
   open: boolean;
@@ -8,7 +7,6 @@ type Props = {
 };
 
 export default function CarrtoDropDown({ open, onClose }: Props) {
- console.log(open)
   return (
     <div className={`
            absolute right-0 z-50 top-full mt-2 w-90  bg-white rounded-[5px] border border-black/20  shadow-lg
@@ -32,8 +30,8 @@ export default function CarrtoDropDown({ open, onClose }: Props) {
             <p>$0</p> 
         </div>
         <div className="flex justify-between">
-        <button  className="bg-white text-[15px] text-center pt-1 pb-1 pl-5 pr-5 border border-black rounded">Ver Carrito</button>    
-<button  className="bg-black pt-1 pb-1 pl-5 pr-5 text-[15px] !text-white border border-white rounded">Confirmar Reserva</button>
+          <button  className="bg-white text-[15px] text-center pt-1 pb-1 pl-5 pr-5 border border-black rounded">Ver Carrito</button>    
+          <button  className="bg-black pt-1 pb-1 pl-5 pr-5 text-[15px] !text-white border border-white rounded">Confirmar Reserva</button>
         </div>
         </section>
     </div>

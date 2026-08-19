@@ -14,6 +14,8 @@ export function Productos({ productos, categorias }: prop) {
     const [prods, setProds] = useState<ProductosInter[] | null>(productos)
     const [selected, setSelected] = useState<number[]>([])
     const [loading, setLoading] = useState(false);
+    const [productAnt, setProductAnt] = useState<ProductosInter[] | null>();
+
     const [offset, setoffset] = useState<number>(() => {
         if (typeof window !== "undefined") {
             const saved = sessionStorage.getItem("offset")
@@ -24,8 +26,20 @@ export function Productos({ productos, categorias }: prop) {
 
 
     const getProd = async (offset: number = 0) => {
+        setProductAnt(prods);
+        
         const productos = await filtrarProductos(selected, offset)
-        setProds(productos)
+       
+        console.log(productos?.length)
+        if(productos?.length== 0) {
+            setProds(productAnt ?? [])
+            setoffset(offset-6  )
+            
+        }else{
+            setProds(productos)
+            setoffset(offset )
+
+        }
     }
 
     useEffect(() => {
@@ -37,25 +51,6 @@ export function Productos({ productos, categorias }: prop) {
         const productos = await searchProd(toSlug(elem.trim()))
         setProds(productos)
     }
-useEffect(() => {
-    // 1. Activamos el estado de carga visual si hay categorías seleccionadas
-    setLoading(true);
-
-    // 2. Definimos el temporizador (ej. 400 milisegundos de espera)
-    const timer = setTimeout(async () => {
-      try {
-        getProd();
-      } catch (error) {
-        console.error("Error al cargar productos:", error);
-      } finally {
-        setLoading(false);
-      }
-    }, 400);
-
-    // 3. Limpieza: Si 'selected' vuelve a cambiar antes de los 400ms, cancela el timer previo
-    return () => clearTimeout(timer);
-  }, [selected]);
-        console.log(selected)
 
     return (<>
         <div className="flex justify-center  md:flex-row  gap-10 bg-white">
@@ -70,7 +65,7 @@ useEffect(() => {
                             <label className="flex gap-1 items-center " key={cat.id}>
                                 <input
                                     type="checkbox"
-                                    onChange={() => {
+                                    onClick={() => {
                                         setSelected(event => event.includes(cat.id) ? event.filter(id => id !== cat.id) : [...event, cat.id])
                                     }
                                     }
@@ -94,15 +89,7 @@ useEffect(() => {
 
 
                     <div className="pb-3 lg:fixed z-10 grid grid-cols-1  w-full">
-                        {/* <nav
-    className="-mb-px flex  space-x-4 overflow-x-scroll 
-               [&::-webkit-scrollbar]:w-[15px] [&::-webkit-scrollbar]:h-[15px] 
-               [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-[#f7f4ed] 
-               [&::-webkit-scrollbar-thumb]:bg-[#e0cbcb] [&::-webkit-scrollbar-thumb]:rounded-full 
-               [&::-webkit-scrollbar-thumb]:border-[3px] [&::-webkit-scrollbar-thumb]:border-solid [&::-webkit-scrollbar-thumb]:border-[#f6f7ed] 
-               hover:[&::-webkit-scrollbar-thumb]:bg-[#c0a0b9]"
-    aria-label="Tabs"
-  > */}
+
                         <nav
                             className="-mb-px flex space-x-4 overflow-x-auto 
                             [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -133,16 +120,16 @@ useEffect(() => {
                 <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-4">
                     {prods?.map(producto => (
                         <CardProd key={producto.id} prod={producto} />
-                    ))}
+                    ))
+                    }
                 </div>
 
-                <section className="flex justify-center gap-4">
-                    <div className="flex">
+                <section className="flex justify-center gap-4 mb-5">
+                    <div className="flex p-1 pr-2  rounded-[20px] border border-black/40">
                         <ChevronLeft />
                         <button onClick={
                             () => {
                                 if (offset > 0) {
-                                    setoffset(offset - 6)
                                     getProd(offset - 6)
                                 }
 
@@ -150,12 +137,11 @@ useEffect(() => {
                     </div>
 
 
-                    <div className="flex">
+                    <div className="flex rounded-[20px] border border-black/40 p-1 pl-2">
 
                         <button onClick={() => {
-                            setoffset(offset + 6)
                             getProd(offset + 6)
-                        }}>Next</button>
+                        }}>Siguiente</button>
                         <ChevronRight />
                     </div>
 
