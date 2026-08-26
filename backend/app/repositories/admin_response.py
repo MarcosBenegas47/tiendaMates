@@ -141,11 +141,9 @@ class AdminRepository:
     
     def update(self, db:Session, id:int, data:ProductUpdate):
         product = db.query(Product).filter(Product.id == id).first()
-
         if not product:
             raise HTTPException(status_code=404, detail="Producto no encontrado")
 
-        print(data)
         product.codigo = data.codigo
         product.nombre = data.nombre
         product.precio_unitario = data.precio_unitario
@@ -160,7 +158,7 @@ class AdminRepository:
         else:
             if product.destacados:
                 db.delete(product.destacados)
-            
+        
         config = db.query(ProductoConfiguracion)\
             .filter(ProductoConfiguracion.producto_id == product.id)\
             .first()
@@ -169,7 +167,16 @@ class AdminRepository:
                 producto_id=product.id
             )
             db.add(config)
-
+        db.query(Producto_categoria).filter(
+            Producto_categoria.producto_id == product.id
+        ).delete(synchronize_session=False)
+        for id in data.categoria:
+            db.add(
+                Producto_categoria(
+                    producto_id =  product.id,
+                    categoria_id = id
+                )
+            )
         config.estilo_id = data.configuracion.idEstilo
         config.material_id = data.configuracion.idMaterial
         config.virola_id = data.configuracion.idVirola
