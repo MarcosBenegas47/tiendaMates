@@ -72,7 +72,6 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
             const response = await fetch(`${url}/api/routes/admin/create/product`, {
                 method:"POST",
                 headers:{
-                    // "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
     
                 },
@@ -85,13 +84,15 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
 
                 const error = await response.text();
                 console.log("Error FastAPI:", error);
+                return false
 
-                throw new Error(error);
             }
-            return response.json();
+            
+            return true;
     
         } catch (error) {
             console.log("Login error:", error);
+            return false
         }
 }
 

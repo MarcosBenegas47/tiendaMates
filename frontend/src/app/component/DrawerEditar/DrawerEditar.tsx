@@ -153,7 +153,7 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
     console.log(productNew)
     // validar antes de enviar
     const validarNulo = Object.values(productNew).some(valor => valor=== null) || Object.values(productNew.configuracion).some(valor => valor=== null)
-    if( validarNulo) onAlert();
+    if( !validarNulo) onAlert();
     if(!validarNulo) updateProduct(id, productNew);
 
   }

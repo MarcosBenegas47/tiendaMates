@@ -7,6 +7,7 @@ import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmi
 import { createNewProduct } from "@/app/service/adminProduct";
 import { tengoToken } from "@/app/service/useAuthStore";
 import { useRouter } from "next/navigation";
+import Alert from "@/app/component/ui/Alert";
 
 
 
@@ -51,11 +52,17 @@ export default function Nuevo() {
   const [capacidad, setCapacidad] = useState<Capacidad[]>()
   const [material, setMaterial] = useState<Material[]>()
   const [esilo, setEstilo] = useState<EstiloMate[]>()
-    const [isLoading, setIsLoading] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [galery, setGalery] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState("");
+  const [alert, setAlert] = useState(false)
+
+  const closeAlert = ()=>{
+    setAlert(false);
+    router.push("/users/admin/dashboard");
+
+  }
     const router = useRouter();
     
     useEffect(()=>{
@@ -166,7 +173,7 @@ export default function Nuevo() {
     }));
   };
 
-  const handleGuardar = (tipo: "borrador" | "publicar") => {
+  const handleGuardar = async (tipo: "borrador" | "publicar") => {
     const payload: ProductCreate = {
       codigo: form.codigo,
       nombre: form.nombre,
@@ -177,11 +184,10 @@ export default function Nuevo() {
 
       configuracion: form.configuracion, // ya tiene la forma exacta del back
     };
-
-    console.log(payload);
-
-
-    createNewProduct(payload, imageFile, galery);
+    const resultado = await  createNewProduct(payload, imageFile, galery);
+    if (resultado) {
+      setAlert(true)
+    } 
   };
   return (<>
     <section className=" bg-white flex ">
@@ -590,6 +596,8 @@ export default function Nuevo() {
           </div>
         </div>
       </div>
+      <Alert open={alert}   onClose={() => closeAlert()} texto="Guardado con exito"  />
+      
     </section>
   </>)
 }

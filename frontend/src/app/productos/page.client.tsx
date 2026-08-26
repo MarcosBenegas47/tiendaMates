@@ -13,7 +13,8 @@ type prop = {
 export function Productos({ productos, categorias }: prop) {
     const [prods, setProds] = useState<ProductosInter[] | null>(productos)
     const [selected, setSelected] = useState<number[]>([])
-    const [loading, setLoading] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState<number[]>([])
+
     const [productAnt, setProductAnt] = useState<ProductosInter[] | null>();
 
     const [offset, setoffset] = useState<number>(() => {
@@ -23,11 +24,14 @@ export function Productos({ productos, categorias }: prop) {
         }
         return 0
     })
-
+useEffect(() => {
+    getProd();
+}, [selected]);
 
     const getProd = async (offset: number = 0) => {
         setProductAnt(prods);
-        
+        if(selectedFilter.length !== 0) setSelected(selectedFilter);
+
         const productos = await filtrarProductos(selected, offset)
        
         console.log(productos?.length)
@@ -66,7 +70,7 @@ export function Productos({ productos, categorias }: prop) {
                                 <input
                                     type="checkbox"
                                     onClick={() => {
-                                        setSelected(event => event.includes(cat.id) ? event.filter(id => id !== cat.id) : [...event, cat.id])
+                                        setSelectedFilter(event => event.includes(cat.id) ? event.filter(id => id !== cat.id) : [...event, cat.id])
                                     }
                                     }
                                 />
@@ -101,7 +105,7 @@ export function Productos({ productos, categorias }: prop) {
                                  onClick={(e)=>{
                                     setSelected((prev) => (
                                         prev.includes(cat.id)? prev.filter(id=>id !== cat.id) :[...prev, cat.id] ))
-                                    getProd()
+                                    // getProd()
                                     }}
                                   className={`flex-none px-4 py-2  rounded-full text-sm ${selected.includes(cat.id)? 'bg-black text-white border-black':'bg-white border border-gray-200'}`}>
                                     {cat.nombre}
