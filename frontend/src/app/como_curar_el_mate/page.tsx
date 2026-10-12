@@ -124,7 +124,7 @@ export default function Como_curar_el_mate() {
                   </h4>
 
                   <p className="text-xs text-stone-600 leading-6">
-                    Llená el interior casi hasta arriba con yerba mate húmeda y usada.
+                    Llená el interior casi hasta arriba con yerba mate húmeda o usada.
                   </p>
                 </div>
 
@@ -134,7 +134,7 @@ export default function Como_curar_el_mate() {
                   </h4>
 
                   <p className="text-xs text-stone-600 leading-6">
-                    Untá las paredes internas con manteca o aceite usando papel limpio.
+                    Untá las paredes internas con manteca o aceite.
                   </p>
                 </div>
 

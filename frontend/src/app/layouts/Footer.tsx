@@ -36,8 +36,8 @@ export function Footer() {
             </h3>
 
             <div className="space-y-2 text-gray-400">
-              <p>📞 +54 11 5809-5101</p>
-              <p>✉️ contacto@tiendamates.com</p>
+              <p>📞 +54 9 11 5875-3803</p>
+              {/* <p>✉️ contacto@tiendamates.com</p> */}
               <p>📍 Buenos Aires, Argentina</p>
             </div>
           </div>
