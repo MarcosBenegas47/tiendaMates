@@ -4,7 +4,6 @@ import Link from "next/link";
 import { formatearPrecio } from "../service/funcionAux";
 
 export function CardProd({ prod }: { prod: ProductosInter }) {
-
     return (
         // max-w-90
             <Link href={"/producto/"+prod.query_link} className=" border flex md:flex-col justify-between border-black/10 max-w-sm w-full rounded gap-4  h-44 md:h-auto" >
@@ -17,7 +16,7 @@ export function CardProd({ prod }: { prod: ProductosInter }) {
                         <p className="text-xl md:text-3xl mt-1 font-bold">${formatearPrecio( prod.precio_unitario)}</p>
                     </div>
                     <div className="mt-3 md:flex md:justify-center  md:w-full">
-                        <button className="bg-white w-full  text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">Ver mas</button>
+                        <button className="bg-white w-full text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">Ver mas</button>
                         {/* <ButtonWhiteLink link="" text=" /> */}
                     </div>
 

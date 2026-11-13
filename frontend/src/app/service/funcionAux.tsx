@@ -1,9 +1,9 @@
 import { getProductAdmin } from "./adminProduct";
 import { getProduct, getProductBySearch, getProductBySlug } from "./getProduct"
 
-export async function filtrarProductos(categorias: number[] , offset= 0) {
+export async function filtrarProductos(categorias: number[] , offset= 0, limit = 6) {
 
-  const productos = await getProduct(categorias,offset)
+  const productos = await getProduct(categorias,offset,limit)
 
   return productos
 }

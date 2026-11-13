@@ -1,18 +1,36 @@
 "use client"
 
-import { TableOfContents } from "lucide-react";
+import { ShoppingCart, TableOfContents } from "lucide-react";
 import Link from "next/link";
 import { cleanOffset } from "../service/utils";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DrowerMenu from "../component/DrowerMenu";
-// import CarrtoDropDown from "../component/CarrtoDropDown";
-
+ import CarrtoDropDown from "../component/CarrtoDropDown";
 
 export function NavBar(){
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [openCarrito, setOpenCarrito] = useState(false);
+    const [cantidadCarrito, setCantidadCarrito] = useState(0);
+
+    useEffect(() => {
+        const actualizarCantidad = () => {
+            try {
+                const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
+                setCantidadCarrito(Array.isArray(carrito) ? carrito.length : 0);
+            } catch {
+                setCantidadCarrito(0);
+            }
+        };
+        actualizarCantidad();
+        window.addEventListener("carritoActualizado", actualizarCantidad);
+        window.addEventListener("storage", actualizarCantidad);
+        return () => {
+            window.removeEventListener("carritoActualizado", actualizarCantidad);
+            window.removeEventListener("storage", actualizarCantidad);
+        };
+    }, []);
     
         const goToProducts = (ruta:string) =>{
             cleanOffset(ruta)
@@ -36,22 +54,25 @@ export function NavBar(){
 
             <div className="md:flex gap-5 hidden ">
                 <Link href={"/"}>Inicio</Link>
-                <button onClick={()=> goToProducts("/productos")}>Productos</button>
+                <button className="cursor-pointer" onClick={()=> goToProducts("/productos")}>Productos</button>
                 <Link href={"como_curar_el_mate"}>  ¿Como curar el mate?</Link>
 
                 <Link href={""}>Nosotros</Link>
                 
 
             </div>
-            {/* <div className="  hidden md:flex gap-3">
+            <div className="  hidden md:flex gap-3">
                
                 <div className="relative">
-                    <ShoppingCart onClick={()=>setOpenCarrito(!openCarrito)}/>
+                    <button type="button" aria-label={`Abrir carrito, ${cantidadCarrito} productos`} onClick={()=>setOpenCarrito(!openCarrito)} className="relative cursor-pointer">
+                        <ShoppingCart />
+                        {cantidadCarrito > 0 && <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-xs text-white">{cantidadCarrito}</span>}
+                    </button>
 
-                    <CarrtoDropDown open={openCarrito} onClose={() =>setOpenCarrito(false)}/>
+                    <CarrtoDropDown open={openCarrito} onClose={() =>setOpenCarrito(false)} />
 
                </div>
-            </div> */}
+            </div>
         </nav>
 
         <DrowerMenu open={open} onClose={()=>setOpen(false)}/>

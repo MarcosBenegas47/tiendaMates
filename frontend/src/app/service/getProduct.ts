@@ -18,7 +18,7 @@ export const getDestacados = async ():Promise<Destacados[] | null> =>{
 
 }
 
-const buildQuery =(id:number[] | []=[] , offset:number = 0) => {
+const buildQuery =(id:number[] | []=[] , offset:number = 0, limit = 6) => {
     const params: string[] = []
     if(id && id.length >0){
         params.push(`id=[${id.join(",")}]`)
@@ -26,13 +26,14 @@ const buildQuery =(id:number[] | []=[] , offset:number = 0) => {
     if(offset != undefined && offset !=0){
         params.push(`offset=${offset}`)
     }
+    if (limit !== 6) params.push(`limit=${limit}`)
     return params.length?  `?${params.join("&")}`:""
 }
 
-export const getProduct = async (id:number[] | []=[] , offset:number = 0):Promise<ProductosInter[] | null> =>{
+export const getProduct = async (id:number[] | []=[] , offset:number = 0, limit = 6):Promise<ProductosInter[] | null> =>{
 
     try {
-        const response = await fetch(`${url}/api/routes/store/categorys/products${buildQuery(id, offset)}`);
+        const response = await fetch(`${url}/api/routes/store/categorys/products${buildQuery(id, offset, limit)}`);
         if (!response.ok) {
         throw new Error(response.statusText);
         }
@@ -92,6 +93,5 @@ export const getProductBySlug = async(slug:string):Promise<ProductosInter | null
         
     }
 } 
-
 
 

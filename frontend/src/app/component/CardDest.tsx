@@ -13,6 +13,7 @@ const agregarCarrito = ()=>{
 
 // 3. Sobrescribir el localstorage con el array actualizado
     localStorage.setItem('carrito', JSON.stringify(miArray));   
+    window.dispatchEvent(new Event("carritoActualizado"));
 }
 
  return(
@@ -26,11 +27,8 @@ const agregarCarrito = ()=>{
         </div>
         {/* <div className="flex justify-center m-5"> */}
             <div className=" m-5">
-            {/* <div>
-                <button onClick={ agregarCarrito} className="bg-black pt-3 pb-3 pl-5 pr-5 !text-white border border-white rounded">Agregar al carrito</button>
-            </div> */}
             <div>
-            <ButtonWhite   text="Reservar"/>
+            <button onClick={(event) => { event.preventDefault(); agregarCarrito(); }} className="bg-black pt-3 pb-3 pl-5 pr-5 text-white border border-white rounded">Agregar al carrito</button>
 
             </div>
         </div>
