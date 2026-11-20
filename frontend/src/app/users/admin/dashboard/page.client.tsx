@@ -2,7 +2,7 @@
 import DrawerEditar from "@/app/component/DrawerEditar/DrawerEditar";
 import AlertDialogSlide from "@/app/component/ui/AlertDialogSlide";
 import { ProductosInter } from "@/Productos";
-import { Package, Pencil, Trash } from "lucide-react";
+import { ChevronDown, Package, Pencil, Trash } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { filtrarProductosAdmin, getBySlug } from "../../../service/funcionAux"
 
@@ -21,6 +21,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
     const [offset, setoffset] = useState<number>(0)
     const [prods, setProds] = useState<ProductosInter[] | null>(product)
     const [isChangingPage, setIsChangingPage] = useState(false)
+    const [openActionsId, setOpenActionsId] = useState<number | undefined>()
 
     const getProd = async (newOffset: number = 0 ) => {
         if (newOffset < 0 || isChangingPage) return
@@ -73,7 +74,7 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
             </div>
             <div>
 
-                <div className="w-full  bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div className="relative z-10 w-full rounded-xl border border-gray-200 bg-white overflow-visible">
 
                     {/* HEADER */}
                     <div className="grid grid-cols-6 px-6 py-3 bg-gray-100 text-gray-600 text-sm font-medium">
@@ -149,14 +150,28 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                             </span>
 
                             {/* ACCIONES */}
-                            <div className="flex justify-center gap-3 text-gray-500">
-                                <button onClick={() => { handleEdit(prod.query_link)}} className="hover:text-black transition">
-                                    <Pencil />
+                            <div className="relative flex justify-center text-gray-500">
+                                <button
+                                    type="button"
+                                    aria-expanded={openActionsId === prod.id}
+                                    onClick={() => setOpenActionsId(openActionsId === prod.id ? undefined : prod.id)}
+                                    className="flex items-center gap-1 rounded border border-gray-200 px-2 py-1 text-sm hover:bg-gray-100"
+                                >
+                                    Acciones <ChevronDown size={16} />
                                 </button>
-                                
-                                {(<button onClick={() => handleClickOpenAlert(prod.id)} className="hover:text-red-500 transition">
-                                    <Trash />
-                                </button>)}
+                                {openActionsId === prod.id && (
+                                    <div className="absolute right-0 top-full z-20 mt-1 w-44 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                                        <button type="button" onClick={() => { setOpenActionsId(undefined); handleClickOpenAlert(prod.id); }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-gray-50">
+                                            <Trash size={16} /> Eliminar
+                                        </button>
+                                        <button type="button" onClick={() => { setOpenActionsId(undefined); handleEdit(prod.query_link); }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-50">
+                                            <Pencil size={16} /> Edición rápida
+                                        </button>
+                                        <Link href={`/users/admin/edit/${encodeURIComponent(prod.query_link)}`} onClick={() => setOpenActionsId(undefined)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50">
+                                            <Pencil size={16} /> Editar
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}

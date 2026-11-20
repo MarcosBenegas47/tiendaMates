@@ -44,10 +44,10 @@ export interface Category {
 
 
 export interface  ConfiProductCreate{
-    idEstilo: number | undefined,
-    idMaterial: number | undefined,
-    idVirola: number | undefined,
-    idCapacidad: number | undefined,
+    idEstilo: number | null | undefined,
+    idMaterial: number | null | undefined,
+    idVirola: number | null | undefined,
+    idCapacidad: number | null | undefined,
 }
 export interface ProductCreate{
     codigo: string,
@@ -118,4 +118,3 @@ export interface ProductForm {
   configuracion: ConfiProductCreate;
   query_link: string;
 }
-

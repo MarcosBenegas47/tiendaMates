@@ -56,6 +56,43 @@ export const updateProduct = async (id:number | undefined, product:ProductUpdate
         }
 }
 
+export const updateProductFull = async (
+    id: number,
+    product: ProductUpdate,
+    image: File | null,
+    gallery: File[],
+    retainedGallery: string[],
+    removeMainImage: boolean,
+): Promise<{ ok: boolean; error?: string }> => {
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token")?.value
+    if (!token) return { ok: false, error: "La sesión expiró. Volvé a iniciar sesión." }
+
+    const formData = new FormData()
+    formData.append("product", JSON.stringify(product))
+    formData.append("keepGallery", JSON.stringify(retainedGallery))
+    formData.append("removeMainImage", String(removeMainImage))
+    if (image) formData.append("imgFirst", image)
+    gallery.forEach((file) => formData.append("galery", file))
+
+    try {
+        const response = await fetch(`${url}/api/routes/admin/product/update/full/${id}`, {
+            method: "PUT",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+        })
+        if (!response.ok) {
+            const detail = await response.text()
+            console.error("Error del backend al actualizar producto", response.status, detail)
+            return { ok: false, error: `El servidor rechazó los cambios (${response.status}). ${detail}` }
+        }
+        return { ok: true }
+    } catch (error) {
+        console.error("Error actualizando producto", error)
+        return { ok: false, error: "No se pudo conectar con el servidor." }
+    }
+}
+
 
 export const createNewProduct = async ( product:ProductCreate, image:File | null, galery:File[])=>{
         const coolie = await cookies()

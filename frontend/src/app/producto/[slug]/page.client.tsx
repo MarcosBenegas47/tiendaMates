@@ -6,7 +6,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import  "@/styles/imagesGalery.css"
 import { ButtonBlack, ButtonWhite } from "@/app/component/ui/Button";
-import { CalendarClock } from "lucide-react";
+import { CalendarClock, ShoppingCart } from "lucide-react";
 import { formatearPrecio } from "@/app/service/funcionAux";
 import { useState } from "react";
 import Link from "next/link";
@@ -89,10 +89,10 @@ export default function Producto({product}:{product: ProductosInter | null}) {
                </div>
                
             </div>
-            <div className="flex flex-col md:flex-row gap-5">
-               <button onClick={() => enviarMensajeDeCompra()}  className="cursor-pointer flex items-center gap-2 bg-black pt-3 pb-3 pl-5 pr-5 text-sm  !text-white border border-white rounded"> <CalendarClock/> Reservar producto 🧉</button>
-                <div className="relative">
-                  <button onClick={agregarAlCarrito} className="bg-white cursor-pointer text-sm text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">Agregar al carrito</button>
+             <div className="grid w-full grid-cols-2 items-center gap-3">
+                <button onClick={() => enviarMensajeDeCompra()}  className="h-12 w-full min-w-0 cursor-pointer flex items-center justify-center gap-1 bg-black px-2 text-center text-xs !text-white border border-white rounded whitespace-nowrap sm:gap-2 sm:px-5 sm:text-sm"> <CalendarClock className="h-4 w-4 shrink-0 sm:h-5 sm:w-5"/> Reservar producto 🧉</button>
+                <div className="relative min-w-0">
+                  <button onClick={agregarAlCarrito} className="h-12 w-full cursor-pointer flex items-center justify-center gap-1 bg-white px-2 text-center text-xs !text-black border border-black rounded whitespace-nowrap sm:gap-2 sm:px-5 sm:text-sm"><ShoppingCart className="h-4 w-4 shrink-0 sm:h-5 sm:w-5"/>Agregar al carrito</button>
                   {agregado && <div role="status" className="absolute bottom-full left-0 z-20 mb-2 w-56 rounded border border-black/10 bg-white p-3 text-sm shadow-lg">
                     <p className="font-medium">¡Agregado al carrito!</p>
                     <Link href="/carrito" className="mt-1 inline-block underline">Ver carrito</Link>

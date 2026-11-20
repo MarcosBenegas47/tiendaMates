@@ -21,10 +21,10 @@ const initialForm: ProductCreate = {
   // imgFirst: "",
   categoria: [],
   configuracion: {
-    idEstilo: 0,
-    idMaterial: 0,
-    idVirola: 0,
-    idCapacidad: 0,
+    idEstilo: null,
+    idMaterial: null,
+    idVirola: null,
+    idCapacidad: null,
   },
   // query_link: "",
 };
@@ -179,12 +179,16 @@ export default function Nuevo() {
       ...prev,
       configuracion: {
         ...prev.configuracion,
-        [name]: Number(value), // el back espera int
+        [name]: value ? Number(value) : null,
       },
     }));
   };
 
   const handleGuardar = async (tipo: "borrador" | "publicar") => {
+    if (!form.configuracion.idEstilo || !form.configuracion.idMaterial || !form.configuracion.idVirola || !form.configuracion.idCapacidad) {
+      window.alert("Seleccioná estilo, material, virola y capacidad antes de guardar.");
+      return;
+    }
     const payload: ProductCreate = {
       codigo: form.codigo,
       nombre: form.nombre,
@@ -346,11 +350,11 @@ export default function Nuevo() {
                     <Field label="Estilo">
                       <select
                         name="idEstilo"
-                        value={form.configuracion.idEstilo}
+                        value={form.configuracion.idEstilo ?? ""}
                         onChange={handleConfigChange}
                         className={inputCls}
                       >
-                        <option value={0}>Seleccionar estilo</option>
+                        <option value="">Sin estilo</option>
                         {esilo?.map((e) => (
                           <option key={e.id} value={e.id}>
                             {e.nombre}
@@ -362,11 +366,11 @@ export default function Nuevo() {
                     <Field label="Material">
                       <select
                         name="idMaterial"
-                        value={form.configuracion.idMaterial}
+                        value={form.configuracion.idMaterial ?? ""}
                         onChange={handleConfigChange}
                         className={inputCls}
                       >
-                        <option value={0}>Seleccionar material</option>
+                        <option value="">Sin material</option>
                         {material?.map((m) => (
                           <option key={m.id} value={m.id}>
                             {m.nombre}
@@ -378,11 +382,11 @@ export default function Nuevo() {
                     <Field label="Virola">
                       <select
                         name="idVirola"
-                        value={form.configuracion.idVirola}
+                        value={form.configuracion.idVirola ?? ""}
                         onChange={handleConfigChange}
                         className={inputCls}
                       >
-                        <option value={0}>Seleccionar virola</option>
+                        <option value="">Sin virola</option>
                         {virola?.map((v) => (
                           <option key={v.id} value={v.id}>
                             {v.nombre}
@@ -394,11 +398,11 @@ export default function Nuevo() {
                     <Field label="Capacidad">
                       <select
                         name="idCapacidad"
-                        value={form.configuracion.idCapacidad}
+                        value={form.configuracion.idCapacidad ?? ""}
                         onChange={handleConfigChange}
                         className={inputCls}
                       >
-                        <option value={0}>Seleccionar capacidad</option>
+                        <option value="">Sin capacidad</option>
                         {capacidad?.map((c) => (
                           <option key={c.id} value={c.id}>
                             {c.descripcion}
