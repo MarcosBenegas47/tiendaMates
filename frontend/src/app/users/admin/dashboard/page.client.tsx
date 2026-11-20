@@ -7,44 +7,34 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { filtrarProductosAdmin, getBySlug } from "../../../service/funcionAux"
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Alert from "@/app/component/ui/Alert";
-import { verificarToken } from "@/app/service/adminUser";
-import { tengoToken } from "@/app/service/useAuthStore";
-import { useRouter } from "next/navigation";
 
 export default function Dashboard({ product }: { product: ProductosInter[] | null }) {
     const [open, setOpen] = useState(false);
     const [producto, setProducto] = useState<ProductosInter | null> (null)
     const [openAlert, setOpenAlert] = useState(false);
     const [openAlertDrower, setOpenAlertDrower] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-
+    const [mensajeAlertDrawer, setMensajeAlertDrawer] = useState("");
     const [selectedId, setSelectedId] = useState<number | undefined>();
+    const editingSlugRef = useRef<string | null>(null);
     const [offset, setoffset] = useState<number>(0)
     const [prods, setProds] = useState<ProductosInter[] | null>(product)
-    const router = useRouter();
+    const [isChangingPage, setIsChangingPage] = useState(false)
 
-    const getProd = async (offset: number = 0 ) => {
-        const productos = await filtrarProductosAdmin([], offset)
-        console.log(productos)
-        setProds(productos)
-    }
-     useEffect(()=>{
-        const verificarSiHayToken = async () =>{
-            if( !await tengoToken()) {
-                setIsLoading(false)
-                router.push("/users/login")
+    const getProd = async (newOffset: number = 0 ) => {
+        if (newOffset < 0 || isChangingPage) return
+        setIsChangingPage(true)
+        try {
+            const productos = await filtrarProductosAdmin([], newOffset)
+            if (productos !== null) {
+                setProds(productos)
+                setoffset(newOffset)
             }
-            const data = await verificarToken() || {ok: false}
-            if (!data.ok) {
-            router.push("/users/login");
+        } finally {
+            setIsChangingPage(false)
         }
-
-        }
-        verificarSiHayToken()   
-     },[product])
-
+    }
     
     
     
@@ -58,15 +48,15 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
     setOpenAlert(false);
   };
   const handleEdit  = async (slug:string)=>{
-    const prod = await getBySlug(slug); 
-    if(prod){
-        setProducto(prod)
-        setOpen(true); 
-    }
-    
+    const prodEnLista = prods?.find((item) => item.query_link === slug);
+    editingSlugRef.current = slug;
+    if (prodEnLista) setProducto(prodEnLista);
+    setOpen(true);
+    const productoCompleto = await getBySlug(slug);
+    if (productoCompleto && editingSlugRef.current === slug) setProducto(productoCompleto);
   }
     return <>
-        {isLoading && (<div className="h-[calc(100dvh-96px)] bg-white flex ">
+        {(<div className="h-[calc(100dvh-96px)] bg-white flex ">
             <div className="flex flex-col  justify-between w-65 border border-black/10">
                 <section className=" flex flex-col gap-2">
                     <Link href={"/users/admin/dashboard"} className="flex items-center">
@@ -172,38 +162,45 @@ export default function Dashboard({ product }: { product: ProductosInter[] | nul
                     ))}
 
                 </div>
-                <section className="flex justify-center gap-4">
-                    <div className="flex">
-                        <ChevronLeft />
-                        <button onClick={
-                            () => {
-                                if (offset > 0) {
-                                    setoffset(offset - 6)
-                                    getProd(offset - 6)
-                                }
+                <section className="mb-5 mt-4 flex flex-wrap items-center justify-center gap-2" aria-label="Paginación de productos">
+                    <button
+                        disabled={offset === 0 || isChangingPage}
+                        onClick={() => getProd(Math.max(0, offset - 6))}
+                        className="flex items-center gap-1 rounded-[20px] border border-black/40 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        <ChevronLeft className="h-4 w-4" /> Anterior
+                    </button>
 
-                            }}>Anterior</button>
-                    </div>
+                    {Array.from({ length: Math.floor(offset / 6) + 1 + ((prods?.length ?? 0) >= 6 ? 1 : 0) }, (_, index) => index).map((page) => {
+                        const pageOffset = page * 6
+                        const isCurrentPage = offset === pageOffset
+                        return (
+                            <button
+                                key={page}
+                                aria-current={isCurrentPage ? "page" : undefined}
+                                disabled={isChangingPage}
+                                onClick={() => getProd(pageOffset)}
+                                className={`h-9 min-w-9 rounded-full border px-3 text-sm transition-colors disabled:cursor-wait ${isCurrentPage ? "border-black bg-black text-white" : "border-black/30 bg-white text-gray-700 hover:bg-gray-100"}`}
+                            >
+                                {page + 1}
+                            </button>
+                        )
+                    })}
 
-
-                    <div className="flex">
-
-                        <button onClick={() => {
-                            setoffset(offset + 6)
-                            getProd(offset + 6)
-                        }}>Next</button>
-                        <ChevronRight />
-                    </div>
-
-
+                    <button
+                        disabled={isChangingPage || (prods?.length ?? 0) < 6}
+                        onClick={() => getProd(offset + 6)}
+                        className="flex items-center gap-1 rounded-[20px] border border-black/40 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        Siguiente <ChevronRight className="h-4 w-4" />
+                    </button>
                 </section>
             </div>
              <AlertDialogSlide open={openAlert} onClose={handleCloseAlert} id={selectedId}  />
 
             <div>
-                <DrawerEditar open={open} onAlert={() => setOpenAlertDrower(true)} onClose={() => setOpen(false)} prod={producto}/>
-                    <Alert open={openAlertDrower}   onClose={() => setOpenAlertDrower(false)} texto="No se pueden dejar campos nulos"  />
-                    <Alert open={openAlertDrower}   onClose={() => setOpenAlertDrower(false)} texto="Guardado con exito"  />
+                <DrawerEditar open={open} onAlert={(mensaje) => { setMensajeAlertDrawer(mensaje); setOpenAlertDrower(true); }} onClose={() => setOpen(false)} prod={producto}/>
+                    <Alert open={openAlertDrower} onClose={() => { setOpenAlertDrower(false); setOpen(false); }} texto={mensajeAlertDrawer} />
 
             </div>
 

@@ -98,9 +98,15 @@ export const createNewProduct = async ( product:ProductCreate, image:File | null
 
 
 export const getProductAdmin = async (id:number[] | []=[] , offset:number = 0):Promise<ProductosInter[] | null> =>{
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token")?.value
+    if (!token) return null;
 
     try {
-        const response = await fetch(`${url}/api/routes/admin/categorys/products${buildQuery(id, offset)}`);
+        const response = await fetch(`${url}/api/routes/admin/categorys/products${buildQuery(id, offset)}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            cache: "no-store",
+        });
         if (!response.ok) {
         throw new Error(response.statusText);
         }

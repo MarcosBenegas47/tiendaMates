@@ -35,6 +35,9 @@ export default function CarrtoDropDown({ open, onClose, mobile = false }: Props)
     const lineas = carrito.map((producto, i) => `${i + 1}. ${producto.nombre || "Producto"}${producto.cantidad && producto.cantidad > 1 ? ` (x${producto.cantidad})` : ""} - $${producto.precio_unitario ?? " consultar"}`);
     const texto = `Hola, quiero solicitar una reserva para estos productos:\n${lineas.join("\n")}`;
     window.open(`https://wa.me/5491158753803?text=${encodeURIComponent(texto)}`, "_blank", "noopener,noreferrer");
+    localStorage.removeItem("carrito");
+    setCarrito([]);
+    window.dispatchEvent(new Event("carritoActualizado"));
   };
   const eliminarProducto = (indice: number) => {
     const carritoActualizado = carrito.filter((_, i) => i !== indice);
@@ -42,7 +45,7 @@ export default function CarrtoDropDown({ open, onClose, mobile = false }: Props)
     setCarrito(carritoActualizado);
     window.dispatchEvent(new Event("carritoActualizado"));
   };
-  const total = carrito.reduce((suma, p) => suma + Number(p.precio_unitario || 0) * (p.cantidad || 1), 0);
+  const total = carrito.reduce((suma, p) => suma + Number(p.precio_unitario || 0) , 0);
   return (
     <div className={`
            ${mobile ? "relative mt-2 w-full" : "absolute right-0 top-full mt-2 w-90"} z-50 bg-white rounded-[5px] border border-black/20 shadow-lg

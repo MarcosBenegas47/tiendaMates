@@ -9,7 +9,7 @@ type Props = {
   open: boolean;
   prod: ProductosInter | null;
   onClose: () => void;
-  onAlert: () => void;
+  onAlert: (message: string) => void;
 };
 
 export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
@@ -53,6 +53,9 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
             }
           }
         });
+        setImagePreview(prod.imgURL || null);
+        setImageFile(null);
+        setGalery([]);
       }
     };
     const getCat = async () => {
@@ -82,10 +85,6 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
     getCapacidad()
     getVirola()
     getMaterial()
-    setImagePreview(producto?.imgURL ?? null)
-    setImageFile(null);
-    setGalery([]);
-
     getCat()
     fetchData();
   }, [open, prod]);
@@ -128,7 +127,7 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
       }
     };
   }, [imagePreview]);
-  const handleform = (e: React.FormEvent) => {
+  const handleform = async (e: React.FormEvent) => {
     e.preventDefault();
     const id = producto?.id;
     const productNew: ProductUpdate = {
@@ -153,8 +152,13 @@ export default function DrawerEditar({ open, onClose,onAlert, prod }: Props) {
     console.log(productNew)
     // validar antes de enviar
     const validarNulo = Object.values(productNew).some(valor => valor=== null) || Object.values(productNew.configuracion).some(valor => valor=== null)
-    if( !validarNulo) onAlert();
-    if(!validarNulo) updateProduct(id, productNew);
+    if (validarNulo) {
+      onAlert("No se pueden dejar campos nulos");
+      return;
+    }
+    const actualizado = await updateProduct(id, productNew);
+    if (actualizado) onAlert("Guardado con éxito");
+    else onAlert("No se pudo guardar el producto. Intentá nuevamente.");
 
   }
   const cerrarDrawer = ()=>{

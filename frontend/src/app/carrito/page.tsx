@@ -38,10 +38,14 @@ export default function CarritoPage() {
     window.dispatchEvent(new Event("carritoActualizado"));
   };
 
-  const total = carrito.reduce((suma, producto) => suma + Number(producto.precio_unitario || 0) * (producto.cantidad || 1), 0);
+  const total = carrito.reduce((suma, producto) => suma + Number(producto.precio_unitario || 0) , 0);
   const solicitar = () => {
+    if (!carrito.length) return;
     const detalle = carrito.map((p, i) => `${i + 1}. ${p.nombre || "Producto"}${p.cantidad && p.cantidad > 1 ? ` (x${p.cantidad})` : ""} - $${p.precio_unitario ?? "consultar"}`).join("\n");
     window.open(`https://wa.me/5491158753803?text=${encodeURIComponent(`Hola, quiero solicitar una reserva para estos productos:\n${detalle}`)}`, "_blank", "noopener,noreferrer");
+    localStorage.removeItem("carrito");
+    setCarrito([]);
+    window.dispatchEvent(new Event("carritoActualizado"));
   };
 
   return (

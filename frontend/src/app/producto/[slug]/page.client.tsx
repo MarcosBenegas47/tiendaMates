@@ -8,7 +8,10 @@ import  "@/styles/imagesGalery.css"
 import { ButtonBlack, ButtonWhite } from "@/app/component/ui/Button";
 import { CalendarClock } from "lucide-react";
 import { formatearPrecio } from "@/app/service/funcionAux";
+import { useState } from "react";
+import Link from "next/link";
 export default function Producto({product}:{product: ProductosInter | null}) {
+   const [agregado, setAgregado] = useState(false);
    let listaImages = []
    listaImages.push(product?.imgURL)
    const listaImagagenesConcatenada = listaImages.concat(product?.galery)
@@ -41,6 +44,8 @@ export default function Producto({product}:{product: ProductosInter | null}) {
          localStorage.setItem("carrito", JSON.stringify([product]));
       }
       window.dispatchEvent(new Event("carritoActualizado"));
+      setAgregado(true);
+      window.setTimeout(() => setAgregado(false), 2500);
    };
        
    return (<>
@@ -86,7 +91,13 @@ export default function Producto({product}:{product: ProductosInter | null}) {
             </div>
             <div className="flex flex-col md:flex-row gap-5">
                <button onClick={() => enviarMensajeDeCompra()}  className="cursor-pointer flex items-center gap-2 bg-black pt-3 pb-3 pl-5 pr-5 text-sm  !text-white border border-white rounded"> <CalendarClock/> Reservar producto 🧉</button>
-                <button onClick={agregarAlCarrito} className="bg-white cursor-pointer text-sm text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">Agregar al carrito</button>
+                <div className="relative">
+                  <button onClick={agregarAlCarrito} className="bg-white cursor-pointer text-sm text-center pt-3 pb-3 pl-5 pr-5 border border-black rounded">Agregar al carrito</button>
+                  {agregado && <div role="status" className="absolute bottom-full left-0 z-20 mb-2 w-56 rounded border border-black/10 bg-white p-3 text-sm shadow-lg">
+                    <p className="font-medium">¡Agregado al carrito!</p>
+                    <Link href="/carrito" className="mt-1 inline-block underline">Ver carrito</Link>
+                  </div>}
+                </div>
             </div>
          </div>
          

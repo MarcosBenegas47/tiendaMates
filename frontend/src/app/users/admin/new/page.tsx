@@ -2,7 +2,7 @@
 import { Package, X } from "lucide-react";
 import Link from "next/link";
 import { Capacidad, Category, EstiloMate, Material, ProductCreate, ProductosInter, ProductUpdate, Virola } from "@/Productos";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCapacidadAdmin, getCategorysAdmin, getEstiliosAdmin, getMaterialAdmin, getVirolaAdmin, verificarToken } from "@/app/service/adminUser";
 import { createNewProduct } from "@/app/service/adminProduct";
 import { tengoToken } from "@/app/service/useAuthStore";
@@ -54,9 +54,11 @@ export default function Nuevo() {
   const [esilo, setEstilo] = useState<EstiloMate[]>()
   const [isLoading, setIsLoading] = useState(true);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [galery, setGalery] = useState<File[]>([]);
+  const [galery, setGalery] = useState<{ file: File; preview: string }[]>([]);
   const [imagePreview, setImagePreview] = useState("");
   const [alert, setAlert] = useState(false)
+  const galleryRef = useRef(galery);
+  galleryRef.current = galery;
 
   const closeAlert = ()=>{
     setAlert(false);
@@ -94,13 +96,22 @@ export default function Nuevo() {
   };
 
   const handleGaleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = Array.from(e.target.files || []);
-    setGalery((prev) => [...prev, ...file])
+    const files = Array.from(e.target.files || []);
+    setGalery((prev) => [
+      ...prev,
+      ...files.map((file) => ({ file, preview: URL.createObjectURL(file) })),
+    ]);
+    e.target.value = "";
   };
   const removeImage = (indexToremove: number) => {
+    const imageToRemove = galery[indexToremove];
+    if (imageToRemove) URL.revokeObjectURL(imageToRemove.preview);
     setGalery((prev) => prev.filter((_, index) => index != indexToremove));
 
   }
+  useEffect(() => {
+    return () => galleryRef.current.forEach(({ preview }) => URL.revokeObjectURL(preview));
+  }, []);
   useEffect(() => {
     return () => {
       if (imagePreview) {
@@ -184,7 +195,7 @@ export default function Nuevo() {
 
       configuracion: form.configuracion, // ya tiene la forma exacta del back
     };
-    const resultado = await  createNewProduct(payload, imageFile, galery);
+    const resultado = await  createNewProduct(payload, imageFile, galery.map(({ file }) => file));
     if (resultado) {
       setAlert(true)
     } 
@@ -490,20 +501,31 @@ export default function Nuevo() {
                       onChange={handleGaleryChange}
                     />
 
-                    {
-                      galery.map((file, index) => (<div key={index}>
-                        <button type="button"
-                          onClick={() => removeImage(index)}>
-
-                          <span><X /></span>
-                        </button>
-                        <span>{file.name}</span>
-                        <span className="text-xs text-gray-500">
-                          {(file.size / 1024).toFixed(1)} KB
-                        </span>
+                    {galery.length > 0 && (
+                      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                        {galery.map(({ file, preview }, index) => (
+                          <div key={`${file.name}-${index}`} className="group relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                            <img
+                              src={preview}
+                              alt={`Vista previa de ${file.name}`}
+                              className="h-32 w-full object-cover"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              aria-label={`Eliminar ${file.name}`}
+                              title="Eliminar imagen"
+                              className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-gray-700 shadow hover:bg-red-600 hover:text-white"
+                            >
+                              <X size={16} />
+                            </button>
+                            <div className="truncate px-2 py-1.5 text-xs text-gray-600" title={file.name}>
+                              {file.name}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      ))
-                    }
+                    )}
                   </Field>
                 </section>
 

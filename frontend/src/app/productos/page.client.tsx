@@ -13,6 +13,7 @@ type prop = {
 export function Productos({ productos, categorias }: prop) {
     const [prods, setProds] = useState<ProductosInter[] | null>(productos)
     const [selected, setSelected] = useState<number[]>([])
+    const [pendingSelected, setPendingSelected] = useState<number[]>([])
     const [offset, setoffset] = useState(0)
     const [loading, setLoading] = useState(true)
     const [restaurado, setRestaurado] = useState(false)
@@ -31,7 +32,7 @@ export function Productos({ productos, categorias }: prop) {
         setLoading(true)
         filtrarProductos(selected, offset).then((resultados) => {
             if (!vigente) return
-            setProds(resultados || [])
+            if (resultados !== null) setProds(resultados)
         }).finally(() => {
             if (vigente) setLoading(false)
         })
@@ -42,7 +43,18 @@ export function Productos({ productos, categorias }: prop) {
         if (offset > 0) window.scrollTo({ top: 0, behavior: "smooth" })
     }, [offset])
 
-    const aplicarFiltros = () => setoffset(0)
+    const aplicarFiltros = async () => {
+        setSelected(pendingSelected)
+        setoffset(0)
+        setHasSearched(false)
+        setLoading(true)
+        try {
+            const resultados = await filtrarProductos(pendingSelected, 0)
+            if (resultados !== null) setProds(resultados)
+        } finally {
+            setLoading(false)
+        }
+    }
     const irAlFinal = async () => {
         if (loading || hasSearched) return
         const todos = await filtrarProductos(selected, 0, 10000)
@@ -68,10 +80,8 @@ export function Productos({ productos, categorias }: prop) {
                             <label className="flex gap-1 items-center " key={cat.id}>
                                 <input
                                     type="checkbox"
-                                    onClick={() => {
-                                     setSelected(event => event.includes(cat.id) ? event.filter(id => id !== cat.id) : [...event, cat.id])
-                                    }
-                                    }
+                                    checked={pendingSelected.includes(cat.id)}
+                                    onChange={() => setPendingSelected((prev) => prev.includes(cat.id) ? prev.filter(id => id !== cat.id) : [...prev, cat.id])}
                                 />
                                 {cat.nombre}
                             </label>
@@ -102,8 +112,11 @@ export function Productos({ productos, categorias }: prop) {
                                 <button
                                  key={cat.id}
                                      onClick={()=>{
-                                     setSelected((prev) => (
-                                         prev.includes(cat.id)? prev.filter(id=>id !== cat.id) :[...prev, cat.id] ))
+                                      setSelected((prev) => {
+                                          const actualizada = prev.includes(cat.id) ? prev.filter(id => id !== cat.id) : [...prev, cat.id]
+                                          setPendingSelected(actualizada)
+                                          return actualizada
+                                      })
                                      setoffset(0)
                                     }}
                                   className={`flex-none px-4 py-2  rounded-full text-sm ${selected.includes(cat.id)? 'bg-black text-white border-black':'bg-white border border-gray-200'}`}>
@@ -120,9 +133,10 @@ export function Productos({ productos, categorias }: prop) {
 
                 </div>
 
-                <div aria-busy={loading} className={`grid grid-cols-1 md:grid-cols-3 justify-items-center gap-4 transition-opacity duration-200 ${loading ? "opacity-0" : "opacity-100"}`}>
+                <div aria-busy={loading} className="grid grid-cols-1 justify-items-center gap-4 transition-opacity duration-200 md:grid-cols-3">
                     {prods?.map(producto => <CardProd key={producto.id} prod={producto} />)}
                     {!loading && prods?.length === 0 && <p className="col-span-full py-8 text-center">No se encontraron productos.</p>}
+                    {loading && <p className="col-span-full py-2 text-center text-sm text-black/50">Actualizando productos…</p>}
                 </div>
 
                 <section className="mb-5 flex flex-nowrap items-center justify-center gap-1 sm:gap-4">
