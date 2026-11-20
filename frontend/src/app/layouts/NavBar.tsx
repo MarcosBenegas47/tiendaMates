@@ -4,7 +4,7 @@ import { ShoppingCart, TableOfContents } from "lucide-react";
 import Link from "next/link";
 import { cleanOffset } from "../service/utils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DrowerMenu from "../component/DrowerMenu";
  import CarrtoDropDown from "../component/CarrtoDropDown";
 
@@ -13,6 +13,18 @@ export function NavBar(){
     const [open, setOpen] = useState(false);
     const [openCarrito, setOpenCarrito] = useState(false);
     const [cantidadCarrito, setCantidadCarrito] = useState(0);
+    const carritoRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!openCarrito) return;
+        const cerrarAlHacerClickAfuera = (event: PointerEvent) => {
+            if (event.target instanceof Node && !carritoRef.current?.contains(event.target)) {
+                setOpenCarrito(false);
+            }
+        };
+        document.addEventListener("pointerdown", cerrarAlHacerClickAfuera);
+        return () => document.removeEventListener("pointerdown", cerrarAlHacerClickAfuera);
+    }, [openCarrito]);
 
     useEffect(() => {
         const actualizarCantidad = () => {
@@ -63,7 +75,7 @@ export function NavBar(){
             </div>
             <div className="  hidden md:flex gap-3">
                
-                <div className="relative">
+                 <div ref={carritoRef} className="relative">
                     <button type="button" aria-label={`Abrir carrito, ${cantidadCarrito} productos`} onClick={()=>setOpenCarrito(!openCarrito)} className="relative cursor-pointer">
                         <ShoppingCart />
                         {cantidadCarrito > 0 && <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-xs text-white">{cantidadCarrito}</span>}

@@ -55,7 +55,7 @@ class GetProductResponse(BaseModel):
     estado:bool
     query_link:str
     categorias:Optional[list[int]] = None
-    imgURL:str
+    imgURL:Optional[str] = None
     galery:list[str]
     configuracion: Optional[ConfigResponse] = None
     class Config:
@@ -107,5 +107,3 @@ class ProductResponseAdmin(BaseModel):
     galery:Optional[list[str]] = None
     class Config:
         from_attributes = True
-
-

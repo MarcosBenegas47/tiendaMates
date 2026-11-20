@@ -34,6 +34,21 @@ def deleteProduct(id:int, db:Session = Depends(getDataBase), admin = Depends(get
 def updateProduct(id:int, data:ProductUpdate, db:Session = Depends(getDataBase), admin = Depends(getDbAdmin) ):
     return responseAdmin.update(db, id, data)
 
+@router.put("/product/update/full/{id}")
+async def updateProductFull(
+    id: int,
+    product: str = Form(...),
+    keepGallery: str = Form("[]"),
+    removeMainImage: bool = Form(False),
+    imgFirst: UploadFile | None = File(None),
+    galery: list[UploadFile] = File([]),
+    db: Session = Depends(getDataBase),
+    admin=Depends(getDbAdmin),
+):
+    product_obj = ProductUpdate.model_validate_json(product)
+    retained_urls = json.loads(keepGallery)
+    return await responseAdmin.updateFull(db, id, product_obj, imgFirst, galery, retained_urls, removeMainImage)
+
 @router.get("/product/categorys")
 def getCategorys(  db:Session = Depends(getDataBase), admin = Depends(getDbAdmin) ):
     return responseAdmin.getCategoryList(db )
@@ -58,4 +73,3 @@ def getproducts(db:Session = Depends(getDataBase), id:Optional[str] = None,limit
     if id:
         ids_list = json.loads(id)  
     return responseAdmin.get_all_admin(db, id = ids_list ,limit = limit, offset = offset)
-

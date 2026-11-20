@@ -33,7 +33,7 @@ class AdminRepository:
                     estado=product.estado,
                     query_link=product.query_link,
                     categoria= categorias,
-                    destacado= product.destacados is None ,
+                    destacado= product.destacados is not None,
                     imgURL=product.img,
                     galery=galeryImages,
                     descripcion =product.descripcion
@@ -191,3 +191,36 @@ class AdminRepository:
         db.refresh(product)
 
         return {"message": "Producto actualizado correctamente"}
+
+    async def updateFull(self, db:Session, id:int, data:ProductUpdate, imgFirst:UploadFile | None, galery:list[UploadFile], keepGallery:list[str], removeMainImage:bool):
+        product = db.query(Product).filter(Product.id == id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+        known_gallery = {image.url for image in product.imagenes}
+        if any(url not in known_gallery for url in keepGallery):
+            raise HTTPException(status_code=400, detail="La galería contiene imágenes inválidas")
+
+        result = self.update(db, id, data)
+
+        old_gallery = [image for image in product.imagenes if image.url not in keepGallery]
+        removed_urls = [image.url for image in old_gallery]
+        for image in old_gallery:
+            db.delete(image)
+        if removed_urls:
+            imagesProduct.deleteGaleryImg(removed_urls)
+
+        for url in await imagesProduct.uploadGalery(galery):
+            db.add(ProductoImagen(producto_id=id, url=url))
+
+        if imgFirst:
+            new_main_url = await imagesProduct.uploadImg(imgFirst)
+            if product.img:
+                imagesProduct.deleteImg(product.img)
+            product.img = new_main_url
+        elif removeMainImage and product.img:
+            imagesProduct.deleteImg(product.img)
+            product.img = None
+
+        db.commit()
+        return result
